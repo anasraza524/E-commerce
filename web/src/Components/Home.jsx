@@ -6,6 +6,7 @@ import {Typography,Card,CardContent,
     let baseUrl = ``;
     if (window.location.href.split(":")[0] === "http") {
         baseUrl = `http://localhost:3000`;
+        console.log(baseUrl)
     }
     const Home = () => {
 
@@ -16,9 +17,9 @@ import {Typography,Card,CardContent,
     useEffect(() => {
         (async () => {
           const response =
-           await axios.get(`${baseUrl}/product`);
+           await axios.get(`${baseUrl}/products`);
           setProductData(response.data.data);
-          console.log(response.data.data)
+          console.log("data",response.data.data)
         })();
       }, []);
     const submitHandler = async (e) => {
@@ -35,7 +36,7 @@ import {Typography,Card,CardContent,
               headers: { "Content-Type": "applicatio.json" },
               // withCredentials: true
             });
-            
+
             console.log(data)
             console.log(prodName,prodDec,prodPrice)
             console.log(response.data);  // '{"answer":42}'

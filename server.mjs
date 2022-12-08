@@ -3,7 +3,7 @@ import path from 'path';
 import cors from 'cors'
 
 const app = express();
-const port = process.env.PORT || 3000 ;
+const port = process.env.PORT || 3001 ;
 
 app.use(cors());
 app.use(express.json());
@@ -42,7 +42,7 @@ res.send({
 })
 
 
-app.get('/product', (req, res) => {
+app.get('/products', (req, res) => {
   res.send({
       message: "got all products successfully",
       data: products
