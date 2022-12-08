@@ -3,13 +3,13 @@ import path from 'path';
 import cors from 'cors'
 
 const app = express();
-const port = process.env.PORT || 3000 || 3001;
+const port = process.env.PORT || 3000 ;
 
 app.use(cors());
 app.use(express.json());
 let  products = [];
 
-app.post('/products',(req,res)=>{
+app.post('/product',(req,res)=>{
   const body = req.body
   if(!body.name && body.price && body.description
     // && body.id
@@ -42,14 +42,14 @@ res.send({
 })
 
 
-app.get('/products', (req, res) => {
+app.get('/product', (req, res) => {
   res.send({
       message: "got all products successfully",
       data: products
   })
 })
 
-app.get('/products/:id', (req, res) => {
+app.get('/product/:id', (req, res) => {
 
   const id = req.params.id;
 

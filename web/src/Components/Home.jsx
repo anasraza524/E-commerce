@@ -13,37 +13,49 @@ import {Typography,Card,CardContent,
     const [prodName, setProdName] = useState('')
     const [prodPrice, setProdPrice] = useState('')
     const [prodDec, setProdDec] = useState('')
-   
+    useEffect(() => {
+        (async () => {
+          const response =
+           await axios.get(`${baseUrl}/product`);
+          setProductData(response.data.data);
+          console.log(response.data.data)
+        })();
+      }, []);
     const submitHandler = async (e) => {
         e.preventDefault();
-        axios.post(`${baseUrl}/products`, {prodName,prodDec,prodPrice})
-        const res = await  axios.post(`${baseUrl}/products`, 
-        {
-           name: prodName,
-           price:prodDec,
-           description:prodPrice,
-        });
-
-        console.log(res.data.data)  // '{"answer":42}'
+        let data = {
+            name:prodName,
+            price:prodPrice,
+            dec:prodDec}
+       
+            const res = await axios({    // you may use any other library to send from-data request to server, I used axios for no specific reason, I used it just because I'm using it these days, earlier I was using npm request module but last week it get fully depricated, such a bad news.
+              method: "post",
+              url: `${baseUrl}/product`,
+              data: data,
+              headers: { "Content-Type": "applicatio.json" },
+              // withCredentials: true
+            });
+    
+            console.log(`upload Success` + res.data);  // '{"answer":42}'
         // res.data.headers['Content-Type']; 
+          }
 
 
+        // .catch(err => {
+        //     console.log("error: ", err);
+        // })
+      
+        // console.log("I am click handler")
+        // axios.get(`${baseUrl}/products`)
+        //     .then(response => {
+        //         console.log("response: ", response.data);
 
-        .catch(err => {
-            console.log("error: ", err);
-        })
-
-        console.log("I am click handler")
-        axios.get(`${baseUrl}/products`)
-            .then(response => {
-                console.log("response: ", response.data);
-
-                setProductData(response.data);
-            })
-            .catch(err => {
-                console.log("error: ", err);
-            })
-    }
+        //         setProductData(response.data);
+        //     })
+        //     .catch(err => {
+        //         console.log("error: ", err);
+        //     })
+      
     return (
 
 
