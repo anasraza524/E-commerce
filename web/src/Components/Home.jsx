@@ -29,7 +29,7 @@ const Home = () => {
     let data = {
       name: prodName,
       price: prodPrice,
-      dec: prodDec
+      description: prodDec
     }
 
     const response = await
