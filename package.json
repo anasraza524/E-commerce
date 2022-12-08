@@ -1,0 +1,29 @@
+{
+  "name": "express.js-hello-world",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.mjs",
+    "dev": "node --watch server.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anasraza524/Express.js-Hello-world.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anasraza524/Express.js-Hello-world/issues"
+  },
+  "homepage": "https://github.com/anasraza524/Express.js-Hello-world#readme",
+  "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@mui/material": "^5.10.17",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "path": "^0.12.7"
+  }
+}
