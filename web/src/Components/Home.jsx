@@ -29,17 +29,20 @@ import {Typography,Card,CardContent,
             price:prodPrice,
             dec:prodDec}
        
-            const response = await axios({    // you may use any other library to send from-data request to server, I used axios for no specific reason, I used it just because I'm using it these days, earlier I was using npm request module but last week it get fully depricated, such a bad news.
-              method: "post",
-              url: `${baseUrl}/product`,
-              data: data,
-              headers: { "Content-Type": "applicatio.json" },
-              // withCredentials: true
-            });
+            const response = await
+             axios.post(`${baseUrl}/product`,data
+            //  {   
+             
+            //   url: `${baseUrl}/product`,
+            //   data: data,
+            //   headers: { "Content-Type": "application/json" },
+            //   // withCredentials: true
+            // }
+            );
 
             console.log(data)
             console.log(prodName,prodDec,prodPrice)
-            console.log(response.data);  // '{"answer":42}'
+            console.log(response);  // '{"answer":42}'
         // res.data.headers['Content-Type']; 
           }
 
