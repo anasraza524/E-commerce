@@ -65,6 +65,7 @@ const Home = () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
          console.log("File available at", downloadURL);
             getStorageURL(downloadURL)
+            setProdImage(storageURL)
           });
         }
       );
@@ -75,7 +76,7 @@ const Home = () => {
       name: prodName,
       price: prodPrice,
       description: prodDec,
-      productImage:setProdImage(storageURL),
+      productImage:prodImage,
     }
     const response = await
       axios.post(`${baseUrl}/product`, data);
@@ -189,8 +190,8 @@ Add Product
               {(prodImage === "") ? 
               <CardMedia
               component="img"
-              width="200"
-              height="200"
+              width="300"
+              height="300"
               image='https://products.ideadunes.com/assets/images/default_product.jpg'
               alt="green iguana"
             />
@@ -198,8 +199,8 @@ Add Product
               
               : <CardMedia
                 component="img"
-                width="200"
-                height="200"
+                width="300"
+                height="300"
                 image={eachProduct.ProductImage}
                 alt="green iguana"
               />}
