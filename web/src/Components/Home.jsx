@@ -1,11 +1,26 @@
 import React from 'react'
 import axios from 'axios';
 import { useState, useEffect } from "react"
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import {
   Typography, Card, CardContent,
   TextField, Button, Paper, Chip, Box, Grid,
-  CardActions, CardActionArea, Divider, CardMedia
+  CardActions, CardActionArea, Divider, CardMedia,Stack
 } from '@mui/material'
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  listAll,
+  list,
+} from "firebase/storage";
+
+import { v4 } from "uuid";
+import { getStorage,uploadBytesResumable,
+
+} from "firebase/storage";
+
+
 let baseUrl = ``;
 if (window.location.href.split(":")[0] === "http") {
   baseUrl = `http://localhost:3000`;
@@ -18,7 +33,12 @@ const Home = () => {
   const [prodName, setProdName] = useState('')
   const [prodPrice, setProdPrice] = useState('')
   const [prodDec, setProdDec] = useState('')
+  const [storageURL, getStorageURL] = useState(''); 
+  const [file, setFile] = useState(null)
+  const [progress, setProgress] = useState(0);
+  const storage = getStorage();
   useEffect(() => {
+    
     (async () => {
       const response =
         await axios.get(`${baseUrl}/products`);
@@ -26,22 +46,46 @@ const Home = () => {
       console.log("data", response.data.data)
     })();
   }, []);
+
+  const fileUpload= ()=>{
+    if (!file) return;
+      const sotrageRef = ref(storage, `files/${file.name}`);
+      const uploadTask = uploadBytesResumable(sotrageRef, file);
+  
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const prog = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          setProgress(prog);
+        },
+        (error) => console.log(error),
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+         console.log("File available at", downloadURL);
+            getStorageURL(downloadURL)
+          });
+        }
+      );
+  }
   const submitHandler = async (e) => {
     e.preventDefault();
     let data = {
       name: prodName,
       price: prodPrice,
-      description: prodDec
+      description: prodDec,
+      productImage:storageURL,
     }
-
     const response = await
       axios.post(`${baseUrl}/product`, data);
-
     console.log(data)
     console.log(prodName, prodDec, prodPrice)
     console.log(response);
   }
-
+  
+  
+ 
 
   // .catch(err => {
   //     console.log("error: ", err);
@@ -63,7 +107,18 @@ const Home = () => {
 
 
     <div>
-      <form onSubmit={submitHandler}>
+<Box
+ sx={{
+  width: 300,
+  height: 400,
+
+ 
+}}
+>
+      <Typography sx={{ml:7}} variant='h5'>
+Add Product
+      </Typography>
+      <form style={{margin:'5px'}} onSubmit={submitHandler}>
         <TextField
           sx={{ pl: 5, pr: 5 }}
           size="small"
@@ -84,22 +139,44 @@ const Home = () => {
         <TextField
           sx={{ pl: 5, pr: 5 }}
           size="small"
-          type="text" placeholder="enter your product Dexription"
+          type="text" placeholder="enter your product Description"
           onChange={(e) => { setProdDec(e.target.value) }}>
 
         </TextField>
-
-        {/* <TextField 
+      
+         <TextField 
                 sx={{pl:5,pr:5}}
                  size="small"
                 type="file"  
-                onChange={(e) => { setprod(e.target.value) }}>
+                id='select-image'
+            
 
-                </TextField>  */}
-        <Button type="submit" variant="outlined">Add Product </Button>
+                name='postImage'
+                onChange={(e) => {
+                  setFile(e.currentTarget.files[0])
+                }}
+                style={{ display: 'none' }}>
+                </TextField> 
+                <Box sx={{ml:5}}>
+
+<label htmlFor="select-image">
+< AddPhotoAlternateIcon style={{ paddingLeft: "5px", fontSize: "25px", color: 'green' }} />
+</label>
+<Button sx={{ml:2}} onClick={fileUpload}>set image</Button> 
+{
+(progress === '100')?<h5>Done{progress}%</h5>:<h5>loading{progress}%</h5>
+} 
+</Box> 
+        <Button sx={{ml:8}} type="submit" variant="outlined">Add Product </Button>
       </form>
+      </Box>
       <br />
       <br />
+
+    
+                 
+                  
+
       <Divider />
       {(!ProductData) ? null :
         ProductData?.map((eachProduct, index) => (
@@ -109,7 +186,17 @@ const Home = () => {
             sx={{ m: 3, width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
 
             <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-              {(prodImage === "") ? null : <CardMedia
+              {(prodImage === "") ? 
+              <CardMedia
+              component="img"
+              width="200"
+              height="200"
+              image='https://products.ideadunes.com/assets/images/default_product.jpg'
+              alt="green iguana"
+            />
+              
+              
+              : <CardMedia
                 component="img"
                 width="200"
                 height="200"

@@ -32,7 +32,7 @@ app.post('/product', (req, res) => {
         name: body.name,
         price: body.price,
         description: body.description,
-        // productImage: body.productImage,
+        productImage: body.productImage,
     })
 
     res.send({
