@@ -81,7 +81,7 @@ const Home = () => {
     const response = await
       axios.post(`${baseUrl}/product`, data);
     console.log(data)
-    console.log(prodName, prodDec, prodPrice)
+    console.log(prodName, prodDec, prodPrice,prodImage)
     console.log(response);
   }
   
@@ -187,7 +187,7 @@ Add Product
             sx={{ m: 3, width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
 
             <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-              {(prodImage === "") ? 
+              {(prodImage === null) ? 
               <CardMedia
               component="img"
               width="300"
