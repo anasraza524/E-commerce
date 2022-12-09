@@ -65,7 +65,7 @@ const Home = () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
          console.log("File available at", downloadURL);
             getStorageURL(downloadURL)
-            setProdImage(storageURL)
+            
           });
         }
       );
@@ -76,7 +76,7 @@ const Home = () => {
       name: prodName,
       price: prodPrice,
       description: prodDec,
-      productImage:prodImage,
+      productImage:storageURL,
     }
     const response = await
       axios.post(`${baseUrl}/product`, data);
@@ -187,7 +187,7 @@ Add Product
             sx={{ m: 3, width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
 
             <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-              {(prodImage === null) ? 
+              {(storageURL === null) ? 
               <CardMedia
               component="img"
               width="300"
