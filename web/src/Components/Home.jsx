@@ -75,7 +75,7 @@ const Home = () => {
       name: prodName,
       price: prodPrice,
       description: prodDec,
-      productImage:storageURL,
+      productImage:setProdImage(storageURL),
     }
     const response = await
       axios.post(`${baseUrl}/product`, data);
