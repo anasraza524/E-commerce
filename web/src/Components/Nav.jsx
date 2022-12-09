@@ -127,15 +127,15 @@ import { Mail,DragHandle,
              <ListItemText primary="Add Product" />
            </ListItemButton>
          </ListItem></LinkPage> 
-         {/* <LinkPage to="/MarkAttend">
+          <LinkPage to="/SearchProduct">
          <ListItem disablePadding>
            <ListItemButton component="a" >
              <ListItemIcon>
               <Group />
              </ListItemIcon>
-             <ListItemText primary="Mark Attendance" />
+             <ListItemText primary="Search Product" />
            </ListItemButton>
-         </ListItem></LinkPage> */}
+         </ListItem></LinkPage> 
          
          <Divider/>
          <ListItem disablePadding>
@@ -176,7 +176,8 @@ import { Mail,DragHandle,
 
 <LinkPage  to="/" ><TabPage label="Home" /></LinkPage>
 <LinkPage  to="/" ><TabPage label="Add Product" /></LinkPage>
-{/* <LinkPage  to="/MarkAttend" ><TabPage label="MarkAttendnace" /></LinkPage>
+<LinkPage  to="/" ><TabPage label="Search Product" /></LinkPage>
+{/* <LinkPage  to="/MarkAttend" ><TabPage label="Search Product" /></LinkPage>
 <LinkPage  to="/History" ><TabPage label="History" /></LinkPage> */}
 {/* <TabPage component="a" to="/" label="Home"><Link  to="/">Home</Link></TabPage>
 <TabPage component="a" to="About" label="About"><Link to="About">About</Link></TabPage> */}
