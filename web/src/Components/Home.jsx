@@ -27,7 +27,7 @@ if (window.location.href.split(":")[0] === "http") {
   console.log(baseUrl)
 }
 const Home = () => {
-
+  const [loadProduct, setLoadProduct] = useState(false)
   const [prodImage, setProdImage] = useState('')
   const [ProductData, setProductData] = useState(null)
   const [prodName, setProdName] = useState('')
@@ -45,7 +45,7 @@ const Home = () => {
       setProductData(response.data.data);
       console.log("data", response.data.data)
     })();
-  }, []);
+  }, [loadProduct]);
 
   const fileUpload= ()=>{
     if (!file) return;
@@ -83,6 +83,7 @@ const Home = () => {
     console.log(data)
     console.log(prodName, prodDec, prodPrice,prodImage)
     console.log(response);
+    setLoadProduct(!loadProduct)
   }
   
   
