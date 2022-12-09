@@ -3,8 +3,8 @@ import axios from 'axios';
 import { useState, useEffect } from "react"
 import {
   Typography, Card, CardContent,
-  TextField, Button, Paper,Chip,Box,Grid,
-      CardActions,CardActionArea,Divider,CardMedia
+  TextField, Button, Paper, Chip, Box, Grid,
+  CardActions, CardActionArea, Divider, CardMedia
 } from '@mui/material'
 let baseUrl = ``;
 if (window.location.href.split(":")[0] === "http") {
@@ -13,7 +13,7 @@ if (window.location.href.split(":")[0] === "http") {
 }
 const Home = () => {
 
-  const [prodImage, setProdImage]= useState('')
+  const [prodImage, setProdImage] = useState('')
   const [ProductData, setProductData] = useState(null)
   const [prodName, setProdName] = useState('')
   const [prodPrice, setProdPrice] = useState('')
@@ -71,7 +71,7 @@ const Home = () => {
           onChange={(e) => { setProdName(e.target.value) }}>
         </TextField>
 
-<br /><br />
+        <br /><br />
         <TextField
           sx={{ pl: 5, pr: 5 }}
           size="small"
@@ -88,7 +88,7 @@ const Home = () => {
           onChange={(e) => { setProdDec(e.target.value) }}>
 
         </TextField>
-        
+
         {/* <TextField 
                 sx={{pl:5,pr:5}}
                  size="small"
@@ -99,54 +99,55 @@ const Home = () => {
         <Button type="submit" variant="outlined">Add Product </Button>
       </form>
       <br />
-        <br />
-      <Divider/>
-      
-    <Paper elevation={3} sx={{ m:3, width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-    {(!ProductData)?null:
-    ProductData?.map((eachProduct,index)=>(
+      <br />
+      <Divider />
+      {(!ProductData) ? null :
+        ProductData?.map((eachProduct, index) => (
+          <Paper
+            key={index}
+            elevation={3}
+            sx={{ m: 3, width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
 
+            <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+              {(prodImage === "") ? null : <CardMedia
+                component="img"
+                width="200"
+                height="200"
+                image={eachProduct.ProductImage}
+                alt="green iguana"
+              />}
+              <Box sx={{ my: 3, mx: 2 }}>
+                <Grid container alignItems="center">
+                  <Grid item xs>
+                    <Typography gutterBottom variant="h4" component="div">
+                      {eachProduct.name}
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography gutterBottom variant="h6" component="div">
+                      ${eachProduct.price}
+                    </Typography>
+                  </Grid>
+                </Grid>
+                <Typography color="text.secondary" variant="body2">
+                  {eachProduct.description}
+                </Typography>
+              </Box>
+              <Divider variant="middle" />
 
-   
-    
-    <Box key={index} sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-   {(prodImage==="")?null: <CardMedia
-          component="img"
-          width="200"
-          height="200"
-          image={eachProduct.ProductImage}
-          alt="green iguana"
-        />}
-      <Box sx={{ my: 3, mx: 2 }}>
-        <Grid container alignItems="center">
-          <Grid item xs>
-            <Typography gutterBottom variant="h4" component="div">
-              {eachProduct.name}
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Typography gutterBottom variant="h6" component="div">
-              ${eachProduct.price}
-            </Typography>
-          </Grid>
-        </Grid>
-        <Typography color="text.secondary" variant="body2">
-          {eachProduct.description}
-        </Typography>
-      </Box>
-      <Divider variant="middle" />
-      
-      <Box sx={{ 
-        display:"flex",justifyContent:"space-evenly",
-        m:1, p:1 }}>
-        <Button color='success' variant='contained'>Add to cart</Button>
-        <Button color='success' variant='contained'>Order Now</Button>
-      </Box>
-    </Box>
-     ))
-    }
-    </Paper>
-      </div>
+              <Box sx={{
+                display: "flex", justifyContent: "space-evenly",
+                m: 1, p: 1
+              }}>
+                <Button color='success' variant='contained'>Add to cart</Button>
+                <Button color='success' variant='contained'>Order Now</Button>
+              </Box>
+            </Box>
+
+          </Paper>
+        ))
+      }
+    </div>
   )
 }
 
