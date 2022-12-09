@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useState, useEffect } from "react"
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import {
-  Typography, Card, CardContent,
+  Typography, Card, CardContent,CircularProgress,
   TextField, Button, Paper, Chip, Box, Grid,
   CardActions, CardActionArea, Divider, CardMedia,Stack
 } from '@mui/material'
@@ -145,7 +145,8 @@ Add Product
           onChange={(e) => { setProdDec(e.target.value) }}>
 
         </TextField>
-      
+      <Box sx={{display:"flex",
+      justifyContent:'center'}}>
          <TextField 
                 sx={{pl:5,pr:5}}
                  size="small"
@@ -165,9 +166,30 @@ Add Product
 < AddPhotoAlternateIcon style={{ paddingLeft: "5px", fontSize: "25px", color: 'green' }} />
 </label>
 <Button sx={{ml:2}} onClick={fileUpload}>set image</Button> 
-{
+
+<Box sx={{m:3 , position: 'relative', display: 'inline-flex' }}>
+<CircularProgress variant="determinate" value={progress}  />
+      <Box
+        sx={{
+          top: 0,
+          left: 0,
+          bottom: 0,
+          right: 0,
+          position: 'absolute',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Typography variant="caption" component="div" color="text.white">
+          {`${progress}%`}
+        </Typography>
+      </Box>
+    </Box>
+    </Box>
+{/* {
 (progress === '100')?<h5>Done{progress}%</h5>:<h5>loading{progress}%</h5>
-} 
+}  */}
 </Box> 
         <Button sx={{ml:8}} type="submit" variant="outlined">Add Product </Button>
       </form>
