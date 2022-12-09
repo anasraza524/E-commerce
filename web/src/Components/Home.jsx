@@ -71,14 +71,16 @@ const Home = () => {
           onChange={(e) => { setProdName(e.target.value) }}>
         </TextField>
 
-
+<br /><br />
         <TextField
           sx={{ pl: 5, pr: 5 }}
           size="small"
-          type="text" placeholder="enter your Product Price" required
+          type="number" placeholder="enter your Product Price" required
           onChange={(e) => { setProdPrice(e.target.value) }}>
 
         </TextField>
+        <br />
+        <br />
         <TextField
           sx={{ pl: 5, pr: 5 }}
           size="small"
@@ -86,7 +88,7 @@ const Home = () => {
           onChange={(e) => { setProdDec(e.target.value) }}>
 
         </TextField>
-
+        
         {/* <TextField 
                 sx={{pl:5,pr:5}}
                  size="small"
@@ -94,11 +96,13 @@ const Home = () => {
                 onChange={(e) => { setprod(e.target.value) }}>
 
                 </TextField>  */}
-        <Button type="submit" variant="outlined">get </Button>
+        <Button type="submit" variant="outlined">Add Product </Button>
       </form>
+      <br />
+        <br />
       <Divider/>
       
-    <Paper elevation={3} sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+    <Paper elevation={3} sx={{ m:3, width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
     {(!ProductData)?null:
     ProductData?.map((eachProduct,index)=>(
 
