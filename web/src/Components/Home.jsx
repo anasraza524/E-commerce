@@ -201,7 +201,7 @@ Add Product
                 component="img"
                 width="300"
                 height="300"
-                image={eachProduct.ProductImage}
+                image={eachProduct.productImage}
                 alt="green iguana"
               />}
               <Box sx={{ my: 3, mx: 2 }}>
