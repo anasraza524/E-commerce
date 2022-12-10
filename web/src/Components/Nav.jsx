@@ -79,7 +79,7 @@ import { Mail,DragHandle,
      display: "none",
    },
  }));
- const Nav = ({mode,setMode}) => {
+ const Nav = ({mode,setMode,BageNo}) => {
    const [open, setOpen] = useState(false);
    const [isOpen, setIsOpen] = React.useState(false)
    const toggleDrawer = () => {
@@ -188,7 +188,8 @@ import { Mail,DragHandle,
 
    </Box>
   <Link to="/AddToProduct"> <IconButton  aria-label="cart">
-         <Badge badgeContent={5} color="primary">
+         <Badge badgeContent={BageNo} color="primary">
+      
       <ShoppingCart style={{color:"whitesmoke"}} />
     </Badge>
 </IconButton></Link>
