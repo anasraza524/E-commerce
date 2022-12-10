@@ -6,4 +6,4 @@ const AddToProduct = () => {
   )
 }
 
-export default AddToProduct
+export default AddToProduct;

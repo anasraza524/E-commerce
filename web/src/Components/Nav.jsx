@@ -175,8 +175,8 @@ import { Mail,DragHandle,
 
 
 <LinkPage  to="/" ><TabPage label="Home" /></LinkPage>
-<LinkPage  to="/" ><TabPage label="Add Product" /></LinkPage>
-<LinkPage  to="/" ><TabPage label="Search Product" /></LinkPage>
+<LinkPage  to="/MakeProduct" ><TabPage label="Add Product" /></LinkPage>
+<LinkPage  to="/SearchProduct" ><TabPage label="Search Product" /></LinkPage>
 {/* <LinkPage  to="/MarkAttend" ><TabPage label="Search Product" /></LinkPage>
 <LinkPage  to="/History" ><TabPage label="History" /></LinkPage> */}
 {/* <TabPage component="a" to="/" label="Home"><Link  to="/">Home</Link></TabPage>
@@ -187,11 +187,11 @@ import { Mail,DragHandle,
 
 
    </Box>
-   <IconButton to="/" aria-label="cart">
+  <Link to="/AddToProduct"> <IconButton  aria-label="cart">
          <Badge badgeContent={5} color="primary">
       <ShoppingCart style={{color:"whitesmoke"}} />
     </Badge>
-</IconButton>
+</IconButton></Link>
          <Icons>
            
          <LogoutIcon
