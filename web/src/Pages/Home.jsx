@@ -13,6 +13,7 @@ if (window.location.href.split(":")[0] === "http") {
 }
 
 const Home = ({AddTheProduct}) => {
+  const [CurrentProduct, setCurrentProduct] = useState(null)
   const [ProductData, setProductData] = useState(null)
   const [loadProduct, setLoadProduct] = useState(false)
   useEffect(() => {
@@ -30,17 +31,17 @@ const Home = ({AddTheProduct}) => {
     console.log("ev",e.target.dataset.user)
   }
 
-  // const getAProducts = async () => {
-  //   try {
-  //     const response = await axios.get(`http://localhost:5001/products`)
-  //     console.log("response: ", response.data);
+  const getAProduct = async (id) => {
+    try {
+      const response = await axios.get(`http://localhost:5001/product/${id}`)
+      console.log("response: ", response.data);
 
-  //     setProducts(response.data.data)
+      CurrentProduct(response.data)
 
-  //   } catch (error) {
-  //     console.log("error in getting all products", error);
-  //   }
-  // }
+    } catch (error) {
+      console.log("error in getting all products", error);
+    }
+  }
 
 
   return (
@@ -50,11 +51,12 @@ const Home = ({AddTheProduct}) => {
       <Divider/>
       <Paper sx={{m:1}} elevation={1}>
    
+       
+         <Grid sx={{m:{xs:1,sm:5,lg:3}}} container item spacing={6}>
          {(!ProductData) ? null :
         ProductData?.map((eachProduct, index) => ( 
-         <Grid sx={{m:{xs:1,sm:5,lg:3}}} container item spacing={6}>
           <Paper
-          onClick={ClickEvent}
+          
           key={index}
             elevation={4}
             sx={{ m: 3, width: '100%', maxWidth: 300, bgcolor: 'background.paper' }}>
@@ -100,20 +102,22 @@ const Home = ({AddTheProduct}) => {
               }}>
                 <Button
                 //  onClick={AddTheProduct}
-                 onClick={ClickEvent}
+                onClick={() => {
+                  getAProduct(eachProduct.id)
+                }}
                  color='success' variant='contained'>Add to cart</Button>
                 <Button color='success' variant='contained'>Order Now</Button>
               </Box>
             </Box>
 
           </Paper>
-      
+                
+                ))
+              } 
          
           </Grid>
           
-          
-       ))
-      } 
+
    
       </Paper>
     </div>
