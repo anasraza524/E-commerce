@@ -8,12 +8,53 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 let products = [];
+let addtocart = []
+let bage = 0
+
+app.post('/addtocart', (req, res) => {
+    const body = req.body
+    if (!body.name 
+        || !body.price 
+        || !body.description
+        || body.id
+         && body.productImage
+    ) {
+
+        res.status(400)
+        res.send({ message: "Requird Parameter missing." })
+        return;
+    }
+    // console.log(body.id)
+    console.log(body.name)
+    console.log(body.price)
+    console.log(body.description)
+    // console.log('name:',body.productImage)
+
+    addtocart.push({
+        // id: `${new Date().getTime()}`,
+        id: body.id,
+        name: body.name,
+        price: body.price,
+        description: body.description,
+        productImage: body.productImage,
+    })
+
+    res.send({
+        message: "Addtocart added successfully"
+    });
+
+})
+
+
+
 
 app.post('/product', (req, res) => {
     const body = req.body
-    if (!body.name && body.price && body.description
+    if (!body.name 
+        || !body.price 
+        || !body.description
         // && body.id
-        // && body.productImage
+         && body.productImage
     ) {
 
         res.status(400)
@@ -27,7 +68,7 @@ app.post('/product', (req, res) => {
     // console.log('name:',body.productImage)
 
     products.push({
-        id: new Date().getTime(),
+        id: `${new Date().getTime()}`,
         // id: body.id,
         name: body.name,
         price: body.price,
@@ -49,6 +90,12 @@ app.get('/products', (req, res) => {
     })
 })
 
+app.get('/addtocarts', (req, res) => {
+    res.send({
+        message: "got all products successfully",
+        data: addtocart
+    })
+})
 app.get('/product/:id', (req, res) => {
 
     const id = req.params.id;
