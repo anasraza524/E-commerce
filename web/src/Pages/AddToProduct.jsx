@@ -1,5 +1,14 @@
 import React from 'react'
+import {
+  Divider,Paper,Box,Button,Grid,CardMedia,Typography
+} from '@mui/material'
+import axios from 'axios';
+import { useState, useEffect } from "react"
 
+let baseUrl = ``;
+if (window.location.href.split(":")[0] === "http") {
+  baseUrl = `http://localhost:3000`;
+}
 const AddToProduct = () => {
   
   const [addtoCartData, setaddtoCartData] = useState(null)
