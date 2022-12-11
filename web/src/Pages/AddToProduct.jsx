@@ -20,6 +20,7 @@ const AddToProduct = ({BageNo,setBageNo}) => {
         await axios.get(`${baseUrl}/addtocarts`);
       setaddtoCartData(response.data.data);
       console.log("addtocart", response.data.data)
+      setBageNo(response.data.data.length)
     })();
   }, [loadProduct]);
 
@@ -37,9 +38,24 @@ const AddToProduct = ({BageNo,setBageNo}) => {
     }
   }
 
+  // const addBageNo = async () => {
+  //   let bage = addtoCartData.length
+  
+  //   try {
+  //     const response = await
+  //     axios.post(`${baseUrl}/bageno`,{bage} );
+  
+  //  console.log("ss",response)
+  // // setBageNo(response)
+  //   setLoadProduct(!loadProduct)
 
+  //   } catch (error) {
+  //     console.log("error cart in getting all products", error);
+  //   }
+  // }
+ 
   return (
-    <div><Grid sx={{m:{xs:1,sm:5,lg:3}}} container item spacing={6}>
+    <div><Grid sx={{m:{xs:1,sm:2,lg:3}}} container item spacing={6}>
     {(!addtoCartData) ? null :
    addtoCartData?.map((eachProduct, index) => ( 
      <Paper

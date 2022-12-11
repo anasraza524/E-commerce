@@ -9,8 +9,8 @@ app.use(cors());
 app.use(express.json());
 let products = [];
 let addtocart = [];
-let bageNo = addtocart.length
-console.log(bageNo)
+// let bageNo = 0
+
 app.post('/addtocart', (req, res) => {
     const body = req.body
     if (!body.name 
@@ -111,17 +111,35 @@ app.get('/products', (req, res) => {
     })
 })
 
-app.get('/bageno', (req, res) => {
-    res.send({
-        message: "got BageNO  successfully",
-        data: bageNo
+// app.get('/bageno', (req, res) => {
+//     res.send({
+//         message: "got BageNO  successfully",
+//         data: bageNo
         
-    })
-})
+//     })
+// })
+// app.post('/bageno', (req, res) => {
+//     const body = req.body
+//     // if (bageNo) {
+
+//     //     res.status(400)
+//     //     res.send({ message: "Requird Parameter missing." })
+//     //     return;
+//     // }
+ 
+
+//    bageNo = body.bageNo
+
+//     res.send({
+//         message: "Bage added successfully"
+//     });
+
+// })
 app.get('/addtocarts', (req, res) => {
     res.send({
         message: "got all products successfully",
         data: addtocart
+      
         
     })
 })

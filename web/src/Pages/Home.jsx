@@ -36,14 +36,15 @@ console.log()
 console.log("response2: ", response.data.data)
       setCurrentProduct(response.data.data)
       console.log("CurrentProduct",CurrentProduct)
+      addcart()
       if(!addcart.error)
       {
-        addcart()
+        
         AddTheProduct();
       }
+      } 
       
-     
-    } catch (error) {
+      catch (error) {
       console.log("error cart in getting all products", error);
     }
   }

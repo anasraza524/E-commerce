@@ -98,17 +98,17 @@ if (window.location.href.split(":")[0] === "http") {
 //    const [isOpen, setIsOpen] = React.useState(false)
 
 const [loadProduct, setLoadProduct] = useState(false)
-useEffect(() => {
+// useEffect(() => {
   
-  (async () => {
-    const response =
-      await axios.get(`${baseUrl}/bageno`);
+//   (async () => {
+//     const response =
+//       await axios.get(`${baseUrl}/bageno`);
  
-    console.log("data", response.data.data)
+//     console.log("data", response.data.data)
    
 
-  })();
-}, [loadProduct]);
+//   })();
+// }, [loadProduct]);
 
 
    return (

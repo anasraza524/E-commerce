@@ -86,7 +86,17 @@ const Home = () => {
     setLoadProduct(!loadProduct)
   }
   
-  
+  const deleteProduct = async (id) => {
+    try {
+      const response = await axios.delete(`${baseUrl}/product/${id}`)
+      console.log("response: ", response.data);
+      
+      setLoadProduct(!loadProduct)
+
+    } catch (error) {
+      console.log("error in getting all products", error);
+    }
+  }
  
 
   // .catch(err => {
@@ -122,30 +132,34 @@ Add Product
       </Typography>
       <form style={{margin:'5px'}} onSubmit={submitHandler}>
         <TextField
-          sx={{ pl: 5, pr: 5 }}
-          size="small"
-          type="text" placeholder="enter your Product name" required
+       
+          sx={{ pl: 5, pr: 5,width:{lg:"800px",sm:"600px",xs:"380px"} }}
+          size="medium"
+          type="text" placeholder="Enter your Product name" required
           onChange={(e) => { setProdName(e.target.value) }}>
         </TextField>
 
         <br /><br />
         <TextField
-          sx={{ pl: 5, pr: 5 }}
-          size="small"
-          type="number" placeholder="enter your Product Price" required
+         sx={{ pl: 5, pr: 5,width:{lg:"350px",sm:"350px",xs:"380px"} }}
+          size="medium"
+          type="number" placeholder="Enter your Product Price" required
           onChange={(e) => { setProdPrice(e.target.value) }}>
 
         </TextField>
         <br />
         <br />
         <TextField
-          sx={{ pl: 5, pr: 5 }}
-          size="small"
-          type="text" placeholder="enter your product Description"
+        
+        sx={{ pl: 5, pr: 5,width:{lg:"800px",sm:"600px",xs:"380px"} }}
+          size="medium"
+          type="text" placeholder="Enter your product Description"
           onChange={(e) => { setProdDec(e.target.value) }}>
 
         </TextField>
       <Box sx={{display:"flex",
+      border:'solid grey 0.1px',
+      ml:5,mt:3,mb:3,borderRadius:"5px",
       justifyContent:'center'}}>
          <TextField 
                 sx={{pl:5,pr:5}}
@@ -191,23 +205,24 @@ Add Product
 (progress === '100')?<h5>Done{progress}%</h5>:<h5>loading{progress}%</h5>
 }  */}
 </Box> 
-        <Button sx={{ml:8}} type="submit" variant="outlined">Add Product </Button>
+        <Button sx={{ml:10}} type="submit" variant="outlined">Add Product </Button>
       </form>
       </Box>
       <br />
       <br />
-
+      <br />
     
                  
                   
 
       <Divider />
+      <Grid sx={{m:{xs:1,sm:5,lg:3}}} container item spacing={7}>  
       {(!ProductData) ? null :
         ProductData?.map((eachProduct, index) => (
           <Paper
             key={index}
             elevation={3}
-            sx={{ m: 3, width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+            sx={{ m: 3,height:"100%", width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
 
             <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
               {(storageURL === null) ? 
@@ -251,14 +266,17 @@ Add Product
                 m: 1, p: 1
               }}>
                 <Button color='success' variant='contained'>Edit</Button>
-                <Button color='error' variant='contained'>Delete</Button>
+                <Button 
+                onClick={()=>{
+                  deleteProduct(eachProduct.id)
+                }}
+                color='error' variant='contained'>Delete</Button>
               </Box>
             </Box>
 
           </Paper>
-        ))
-        
-      }
+        ))}
+        </Grid>
     </div>
   )
 }
