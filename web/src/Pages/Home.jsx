@@ -36,7 +36,7 @@ const Home = ({AddTheProduct}) => {
       const response = await axios.get(`${baseUrl}/product/${id}`)
       console.log("response: ", response.data);
 console.log("response2: ", response.data.data)
-      CurrentProduct(response.data)
+      CurrentProduct(response.data.data)
 
     } catch (error) {
       console.log("error in getting all products", error);
