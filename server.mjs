@@ -16,7 +16,7 @@ app.post('/addtocart', (req, res) => {
     if (!body.name 
         || !body.price 
         || !body.description
-        || body.id
+        || !body.id
          && body.productImage
     ) {
 
