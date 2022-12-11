@@ -46,7 +46,7 @@ import { Mail,DragHandle,
 
  const LinkPage = styled(Link)({
    textDecoration:'none',
-   color:'white',
+   color:' black',
    
    
   });
@@ -88,14 +88,14 @@ if (window.location.href.split(":")[0] === "http") {
   baseUrl = `http://localhost:3000`;
 }
 
- const Nav = ({mode,setMode,BageNo}) => {
+ const Nav = ({mode,setMode,BageNo,setBageNo}) => {
    const [open, setOpen] = useState(false);
    const [isOpen, setIsOpen] = React.useState(false)
    const toggleDrawer = () => {
        // setIsOpen((prevState) => !prevState)
        setIsOpen(true)
    }
-//    
+//    const [isOpen, setIsOpen] = React.useState(false)
 
 const [loadProduct, setLoadProduct] = useState(false)
 useEffect(() => {

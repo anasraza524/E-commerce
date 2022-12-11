@@ -4,12 +4,12 @@ import {
 } from '@mui/material'
 import axios from 'axios';
 import { useState, useEffect } from "react"
-
+import CancelIcon from '@mui/icons-material/Cancel';
 let baseUrl = ``;
 if (window.location.href.split(":")[0] === "http") {
   baseUrl = `http://localhost:3000`;
 }
-const AddToProduct = () => {
+const AddToProduct = ({BageNo,setBageNo}) => {
   
   const [addtoCartData, setaddtoCartData] = useState(null)
   const [loadProduct, setLoadProduct] = useState(false)
@@ -22,6 +22,22 @@ const AddToProduct = () => {
       console.log("addtocart", response.data.data)
     })();
   }, [loadProduct]);
+
+
+
+  const deleteCartProduct = async (id) => {
+    try {
+      const response = await axios.delete(`${baseUrl}/addtocart/${id}`)
+      console.log("response: ", response.data);
+      setBageNo(BageNo-1)
+      setLoadProduct(!loadProduct)
+
+    } catch (error) {
+      console.log("error in getting all products", error);
+    }
+  }
+
+
   return (
     <div><Grid sx={{m:{xs:1,sm:5,lg:3}}} container item spacing={6}>
     {(!addtoCartData) ? null :
@@ -35,7 +51,13 @@ const AddToProduct = () => {
        <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
         
          
-         
+       <CancelIcon
+
+onClick={() => {
+  deleteCartProduct(eachProduct.id)
+}}
+     
+       sx={{m:1,float:"right"}}/>
           <CardMedia
            component="img"
            width="200"

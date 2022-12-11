@@ -36,10 +36,15 @@ console.log()
 console.log("response2: ", response.data.data)
       setCurrentProduct(response.data.data)
       console.log("CurrentProduct",CurrentProduct)
-      addcart()
-      AddTheProduct()
+      if(!addcart.error)
+      {
+        addcart()
+        AddTheProduct();
+      }
+      
+     
     } catch (error) {
-      console.log("error in getting all products", error);
+      console.log("error cart in getting all products", error);
     }
   }
 
@@ -54,7 +59,7 @@ console.log("response2: ", response.data.data)
     setLoadProduct(!loadProduct)
 
     } catch (error) {
-      console.log("error in getting all products", error);
+      console.log("error cart in getting all products", error);
     }
   }
 

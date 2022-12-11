@@ -9,7 +9,7 @@ app.use(cors());
 app.use(express.json());
 let products = [];
 let addtocart = [];
-let bageNo = 
+let bageNo = addtocart.length
 console.log(bageNo)
 app.post('/addtocart', (req, res) => {
     const body = req.body
@@ -17,11 +17,11 @@ app.post('/addtocart', (req, res) => {
         || !body.price 
         || !body.description
         || !body.id
-        && body.productImage
+        // && !body.productImage
     ) {
 
         res.status(400)
-        res.send({ message: "Requird  Parameter missing." })
+        res.send({ message: "Requird cart  Parameter missing." })
         return;
     }
     // console.log(body.id)
@@ -43,6 +43,27 @@ app.post('/addtocart', (req, res) => {
         message: "Addtocart added successfully"
     });
 
+})
+app.delete('/addtocart/:id', (req, res) => {
+    const id = req.params.id;
+
+    let isFound = false;
+    for (let i = 0; i <addtocart.length; i++) {
+        if (addtocart[i].id === id) {
+            addtocart.splice(i, 1);
+            res.send({
+                message: "product in cart deleted successfully"
+            });
+            isFound = true
+            break;
+        }
+    }
+    if (isFound === false) {
+        res.status(404)
+        res.send({
+            message: "delete fail: product not found"
+        });
+    }
 })
 
 

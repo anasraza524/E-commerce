@@ -28,7 +28,10 @@ setBageNo(BageNo+1)
 
 
      <Route path="/" element={<Home AddTheProduct={AddTheProduct}/>} />
-     <Route path="AddToProduct" element={<AddToProduct/>} />
+     <Route path="AddToProduct" element={<AddToProduct
+      setBageNo={setBageNo}
+       BageNo={BageNo}/>} />
+       
      <Route path="MakeProduct" element={<MakeProduct/>} />
      <Route path="SearchProduct" element={<SearchProduct/>} />
      <Route path="*" element={<Navigate to="/" replace={true} />} />
