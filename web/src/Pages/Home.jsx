@@ -33,9 +33,9 @@ const Home = ({AddTheProduct}) => {
 
   const getAProduct = async (id) => {
     try {
-      const response = await axios.get(`http://localhost:5001/product/${id}`)
+      const response = await axios.get(`${baseUrl}/product/${id}`)
       console.log("response: ", response.data);
-
+console.log("response2: ", response.data.data)
       CurrentProduct(response.data)
 
     } catch (error) {
