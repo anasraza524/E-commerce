@@ -12,6 +12,10 @@ function App() {
   const [BageNo, setBageNo] = useState(0)
   const AddTheProduct =()=>{
 setBageNo(BageNo+1)
+
+
+
+
   }
 
   return (

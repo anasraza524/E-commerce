@@ -250,13 +250,14 @@ Add Product
                 display: "flex", justifyContent: "space-evenly",
                 m: 1, p: 1
               }}>
-                <Button color='success' variant='contained'>Add to cart</Button>
-                <Button color='success' variant='contained'>Order Now</Button>
+                <Button color='success' variant='contained'>Edit</Button>
+                <Button color='error' variant='contained'>Delete</Button>
               </Box>
             </Box>
 
           </Paper>
         ))
+        
       }
     </div>
   )

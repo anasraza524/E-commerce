@@ -31,7 +31,8 @@ import { Mail,DragHandle,
 
  import { useState } from "react";
  import * as React from 'react';
-
+ import axios from 'axios';
+ import { useEffect } from "react"
 
 
  const StyledToolbar = styled(Toolbar)({
@@ -79,6 +80,14 @@ import { Mail,DragHandle,
      display: "none",
    },
  }));
+ 
+
+
+let baseUrl = ``;
+if (window.location.href.split(":")[0] === "http") {
+  baseUrl = `http://localhost:3000`;
+}
+
  const Nav = ({mode,setMode,BageNo}) => {
    const [open, setOpen] = useState(false);
    const [isOpen, setIsOpen] = React.useState(false)
@@ -86,14 +95,22 @@ import { Mail,DragHandle,
        // setIsOpen((prevState) => !prevState)
        setIsOpen(true)
    }
-//    const logout = ()=>{
-//      const auth = getAuth();
-//  signOut(auth).then(() => {
-//    // Sign-out successful.
-//  }).catch((error) => {
-//    // An error happened.
-//  });
-//    }
+//    
+
+const [loadProduct, setLoadProduct] = useState(false)
+useEffect(() => {
+  
+  (async () => {
+    const response =
+      await axios.get(`${baseUrl}/bageno`);
+ 
+    console.log("data", response.data.data)
+   
+
+  })();
+}, [loadProduct]);
+
+
    return (
      <AppBar position="sticky">
 
@@ -187,7 +204,14 @@ import { Mail,DragHandle,
 
 
    </Box>
-  <Link to="/AddToProduct"> <IconButton  aria-label="cart">
+  <Link sx={{
+    textDecoration:'none',
+    color:'white'
+  }} to="/AddToProduct"> 
+
+
+  <IconButton  aria-label="cart">
+         
          <Badge badgeContent={BageNo} color="primary">
       
       <ShoppingCart style={{color:"whitesmoke"}} />

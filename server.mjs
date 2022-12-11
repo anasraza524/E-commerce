@@ -1,6 +1,6 @@
 import express from 'express'
 import path from 'path';
-import cors from 'cors'
+import cors from 'cors';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -8,20 +8,20 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 let products = [];
-let addtocart = []
-let bage = 0
-
+let addtocart = [];
+let bageNo = 
+console.log(bageNo)
 app.post('/addtocart', (req, res) => {
     const body = req.body
     if (!body.name 
         || !body.price 
         || !body.description
         || !body.id
-         && body.productImage
+        && body.productImage
     ) {
 
         res.status(400)
-        res.send({ message: "Requird Parameter missing." })
+        res.send({ message: "Requird  Parameter missing." })
         return;
     }
     // console.log(body.id)
@@ -90,10 +90,18 @@ app.get('/products', (req, res) => {
     })
 })
 
+app.get('/bageno', (req, res) => {
+    res.send({
+        message: "got BageNO  successfully",
+        data: bageNo
+        
+    })
+})
 app.get('/addtocarts', (req, res) => {
     res.send({
         message: "got all products successfully",
         data: addtocart
+        
     })
 })
 app.get('/product/:id', (req, res) => {

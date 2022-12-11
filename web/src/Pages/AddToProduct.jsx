@@ -19,7 +19,7 @@ const AddToProduct = () => {
       const response =
         await axios.get(`${baseUrl}/addtocarts`);
       setaddtoCartData(response.data.data);
-      console.log("data", response.data.data)
+      console.log("addtocart", response.data.data)
     })();
   }, [loadProduct]);
   return (
@@ -77,7 +77,7 @@ const AddToProduct = () => {
              getAProduct(eachProduct.id)
            }}
             color='success' variant='contained'>Add to cart</Button> */}
-           <Button color='success' variant='contained'>Order Now</Button>
+           <Button fullWidth color='success' variant='contained'>Order Now</Button>
          </Box>
        </Box>
 

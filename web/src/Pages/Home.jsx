@@ -5,8 +5,7 @@ import {
 } from '@mui/material'
 import axios from 'axios';
 import { useState, useEffect } from "react"
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+
 let baseUrl = ``;
 if (window.location.href.split(":")[0] === "http") {
   baseUrl = `http://localhost:3000`;
@@ -23,20 +22,36 @@ const Home = ({AddTheProduct}) => {
         await axios.get(`${baseUrl}/products`);
       setProductData(response.data.data);
       console.log("data", response.data.data)
+      let arr = [45,54,45,4]
+console.log()
     })();
   }, [loadProduct]);
 
-  const ClickEvent = (e) => {
-    console.log("data",e)
-    console.log("ev",e.target.dataset.user)
-  }
+
 
   const getAProduct = async (id) => {
     try {
       const response = await axios.get(`${baseUrl}/product/${id}`)
       console.log("response: ", response.data);
 console.log("response2: ", response.data.data)
-      CurrentProduct(response.data.data)
+      setCurrentProduct(response.data.data)
+      console.log("CurrentProduct",CurrentProduct)
+      addcart()
+      AddTheProduct()
+    } catch (error) {
+      console.log("error in getting all products", error);
+    }
+  }
+
+
+  const addcart = async () => {
+    try {
+      const response = await
+      axios.post(`${baseUrl}/addtocart`, CurrentProduct);
+  
+   
+  
+    setLoadProduct(!loadProduct)
 
     } catch (error) {
       console.log("error in getting all products", error);
@@ -104,6 +119,7 @@ console.log("response2: ", response.data.data)
                 //  onClick={AddTheProduct}
                 onClick={() => {
                   getAProduct(eachProduct.id)
+                 
                 }}
                  color='success' variant='contained'>Add to cart</Button>
                 <Button color='success' variant='contained'>Order Now</Button>
