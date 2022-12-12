@@ -158,7 +158,7 @@ Add Product
 
         </TextField>
       <Box sx={{display:"flex",
-      border:'solid grey 0.1px',
+      border:'solid #B8B8B8 0.1px',
       ml:5,mt:3,mb:3,borderRadius:"5px",
       justifyContent:'center'}}>
          <TextField 
