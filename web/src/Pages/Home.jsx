@@ -36,7 +36,7 @@ console.log()
 console.log("response2: ", response.data.data)
       setCurrentProduct(response.data.data)
       console.log("CurrentProduct",CurrentProduct)
-      addcart()
+      addcart(response.data.data)
       if(!addcart.error)
       {
         
@@ -50,10 +50,10 @@ console.log("response2: ", response.data.data)
   }
 
 
-  const addcart = async () => {
+  const addcart = async (objectCart) => {
     try {
       const response = await
-      axios.post(`${baseUrl}/addtocart`, CurrentProduct);
+      axios.post(`${baseUrl}/addtocart`, objectCart);
   
    
   

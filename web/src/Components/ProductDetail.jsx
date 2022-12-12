@@ -205,8 +205,13 @@ Add Product
 (progress === '100')?<h5>Done{progress}%</h5>:<h5>loading{progress}%</h5>
 }  */}
 </Box> 
+{/* {(fileUpload && !storageURL === "")?
         <Button sx={{ml:10}} type="submit" variant="outlined">Add Product </Button>
-      </form>
+      : 
+      <Button disabled sx={{ml:10}} type="submit" variant="outlined">Add Product </Button>
+      } */}
+      <Button sx={{ml:10}} type="submit" variant="outlined">Add Product </Button>
+        </form>
       </Box>
       <br />
       <br />
