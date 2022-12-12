@@ -233,17 +233,17 @@ Add Product
               {(storageURL === null) ? 
               <CardMedia
               component="img"
-              width="300"
-              height="300"
+              width="200"
+                height="200"
               image='https://products.ideadunes.com/assets/images/default_product.jpg'
-              alt="green iguana"
+              alt="No product Image"
             />
               
               
               : <CardMedia
                 component="img"
-                width="300"
-                height="300"
+                width="200"
+                height="200"
                 image={eachProduct.productImage}
                 alt="green iguana"
               />}

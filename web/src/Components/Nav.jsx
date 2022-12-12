@@ -126,8 +126,11 @@ const [loadProduct, setLoadProduct] = useState(false)
            >
                <Box sx={{ width:250,textAlign:'center' }}>
                <List>
-                 <LinkPage to="/">
-         <ListItem disablePadding>
+                 <LinkPage
+                  onClick={()=>{setIsOpen(false)}}
+                 to="/">
+         <ListItem
+         disablePadding>
            <ListItemButton component="a" >
              <ListItemIcon>
                <Home /> 
@@ -135,7 +138,9 @@ const [loadProduct, setLoadProduct] = useState(false)
              <ListItemText primary="Home" />
            </ListItemButton>
          </ListItem></LinkPage>
-         <LinkPage to="/MakeProduct">
+         <LinkPage
+          onClick={()=>{setIsOpen(false)}}
+           to="/MakeProduct">
          <ListItem disablePadding>
            <ListItemButton component="a" >
              <ListItemIcon>
@@ -144,7 +149,9 @@ const [loadProduct, setLoadProduct] = useState(false)
              <ListItemText primary="Add Product" />
            </ListItemButton>
          </ListItem></LinkPage> 
-          <LinkPage to="/SearchProduct">
+          <LinkPage
+           onClick={()=>{setIsOpen(false)}}
+          to="/SearchProduct">
          <ListItem disablePadding>
            <ListItemButton component="a" >
              <ListItemIcon>
@@ -191,9 +198,15 @@ const [loadProduct, setLoadProduct] = useState(false)
 
 
 
-<LinkPage  to="/" ><TabPage label="Home" /></LinkPage>
-<LinkPage  to="/MakeProduct" ><TabPage label="Add Product" /></LinkPage>
-<LinkPage  to="/SearchProduct" ><TabPage label="Search Product" /></LinkPage>
+<LinkPage
+ 
+   to="/" ><TabPage label="Home" /></LinkPage>
+<LinkPage
+  
+   to="/MakeProduct" ><TabPage label="Add Product" /></LinkPage>
+<LinkPage
+
+ to="/SearchProduct" ><TabPage label="Search Product" /></LinkPage>
 {/* <LinkPage  to="/MarkAttend" ><TabPage label="Search Product" /></LinkPage>
 <LinkPage  to="/History" ><TabPage label="History" /></LinkPage> */}
 {/* <TabPage component="a" to="/" label="Home"><Link  to="/">Home</Link></TabPage>
