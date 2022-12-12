@@ -1,5 +1,6 @@
 import React from 'react'
 import SlideShow from '../Components/SlideShow';
+import { Link } from "react-router-dom";
 import {
   Divider,Paper,Box,Button,Grid,CardMedia,Typography
 } from '@mui/material'
@@ -14,7 +15,7 @@ import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
-import { Link } from '@mui/material';
+
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -52,7 +53,15 @@ const Home = ({AddTheProduct}) => {
       setProductData(response.data.data);
       console.log("data", response.data.data)
       
-console.log()
+if(response.data.data.length === 0){
+  handleClickOpen()
+}else{
+  handleClose()
+}
+ 
+
+
+
     })();
   }, [loadProduct]);
 
@@ -99,10 +108,11 @@ console.log("response2: ", response.data.data)
 
       <SlideShow/>
       <Divider/>
+    
       <div>
        
-        
-     {/* {(ProductData === null)? handleClickOpen():handleClose()} */}
+
+
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
@@ -121,13 +131,15 @@ console.log("response2: ", response.data.data)
             There is no product please add product first..... 
           </Typography>
           <Typography variant='h6'>
-            Thank you
+            Thank you...
           </Typography>
      
-          <ShoppingCartIcon sx={{fontSize:"80px", float:"center",color:"green",ml:10}}/>
+          <ShoppingCartIcon sx={{fontSize:"120px", float:"center",color:"green",ml:15}}/>
         </DialogContent>
         <DialogActions>
-          <Link sx={{fontSize:"20px" , textDecoration:"none"}} to="/">
+          <Link 
+          sx={{fontSize:"20px" , textDecoration:"none"}}
+          to="/MakeProduct">
           <Button sx={{fontSize:"20px"}} autoFocus onClick={handleClose}>
             Ok
           </Button>
