@@ -31,7 +31,7 @@ const Home = () => {
   const [prodImage, setProdImage] = useState('')
   const [ProductData, setProductData] = useState(null)
   const [prodName, setProdName] = useState('')
-  const [prodPrice, setProdPrice] = useState('')
+  const [prodPrice, setProdPrice] = useState(0)
   const [prodDec, setProdDec] = useState('')
   const [storageURL, getStorageURL] = useState(''); 
   const [file, setFile] = useState(null)

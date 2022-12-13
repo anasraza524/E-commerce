@@ -52,17 +52,12 @@ const Home = ({AddTheProduct}) => {
         await axios.get(`${baseUrl}/products`);
       setProductData(response.data.data);
       console.log("data", response.data.data)
-      
 if(response.data.data.length === 0){
   handleClickOpen()
 }else{
   handleClose()
 }
- 
-
-
-
-    })();
+   })();
   }, [loadProduct]);
 
 

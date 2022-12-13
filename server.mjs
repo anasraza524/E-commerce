@@ -6,7 +6,7 @@ import mongoose from 'mongoose'
 
 const app = express();
 const port = process.env.PORT || 3000;
-const mongodbURL = process.env.mongodbURL || "mongodb+srv://anas:12ANASraza786@cluster0.eu5uldj.mongodb.net/e-martdatabase?retryWrites=true&w=majority"
+const mongodbURL = process.env.mongodbURL || "mongodb+srv://anas:12ANASraza786@cluster0.eu5uldj.mongodb.net/emartdatabase?retryWrites=true&w=majority"
 // mongodb+srv://anas:12ANASraza786@cluster0.eu5uldj.mongodb.net/?retryWrites=true&w=majority
 app.use(cors());
 app.use(express.json());
@@ -18,7 +18,7 @@ let productSchema = new mongoose.Schema({
     name: { type: String, required: true },
     price: Number,
     description: String,
-    productImage: String,
+    //  productImage: String,
     createdOn: { type: Date, default: Date.now }
 });
 const productModel = mongoose.model('products', productSchema);
@@ -89,7 +89,14 @@ app.delete('/addtocart/:id', (req, res) => {
         });
     }
 })
-
+app.get('/addtocarts', (req, res) => {
+    res.send({
+        message: "got all products successfully",
+        data: addtocart
+      
+        
+    })
+})
 
 
 
@@ -99,7 +106,7 @@ app.post('/product', (req, res) => {
         || !body.price 
         || !body.description
         // && body.id
-         && body.productImage
+        //  && body.productImage
     ) {
 
         res.status(400)
@@ -112,7 +119,7 @@ app.post('/product', (req, res) => {
     console.log(body.description)
     // console.log('name:',body.productImage)
 
-    // products.push({
+    // products.push({  (without database code)
     //     id: `${new Date().getTime()}`,
     //     // id: body.id, (Not used yet)
     //     name: body.name,
@@ -124,7 +131,7 @@ app.post('/product', (req, res) => {
         name: body.name,
         price: body.price,
         description: body.description,
-        productImage: body.productImage,
+        // productImage: body.productImage,
     },
         (err, saved) => {
             if (!err) {
@@ -135,7 +142,7 @@ app.post('/product', (req, res) => {
                 });
             } else {
                 res.status(500).send({
-                    message: "server error"
+                    message: "server error .."
                 })
             }
         })
@@ -145,12 +152,19 @@ app.post('/product', (req, res) => {
 
 
 app.get('/products', (req, res) => {
-    res.send({
-        message: "got all products successfully",
-        data: products
-    })
+    productModel.find({}, (err, data) => {
+        if (!err) {
+            res.send({
+                message: "got all products successfully",
+                data: data
+            })
+        } else {
+            res.status(500).send({
+                message: "server error"
+            })
+        }
+    });
 })
-
 // app.get('/bageno', (req, res) => {
 //     res.send({
 //         message: "got BageNO  successfully",
@@ -175,60 +189,54 @@ app.get('/products', (req, res) => {
 //     });
 
 // })
-app.get('/addtocarts', (req, res) => {
-    res.send({
-        message: "got all products successfully",
-        data: addtocart
-      
-        
-    })
-})
+
 app.get('/product/:id', (req, res) => {
 
     const id = req.params.id;
 
-    let isFound = false;
-    for (let i = 0; i < products.length; i++) {
-
-        if (products[i].id === id) {
-            res.send({
-                message: `get product by id: ${products[i].id} success`,
-                data: products[i]
-            });
-
-            isFound = true
-            break;
+    productModel.findOne({ _id: id }, (err, data) => {
+        if (!err) {
+            if (data) {
+                res.send({
+                    message: `get product by id: ${data._id} success`,
+                    data: data
+                });
+            } else {
+                res.status(404).send({
+                    message: "product not found",
+                })
+            }
+        } else {
+            res.status(500).send({
+                message: "server error"
+            })
         }
-    }
-    if (isFound === false) {
-        res.status(404)
-        res.send({
-            message: "product not found"
-        });
-    }
-    return;
+    });
 })
+   
 
 app.delete('/product/:id', (req, res) => {
     const id = req.params.id;
+    productModel.deleteOne({ _id: id }, (err, deletedData) => {
+        console.log("deleted: ", deletedData);
+        if (!err) {
 
-    let isFound = false;
-    for (let i = 0; i < products.length; i++) {
-        if (products[i].id === id) {
-            products.splice(i, 1);
-            res.send({
-                message: "product deleted successfully"
-            });
-            isFound = true
-            break;
+            if (deletedData.deletedCount !== 0) {
+                res.send({
+                    message: "Product has been deleted successfully",
+                })
+            } else {
+                res.status(404);
+                res.send({
+                    message: "No Product found with this id: " + id,
+                });
+            }
+        } else {
+            res.status(500).send({
+                message: "server error"
+            })
         }
-    }
-    if (isFound === false) {
-        res.status(404)
-        res.send({
-            message: "delete fail: product not found"
-        });
-    }
+    });
 })
 
 app.put('/product/:id', (req, res) => {
