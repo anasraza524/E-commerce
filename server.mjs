@@ -1,15 +1,39 @@
 import express from 'express'
 import path from 'path';
 import cors from 'cors';
+import mongoose from 'mongoose'
+
 
 const app = express();
 const port = process.env.PORT || 3000;
-
+const mongodbURL = process.env.mongodbURL || "mongodb+srv://anas:12ANASraza786@cluster0.eu5uldj.mongodb.net/?retryWrites=true&w=majority"
+// mongodb+srv://anas:12ANASraza786@cluster0.eu5uldj.mongodb.net/?retryWrites=true&w=majority
 app.use(cors());
 app.use(express.json());
 let products = [];
 let addtocart = [];
 // let bageNo = 0
+
+let productSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    price: Number,
+    description: String,
+    productImage: String,
+    createdOn: { type: Date, default: Date.now }
+});
+const productModel = mongoose.model('products', productSchema);
+
+
+let addtocartSchema = new mongoose.Schema({
+    id:Number,
+    name: { type: String, required: true },
+    price: Number,
+    description: String,
+    productImage: String,
+    createdOn: { type: Date, default: Date.now }
+});
+const addtocartModel = mongoose.model('addtocarts', addtocartSchema);
+
 
 app.post('/addtocart', (req, res) => {
     const body = req.body
@@ -244,3 +268,31 @@ app.use('*', express.static(path.join(__dirname, './web/build')))
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+mongoose.connect(mongodbURL);
+
+////////////////mongodb connected disconnected events///////////////////////////////////////////////
+mongoose.connection.on('connected', function () {//connected
+    console.log("Mongoose is connected");
+});
+
+mongoose.connection.on('disconnected', function () {//disconnected
+    console.log("Mongoose is disconnected");
+    process.exit(1);
+});
+
+mongoose.connection.on('error', function (err) {//any error
+    console.log('Mongoose connection error: ', err);
+    process.exit(1);
+});
+
+process.on('SIGINT', function () {/////this function will run jst before app is closing
+    console.log("app is terminating");
+    mongoose.connection.close(function () {
+        console.log('Mongoose default connection closed');
+        process.exit(0);
+    });
+});
+////////////////mongodb connected disconnected events///////////////////////////////////////////////
