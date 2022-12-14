@@ -1,24 +1,27 @@
 import express from 'express'
 import path from 'path';
 import cors from 'cors';
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 
+//  mongoose.set('strictQuery', false);
 
 const app = express();
 const port = process.env.PORT || 3000;
-const mongodbURL = process.env.mongodbURL || "mongodb+srv://anas:12ANASraza786@cluster0.eu5uldj.mongodb.net/emartdatabase?retryWrites=true&w=majority"
+const mongodbURI = process.env.mongodbURI || "mongodb+srv://anas:emartdb@cluster0.eu5uldj.mongodb.net/emartdatabase?retryWrites=true&w=majority"
 // mongodb+srv://anas:12ANASraza786@cluster0.eu5uldj.mongodb.net/?retryWrites=true&w=majority
+
+
 app.use(cors());
 app.use(express.json());
-let products = [];
-let addtocart = [];
+// let products = [];
+// let addtocart = [];
 // let bageNo = 0
 
 let productSchema = new mongoose.Schema({
     name: { type: String, required: true },
     price: Number,
     description: String,
-    //  productImage: String,
+     productImage: String,
     createdOn: { type: Date, default: Date.now }
 });
 const productModel = mongoose.model('products', productSchema);
@@ -106,7 +109,7 @@ app.post('/product', (req, res) => {
         || !body.price 
         || !body.description
         // && body.id
-        //  && body.productImage
+          || !body.productImage
     ) {
 
         res.status(400)
@@ -119,19 +122,11 @@ app.post('/product', (req, res) => {
     console.log(body.description)
     // console.log('name:',body.productImage)
 
-    // products.push({  (without database code)
-    //     id: `${new Date().getTime()}`,
-    //     // id: body.id, (Not used yet)
-    //     name: body.name,
-    //     price: body.price,
-    //     description: body.description,
-    //     productImage: body.productImage,
-    // })
     productModel.create({
         name: body.name,
         price: body.price,
         description: body.description,
-        // productImage: body.productImage,
+         productImage: body.productImage,
     },
         (err, saved) => {
             if (!err) {
@@ -160,35 +155,12 @@ app.get('/products', (req, res) => {
             })
         } else {
             res.status(500).send({
-                message: "server error"
+                message: "server error...."
             })
         }
     });
 })
-// app.get('/bageno', (req, res) => {
-//     res.send({
-//         message: "got BageNO  successfully",
-//         data: bageNo
-        
-//     })
-// })
-// app.post('/bageno', (req, res) => {
-//     const body = req.body
-//     // if (bageNo) {
-
-//     //     res.status(400)
-//     //     res.send({ message: "Requird Parameter missing." })
-//     //     return;
-//     // }
- 
-
-//    bageNo = body.bageNo
-
-//     res.send({
-//         message: "Bage added successfully"
-//     });
-
-// })
+/
 
 app.get('/product/:id', (req, res) => {
 
@@ -215,7 +187,7 @@ app.get('/product/:id', (req, res) => {
 })
    
 
-app.delete('/product/:id', (req, res) => {
+app.delete('/product/:id',async (req, res) => {
     const id = req.params.id;
     productModel.deleteOne({ _id: id }, (err, deletedData) => {
         console.log("deleted: ", deletedData);
@@ -239,51 +211,48 @@ app.delete('/product/:id', (req, res) => {
     });
 })
 
-app.put('/product/:id', (req, res) => {
+app.put('/product/:id',async (req, res) => {
 
     const body = req.body;
     const id = req.params.id;
 
-    if ( // validation
-        !body.name
-        && !body.price
-        && !body.description
+    if (
+        !body.name ||
+        !body.price ||
+        !body.description
     ) {
-        res.status(400).send({
-            message: "required parameters missing"
-        });
+        res.status(400).send(` required parameter missing. example request body:
+        {
+            "name": "value",
+            "price": "value",
+            "description": "value"
+        }`)
         return;
     }
 
-    console.log(body.name)
-    console.log(body.price)
-    console.log(body.description)
+    try {
+        let data = await productModel.findByIdAndUpdate(id,
+            {
+                name: body.name,
+                price: body.price,
+                description: body.description
+            },
+            { new: true }
+        ).exec();
 
-    let isFound = false;
-    for (let i = 0; i < products.length; i++) {
-        if (products[i].id === id) {
+        console.log('updated: ', data);
 
-            products[i].name = body.name;
-            products[i].price = body.price;
-            products[i].description = body.description;
-
-            res.send({
-                message: "product modified successfully"
-            });
-            isFound = true
-            break;
-        }
-    }
-    if (!isFound) {
-        res.status(404)
         res.send({
-            message: "edit fail: product not found"
+            message: "product modified successfully"
         });
+
+    } catch (error) {
+        res.status(500).send({
+            message: "server error"
+        })
     }
-    res.send({
-        message: "product added successfully"
-    });
 })
+
 
 
 const __dirname = path.resolve();
@@ -295,7 +264,7 @@ app.listen(port, () => {
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
-mongoose.connect(mongodbURL);
+mongoose.connect(mongodbURI);
 
 ////////////////mongodb connected disconnected events///////////////////////////////////////////////
 mongoose.connection.on('connected', function () {//connected

@@ -37,15 +37,24 @@ const Home = () => {
   const [file, setFile] = useState(null)
   const [progress, setProgress] = useState(0);
   const storage = getStorage();
-  useEffect(() => {
-    
-    (async () => {
-      const response =
-        await axios.get(`${baseUrl}/products`);
+  const getAllProducts = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/products`);
+      console.log("response: ", response.data);
+
       setProductData(response.data.data);
-      console.log("data", response.data.data)
-    })();
-  }, [loadProduct]);
+
+    } catch (error) {
+      console.log("error in getting all products", error);
+    }
+  }
+  
+  useEffect(() => {
+
+    getAllProducts()
+
+  }, [loadProduct])
+
 
   const fileUpload= ()=>{
     if (!file) return;

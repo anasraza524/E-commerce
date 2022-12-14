@@ -28,7 +28,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 
 let baseUrl = ``;
 if (window.location.href.split(":")[0] === "http") {
-  baseUrl = `http://localhost:3000`;
+  baseUrl = `https://localhost:3000`;
 }
 
 const Home = ({AddTheProduct}) => {
@@ -57,7 +57,7 @@ if(response.data.data.length === 0){
 }else{
   handleClose()
 }
-   })();
+   })()
   }, [loadProduct]);
 
 
