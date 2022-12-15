@@ -1,12 +1,5 @@
 import React from 'react'
 import axios from 'axios';
-import { useState, useEffect } from "react"
-import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import {
-  Typography, Card, CardContent,CircularProgress,
-  TextField, Button, Paper, Chip, Box, Grid,
-  CardActions, CardActionArea, Divider, CardMedia,Stack
-} from '@mui/material'
 import {
   ref,
   uploadBytes,
@@ -19,6 +12,16 @@ import { v4 } from "uuid";
 import { getStorage,uploadBytesResumable,
 
 } from "firebase/storage";
+
+import { useState, useEffect } from "react"
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import {
+  Typography, Card, CardContent,CircularProgress,
+  TextField, Button, Paper, Chip, Box, Grid,
+  CardActions, CardActionArea, Divider, CardMedia,Stack
+} from '@mui/material'
+
+
 
 
 let baseUrl = "";
@@ -37,6 +40,9 @@ const Home = () => {
   const [storageURL, getStorageURL] = useState(''); 
   const [file, setFile] = useState(null)
   const [progress, setProgress] = useState(0);
+ 
+
+  
   const storage = getStorage();
 
 console.log("file",file)
@@ -46,7 +52,7 @@ console.log("file",file)
       console.log("response: ", response.data);
 
       setProductData(response.data.data);
-      
+     
     } catch (error) {
       console.log("error in getting all products", error);
     }
@@ -153,6 +159,7 @@ console.log("file",file)
 
 
     <div>
+   
 <Box
  sx={{
   width: 300,
