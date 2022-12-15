@@ -26,14 +26,16 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-let baseUrl = ``;
+let baseUrl = "";
 if (window.location.href.split(":")[0] === "http") {
-  baseUrl = `https://localhost:3000`;
+  baseUrl = "http://localhost:3000";
+} else {
+  baseUrl = "https://wild-pink-bat-tam.cyclic.app/";
 }
 
 const Home = ({AddTheProduct}) => {
   const [CurrentProduct, setCurrentProduct] = useState(null)
-  const [ProductData, setProductData] = useState(null)
+  const [homeProductData, setHomeProductData] = useState(null)
   const [loadProduct, setLoadProduct] = useState(false)
   const [open, setOpen] = useState(false);
 
@@ -45,22 +47,38 @@ const Home = ({AddTheProduct}) => {
   };
   
   
-  useEffect(() => {
+//   useEffect(() => {
     
-    (async () => {
-      const response =
-        await axios.get(`${baseUrl}/products`);
-      setProductData(response.data.data);
-      console.log("data", response.data.data)
-if(response.data.data.length === 0){
-  handleClickOpen()
-}else{
-  handleClose()
+//     (async () => {
+//       const response =
+//         await axios.get(`${baseUrl}/products`);
+//       setProductData(response.data.data);
+//       console.log("data", response.data.data)
+// if(response.data.data.length === 0){
+//   handleClickOpen()
+// }else{
+//   handleClose()
+// }
+//    })()
+//   }, [loadProduct]);
+
+const getAllProducts = async () => {
+  try {
+    const response = await axios.get(`${baseUrl}/products`);
+    console.log("response: ", response.data.data);
+
+    setHomeProductData(response.data.data);
+
+  } catch (error) {
+    console.log("error in getting all products", error);
+  }
 }
-   })()
-  }, [loadProduct]);
 
+useEffect(() => {
 
+  getAllProducts()
+
+}, [loadProduct])
 
   const getAProduct = async (id) => {
     try {
@@ -88,7 +106,7 @@ console.log("response2: ", response.data.data)
       const response = await
       axios.post(`${baseUrl}/addtocart`, objectCart);
   
-   
+   console.log(response)
   
     setLoadProduct(!loadProduct)
 
@@ -146,8 +164,8 @@ console.log("response2: ", response.data.data)
    
        
          <Grid sx={{m:{xs:1,sm:5,lg:3}}} container item spacing={6}>
-         {(!ProductData) ? null :
-        ProductData?.map((eachProduct, index) => ( 
+         {(!homeProductData) ? null :
+        homeProductData?.map((eachProduct, index) => ( 
           <Paper
           
           key={index}
@@ -196,7 +214,7 @@ console.log("response2: ", response.data.data)
                 <Button
                 //  onClick={AddTheProduct}
                 onClick={() => {
-                  getAProduct(eachProduct.id)
+                  getAProduct(eachProduct._id)
                  
                 }}
                  color='success' variant='contained'>Add to cart</Button>

@@ -7,13 +7,15 @@ import mongoose from 'mongoose';
 
 const app = express();
 const port = process.env.PORT || 3000;
-const mongodbURI = process.env.mongodbURI || "mongodb+srv://anas:emartdb@cluster0.eu5uldj.mongodb.net/emartdatabase?retryWrites=true&w=majority"
+const mongodbURI = process.env.mongodbURI ||
+"mongodb+srv://abcd:abcd@cluster0.eu5uldj.mongodb.net/anas?retryWrites=true&w=majority"
+app.use(cors());
 // mongodb+srv://anas:12ANASraza786@cluster0.eu5uldj.mongodb.net/?retryWrites=true&w=majority
 
 
 app.use(cors());
 app.use(express.json());
-// let products = [];
+ let products = [];
 // let addtocart = [];
 // let bageNo = 0
 
@@ -27,15 +29,15 @@ let productSchema = new mongoose.Schema({
 const productModel = mongoose.model('products', productSchema);
 
 
-// let addtocartSchema = new mongoose.Schema({
-//     id:Number,
-//     name: { type: String, required: true },
-//     price: Number,
-//     description: String,
-//     productImage: String,
-//     createdOn: { type: Date, default: Date.now }
-// });
-// const addtocartModel = mongoose.model('addtocarts', addtocartSchema);
+let addtocartSchema = new mongoose.Schema({
+    _id:Number,
+    name: { type: String, required: true },
+    price: Number,
+    description: String,
+    productImage: String,
+    createdOn: { type: Date, default: Date.now }
+});
+const addtocartModel = mongoose.model('addtocarts', addtocartSchema);
 
 
 app.post('/addtocart', (req, res) => {
@@ -57,20 +59,30 @@ app.post('/addtocart', (req, res) => {
     console.log(body.description)
     // console.log('name:',body.productImage)
 
-    addtocart.push({
-        // id: `${new Date().getTime()}`,
-        id: body.id,
+    addtocartModel.create({
+        _id:body.id,
         name: body.name,
         price: body.price,
+        
         description: body.description,
         productImage: body.productImage,
-    })
+    },
+        (err, saved) => {
+            console.log("post Error",err)
+            if (!err) {
+                console.log(saved);
 
-    res.send({
-        message: "Addtocart added successfully"
-    });
-
+                res.send({
+                    message: "product added successfully in Cart"
+                });
+            } else {
+                res.status(500).send({
+                    message: "server error .."
+                })
+            }
+        })
 })
+
 app.delete('/addtocart/:id', (req, res) => {
     const id = req.params.id;
 
@@ -109,7 +121,7 @@ app.post('/product', (req, res) => {
         || !body.price 
         || !body.description
         // && body.id
-          || !body.productImage
+        //   || !body.productImage
     ) {
 
         res.status(400)
@@ -120,15 +132,16 @@ app.post('/product', (req, res) => {
     console.log(body.name)
     console.log(body.price)
     console.log(body.description)
-    // console.log('name:',body.productImage)
+     console.log('imaghe',body.productImage)
 
     productModel.create({
         name: body.name,
         price: body.price,
         description: body.description,
-         productImage: body.productImage,
+        productImage: body.productImage,
     },
         (err, saved) => {
+            console.log("post Error",err)
             if (!err) {
                 console.log(saved);
 
@@ -148,11 +161,14 @@ app.post('/product', (req, res) => {
 
 app.get('/products', (req, res) => {
     productModel.find({}, (err, data) => {
+        console.log("get Error",err)
         if (!err) {
             res.send({
                 message: "got all products successfully",
                 data: data
-            })
+              
+            })  
+           
         } else {
             res.status(500).send({
                 message: "server error...."

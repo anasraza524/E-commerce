@@ -21,22 +21,25 @@ import { getStorage,uploadBytesResumable,
 } from "firebase/storage";
 
 
-let baseUrl = ``;
+let baseUrl = "";
 if (window.location.href.split(":")[0] === "http") {
-  baseUrl = `http://localhost:3000`;
-  console.log(baseUrl)
+  baseUrl = "http://localhost:3000";
+} else {
+  baseUrl = "https://wild-pink-bat-tam.cyclic.app/";
 }
 const Home = () => {
   const [loadProduct, setLoadProduct] = useState(false)
   const [prodImage, setProdImage] = useState('')
   const [ProductData, setProductData] = useState(null)
   const [prodName, setProdName] = useState('')
-  const [prodPrice, setProdPrice] = useState(0)
+  const [prodPrice, setProdPrice] = useState('');
   const [prodDec, setProdDec] = useState('')
   const [storageURL, getStorageURL] = useState(''); 
   const [file, setFile] = useState(null)
   const [progress, setProgress] = useState(0);
   const storage = getStorage();
+
+
   const getAllProducts = async () => {
     try {
       const response = await axios.get(`${baseUrl}/products`);
@@ -81,19 +84,37 @@ const Home = () => {
   }
   const submitHandler = async (e) => {
     e.preventDefault();
-    let data = {
-      name: prodName,
-      price: prodPrice,
-      description: prodDec,
-      productImage:storageURL,
+    try {
+      const response = await axios.post(`${baseUrl}/product`, {
+        name: prodName,
+        price: prodPrice,
+        description: prodDec,
+        productImage:storageURL,
+
+      });
+      console.log(response);
+      setLoadProduct(!loadProduct)
+  
+    } catch (err) {
+      console.log("err post", err);
     }
-    const response = await
-      axios.post(`${baseUrl}/product`, data);
-    console.log(data)
-    console.log(prodName, prodDec, prodPrice,prodImage)
-    console.log(response);
-    setLoadProduct(!loadProduct)
-  }
+  };
+
+  // const submitHandler = async (e) => {
+  //   e.preventDefault();
+  //   let data = {
+  //     name: prodName,
+  //     price: prodPrice,
+  //     description: prodDec,
+  //     productImage:storageURL,
+  //   }
+  //   const response = await
+  //     axios.post(`${baseUrl}/product`, data);
+  //   console.log(data)
+  //   // console.log(prodName, prodDec, prodPrice,prodImage)
+  //   console.log(response);
+  //   setLoadProduct(!loadProduct)
+  // }
   
   const deleteProduct = async (id) => {
     try {
@@ -103,7 +124,7 @@ const Home = () => {
       setLoadProduct(!loadProduct)
 
     } catch (error) {
-      console.log("error in getting all products", error);
+      console.log("error in deleting all products", error);
     }
   }
  
@@ -260,7 +281,8 @@ Add Product
                 <Grid container alignItems="center">
                   <Grid item xs>
                     <Typography gutterBottom variant="h4" component="div">
-                      {eachProduct.name}
+                    {eachProduct.name}
+                      
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -282,7 +304,7 @@ Add Product
                 <Button color='success' variant='contained'>Edit</Button>
                 <Button 
                 onClick={()=>{
-                  deleteProduct(eachProduct.id)
+                  deleteProduct(eachProduct._id)
                 }}
                 color='error' variant='contained'>Delete</Button>
               </Box>
