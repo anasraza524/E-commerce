@@ -39,14 +39,14 @@ const Home = () => {
   const [progress, setProgress] = useState(0);
   const storage = getStorage();
 
-
+console.log("file",file)
   const getAllProducts = async () => {
     try {
       const response = await axios.get(`${baseUrl}/products`);
       console.log("response: ", response.data);
 
       setProductData(response.data.data);
-
+      
     } catch (error) {
       console.log("error in getting all products", error);
     }
@@ -57,8 +57,7 @@ const Home = () => {
     getAllProducts()
 
   }, [loadProduct])
-
-
+ 
   const fileUpload= ()=>{
     if (!file) return;
       const sotrageRef = ref(storage, `files/${file.name}`);
@@ -77,11 +76,16 @@ const Home = () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
          console.log("File available at", downloadURL);
             getStorageURL(downloadURL)
-            
+           
           });
         }
       );
   }
+  if(file){
+    fileUpload()
+    setFile(null)
+   }
+ 
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
@@ -204,14 +208,14 @@ Add Product
                 }}
                 style={{ display: 'none' }}>
                 </TextField> 
-                <Box sx={{ml:5}}>
+                <Box sx={{ml:3}}>
 
 <label htmlFor="select-image">
 < AddPhotoAlternateIcon style={{ paddingLeft: "5px", fontSize: "25px", color: 'green' }} />
 </label>
-<Button sx={{ml:2}} onClick={fileUpload}>set image</Button> 
+{/* <Button sx={{ml:2}} onClick={fileUpload}>set image</Button>  */}
 
-<Box sx={{m:3 , position: 'relative', display: 'inline-flex' }}>
+<Box sx={{m:2 , position: 'relative', display: 'inline-flex' }}>
 <CircularProgress variant="determinate" value={progress}  />
       <Box
         sx={{
