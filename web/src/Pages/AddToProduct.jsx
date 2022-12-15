@@ -20,7 +20,8 @@ const AddToProduct = ({BageNo,setBageNo}) => {
         await axios.get(`${baseUrl}/addtocarts`);
       setaddtoCartData(response.data.data);
       console.log("addtocart", response.data.data)
-      setBageNo(response.data.data.length)
+    setBageNo(response.data.data.length)
+    
     })();
   }, [loadProduct]);
 
@@ -30,32 +31,15 @@ const AddToProduct = ({BageNo,setBageNo}) => {
     try {
       const response = await axios.delete(`${baseUrl}/addtocart/${id}`)
       console.log("response: ", response.data);
-      setBageNo(BageNo-1)
+
       setLoadProduct(!loadProduct)
 
     } catch (error) {
       console.log("error in getting all products", error);
     }
   }
-
-  // const addBageNo = async () => {
-  //   let bage = addtoCartData.length
-  
-  //   try {
-  //     const response = await
-  //     axios.post(`${baseUrl}/bageno`,{bage} );
-  
-  //  console.log("ss",response)
-  // // setBageNo(response)
-  //   setLoadProduct(!loadProduct)
-
-  //   } catch (error) {
-  //     console.log("error cart in getting all products", error);
-  //   }
-  // }
- 
   return (
-    <div><Grid sx={{m:{xs:1,sm:2,lg:3}}} container item spacing={6}>
+    <div><Grid sx={{m:{xs:1,sm:5,lg:3}}} container item spacing={6}>
     {(!addtoCartData) ? null :
    addtoCartData?.map((eachProduct, index) => ( 
      <Paper
@@ -70,7 +54,7 @@ const AddToProduct = ({BageNo,setBageNo}) => {
        <CancelIcon
 
 onClick={() => {
-  deleteCartProduct(eachProduct.id)
+  deleteCartProduct(eachProduct._id)
 }}
      
        sx={{m:1,float:"right"}}/>

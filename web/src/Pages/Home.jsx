@@ -68,7 +68,11 @@ const getAllProducts = async () => {
     console.log("response: ", response.data.data);
 
     setHomeProductData(response.data.data);
-
+    if(response.data.data.length === 0){
+         handleClickOpen()
+       }else{
+         handleClose()
+      }
   } catch (error) {
     console.log("error in getting all products", error);
   }
@@ -87,7 +91,17 @@ useEffect(() => {
 console.log("response2: ", response.data.data)
       setCurrentProduct(response.data.data)
       console.log("CurrentProduct",CurrentProduct)
-      addcart(response.data.data)
+      let cart = {
+        id:response.data.data._id,
+        name:response.data.data.name,
+        price:response.data.data.price,
+        description:response.data.data.description,
+        productImage:response.data.data.productImage
+      }
+
+
+      
+      addcart(cart)
       if(!addcart.error)
       {
         

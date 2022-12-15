@@ -30,7 +30,7 @@ const productModel = mongoose.model('products', productSchema);
 
 
 let addtocartSchema = new mongoose.Schema({
-    _id:Number,
+    id:String,
     name: { type: String, required: true },
     price: Number,
     description: String,
@@ -45,22 +45,21 @@ app.post('/addtocart', (req, res) => {
     if (!body.name 
         || !body.price 
         || !body.description
-        || !body.id
-        // && !body.productImage
+    
     ) {
 
         res.status(400)
         res.send({ message: "Requird cart  Parameter missing." })
         return;
     }
-    // console.log(body.id)
+    
     console.log(body.name)
     console.log(body.price)
     console.log(body.description)
     // console.log('name:',body.productImage)
 
     addtocartModel.create({
-        _id:body.id,
+        id:body.id,
         name: body.name,
         price: body.price,
         
@@ -85,25 +84,28 @@ app.post('/addtocart', (req, res) => {
 
 app.delete('/addtocart/:id', (req, res) => {
     const id = req.params.id;
+    addtocartModel.deleteOne({ _id: id }, (err, deletedData) => {
+        console.log("deleted: ", deletedData);
+        if (!err) {
 
-    let isFound = false;
-    for (let i = 0; i <addtocart.length; i++) {
-        if (addtocart[i].id === id) {
-            addtocart.splice(i, 1);
-            res.send({
-                message: "product in cart deleted successfully"
-            });
-            isFound = true
-            break;
+            if (deletedData.deletedCount !== 0) {
+                res.send({
+                    message: "Cart Product has been deleted successfully",
+                })
+            } else {
+                res.status(404);
+                res.send({
+                    message: "No cart Product found with this id: " + id,
+                });
+            }
+        } else {
+            res.status(500).send({
+                message: "server error"
+            })
         }
-    }
-    if (isFound === false) {
-        res.status(404)
-        res.send({
-            message: "delete fail: product not found"
-        });
-    }
+    });
 })
+
 app.get('/addtocarts', (req, res) => {
     addtocartModel.find({}, (err, data) => {
         console.log("get Error",err)
