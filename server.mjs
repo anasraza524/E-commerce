@@ -105,13 +105,23 @@ app.delete('/addtocart/:id', (req, res) => {
     }
 })
 app.get('/addtocarts', (req, res) => {
-    res.send({
-        message: "got all products successfully",
-        data: addtocart
-      
-        
-    })
+    addtocartModel.find({}, (err, data) => {
+        console.log("get Error",err)
+        if (!err) {
+            res.send({
+                message: "got all products successfully",
+                data: data
+              
+            })  
+           
+        } else {
+            res.status(500).send({
+                message: "server error...."
+            })
+        }
+    });
 })
+/
 
 
 
