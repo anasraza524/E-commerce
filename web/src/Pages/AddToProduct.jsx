@@ -77,7 +77,7 @@ const AddToProduct = ({BageNo,setBageNo}) => {
         aria-labelledby="customized-dialog-title"
         open={open}
       >
-      <DialogTitle dividers >
+      <DialogTitle dividers="true" >
         <Typography variant='h4'>
           E-Mart
           <CloseIcon onClick={handleClose} sx={{m:1,float:"right"}} />

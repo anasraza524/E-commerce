@@ -177,9 +177,10 @@ console.log("response2: ", response.data.data)
       <Paper sx={{m:1}} elevation={1}>
    
        
-         <Grid sx={{m:{xs:1,sm:5,lg:3}}} container item spacing={6}>
+         <Grid sx={{height:"100%" ,m:{xs:1,sm:5,lg:3}}} container item spacing={6}>
          {(!homeProductData) ? null :
         homeProductData?.map((eachProduct, index) => ( 
+         
           <Paper
           
           key={index}
@@ -233,13 +234,18 @@ console.log("response2: ", response.data.data)
                 }}
                  color='success' variant='contained'>Add to cart</Button>
                 <Button color='success' variant='contained'>Order Now</Button>
+                <Divider/>
               </Box>
+              
             </Box>
-
+            
           </Paper>
-                
+          
+              
                 ))
               } 
+
+         
          
           </Grid>
           

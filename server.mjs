@@ -281,7 +281,8 @@ app.put('/product/:id',async (req, res) => {
         {
             "name": "value",
             "price": "value",
-            "description": "value"
+            "description": "value",
+            "productImage": "value"
         }`)
         return;
     }
@@ -291,7 +292,8 @@ app.put('/product/:id',async (req, res) => {
             {
                 name: body.name,
                 price: body.price,
-                description: body.description
+                description: body.description,
+                productImage:body.productImage
             },
             { new: true }
         ).exec();
