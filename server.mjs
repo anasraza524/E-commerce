@@ -213,7 +213,35 @@ app.get('/product/:id', (req, res) => {
         }
     });
 })
+
+app.get('/product/:name', (req, res) => {
    
+    const querryName = req.params.name;
+    // ({name:{$regex:`${querryName}`}}`
+    // { name:querryName}
+      productModel.find({name:{$regex:`${querryName}`}}
+        
+        , (err, data) => {
+            console.log("des: ", err)
+        if (!err) {
+          if (data) {
+            res.send({
+              message: `get product by success`,
+              data: data,
+            });
+          } else {
+            res.status(404).send({
+              message: "product not found",
+            });
+          }
+        } else {
+          res.status(500).send({
+            message: "server error/./.",
+          });
+        }
+      });
+    });
+
 
 app.delete('/product/:id',async (req, res) => {
     const id = req.params.id;
