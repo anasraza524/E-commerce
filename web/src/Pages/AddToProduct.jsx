@@ -107,16 +107,16 @@ const AddToProduct = ({BageNo,setBageNo}) => {
       </BootstrapDialog>   
       
       
-      <Grid sx={{m:{xs:1,sm:5,lg:3}}} container item spacing={6}>
+      <Grid sx={{m:{xs:1,sm:2,lg:3}}} container item spacing={6}>
     {(!addtoCartData) ? null :
    addtoCartData?.map((eachProduct, index) => ( 
      <Paper
      
      key={index}
        elevation={4}
-       sx={{ m: 3, width: '100%', maxWidth: 300, bgcolor: 'background.paper' }}>
+       sx={{ m:{xs:3,lg:2,sm:2}, width: '100%', maxWidth:{ lg:300,xs:340,sm:300}, bgcolor: 'background.paper' }}>
 
-       <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+       <Box sx={{ width: '100%', maxWidth: 300, bgcolor: 'background.paper' }}>
         
          
        <CancelIcon

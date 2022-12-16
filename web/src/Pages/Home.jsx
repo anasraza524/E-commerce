@@ -177,7 +177,7 @@ console.log("response2: ", response.data.data)
       <Paper sx={{m:1}} elevation={1}>
    
        
-         <Grid sx={{height:"100%" ,m:{xs:1,sm:5,lg:3}}} container item spacing={6}>
+         <Grid sx={{height:"100%" ,m:{xs:1,sm:2,lg:3}}} container item spacing={6}>
          {(!homeProductData) ? null :
         homeProductData?.map((eachProduct, index) => ( 
          
@@ -185,9 +185,9 @@ console.log("response2: ", response.data.data)
           
           key={index}
             elevation={4}
-            sx={{ m: 3, width: '100%', maxWidth: 300, bgcolor: 'background.paper' }}>
+            sx={{ m:{xs:3,lg:2,sm:1}, width: '100%', maxWidth:{ lg:300,xs:340,sm:300}, bgcolor: 'background.paper' }}>
 
-            <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+            <Box sx={{ width: '100%', maxWidth: 340, bgcolor: 'background.paper' }}>
              
               
               
