@@ -5,20 +5,31 @@ import { useState, useEffect } from "react"
 
 import Nav from './Components/Nav';
 import Home from './Pages/Home';
+import axios from 'axios';
 import AddToProduct from './Pages/AddToProduct';
 import MakeProduct from './Pages/MakeProduct';
 import SearchProduct from "./Pages/SearchProduct";
-
+let baseUrl = ``;
+if (window.location.href.split(":")[0] === "http") {
+  baseUrl = `http://localhost:3000`;
+}
 function App() {
-
+  
   const [BageNo, setBageNo] = useState(0)
-  const AddTheProduct =()=>{
-setBageNo(BageNo+1)
+  const [loadProduct, setLoadProduct] = useState(false)
+  useEffect(() => {
+    
+    (async () => {
+      const response =
+        await axios.get(`${baseUrl}/addtocarts`);
+      
+      console.log("addtocart", response.data.data)
+    setBageNo(response.data.data.length)
+   
+    })();
+  }, [loadProduct]);
+  
 
-
-
-
-  }
 
   return (
     <div >
@@ -29,7 +40,8 @@ setBageNo(BageNo+1)
      
 
 
-     <Route path="/" element={<Home AddTheProduct={AddTheProduct}/>} />
+     <Route path="/" element={<Home  setBageNo={setBageNo}
+       BageNo={BageNo}/>} />
      <Route path="AddToProduct" element={<AddToProduct
       setBageNo={setBageNo}
        BageNo={BageNo}/>} />

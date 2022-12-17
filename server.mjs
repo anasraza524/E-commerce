@@ -90,12 +90,13 @@ app.delete('/addtocart/:id', (req, res) => {
 
             if (deletedData.deletedCount !== 0) {
                 res.send({
-                    message: "Cart Product has been deleted successfully",
+                    message: "Product has been removed successfully",
                 })
             } else {
                 res.status(404);
                 res.send({
-                    message: "No cart Product found with this id: " + id,
+                    message: "No cart Product found",
+                //    "  with this id: " + id,"
                 });
             }
         } else {
@@ -256,7 +257,7 @@ app.delete('/product/:id',async (req, res) => {
             } else {
                 res.status(404);
                 res.send({
-                    message: "No Product found with this id: " + id,
+                    message: "No Product found",                    //  with this id: " + id,
                 });
             }
         } else {

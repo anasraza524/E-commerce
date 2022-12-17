@@ -4,7 +4,7 @@ import Carousel from 'react-bootstrap/Carousel';
 const SlideShow = () => {
   return (
     <div>
-         <Carousel >
+ <Carousel >
       <Carousel.Item sx={{height:{xs:'200px',lg:'400px'}}} interval={3000}>
         <img
           className="d-block w-100"
@@ -33,7 +33,7 @@ const SlideShow = () => {
 
       
       </Carousel.Item>
-      <Carousel.Item sx={{height:{xs:'200px',lg:'400px'}}} interval={3000}>
+      {/* <Carousel.Item sx={{height:{xs:'200px',lg:'400px'}}} interval={3000}>
         <img
           className="d-block w-100"
           src="https://media.istockphoto.com/id/1185615547/vector/flat-lay-sunscreen-banner-ads.jpg?s=170667a&w=0&k=20&c=v2f-TN9OFoNicAtAVkZ7T43roJh6I0hpkSKpyJGCvSI="
@@ -41,7 +41,7 @@ const SlideShow = () => {
         />
 
 
-      </Carousel.Item>
+      </Carousel.Item> */}
       <Carousel.Item sx={{height:{xs:'200px',lg:'400px'}}} interval={3000}>
         <img
           className="d-block w-100"

@@ -1,6 +1,9 @@
 import React from 'react'
 import SlideShow from '../Components/SlideShow';
 import { Link } from "react-router-dom";
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import Stack from '@mui/material/Stack';
 import {
   Divider,Paper,Box,Button,Grid,CardMedia,Typography
 } from '@mui/material'
@@ -16,7 +19,9 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import noProductFound from '../assets/product-not-found.png'
 import shop from '../assets/ecom-cart.gif'
-
+import Cart from '../assets/runingCart.gif'
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -35,11 +40,12 @@ if (window.location.href.split(":")[0] === "http") {
   baseUrl = "https://wild-pink-bat-tam.cyclic.app/";
 }
 
-const Home = ({AddTheProduct}) => {
+const Home = ({BageNo,setBageNo}) => {
   const [CurrentProduct, setCurrentProduct] = useState(null)
   const [homeProductData, setHomeProductData] = useState(null)
   const [loadProduct, setLoadProduct] = useState(false)
   const [open, setOpen] = useState(false);
+ 
 const [homeProductDataLength, sethomeProductDataLength] = useState(null)
   const handleClickOpen = () => {
     setOpen(true);
@@ -47,22 +53,33 @@ const [homeProductDataLength, sethomeProductDataLength] = useState(null)
   const handleClose = () => {
     setOpen(false);
   };
-  
-  
-//   useEffect(() => {
+
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [openSnak, setOpenSnak] = useState(false);
+  const handleClickMsg = () => {
+    setOpenSnak(true);
+  };
+
+  const handleCloseMsg = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenSnak(false);
+  };
+  useEffect(() => {
     
-//     (async () => {
-//       const response =
-//         await axios.get(`${baseUrl}/products`);
-//       setProductData(response.data.data);
-//       console.log("data", response.data.data)
-// if(response.data.data.length === 0){
-//   handleClickOpen()
-// }else{
-//   handleClose()
-// }
-//    })()
-//   }, [loadProduct]);
+    (async () => {
+      const response =
+        await axios.get(`${baseUrl}/addtocarts`);
+      
+      console.log("addtocart", response.data.data)
+    setBageNo(response.data.data.length)
+   
+    })();
+  }, [loadProduct]); 
+
 
 const getAllProducts = async () => {
   try {
@@ -71,6 +88,7 @@ const getAllProducts = async () => {
 
     setHomeProductData(response.data.data);
     sethomeProductDataLength(response.data.data.length)
+    
     if(response.data.data.length === 0){
          handleClickOpen()
        }else{
@@ -88,6 +106,9 @@ useEffect(() => {
 }, [loadProduct])
 
   const getAProduct = async (id) => {
+    if(error || success){
+      handleClickMsg()
+    }
     try {
       const response = await axios.get(`${baseUrl}/product/${id}`)
       console.log("response: ", response.data);
@@ -105,11 +126,7 @@ console.log("response2: ", response.data.data)
 
       
       addcart(cart)
-      if(!addcart.error)
-      {
-        
-        AddTheProduct();
-      }
+
       } 
       
       catch (error) {
@@ -119,16 +136,22 @@ console.log("response2: ", response.data.data)
 
 
   const addcart = async (objectCart) => {
+    if(error || success){
+      handleClickMsg()
+    }
     try {
       const response = await
       axios.post(`${baseUrl}/addtocart`, objectCart);
   
-   console.log(response)
-  
+   console.log("asds",response)
+   setSuccess(response.data.message
+    )
     setLoadProduct(!loadProduct)
 
     } catch (error) {
+      setError(error.message)
       console.log("error cart in getting all products", error);
+    
     }
   }
 
@@ -138,34 +161,53 @@ console.log("response2: ", response.data.data)
 
       <SlideShow/>
       <Divider/>
+      <Stack spacing={2} sx={{ width: '100%', }}>
+      
+      
+    
+      <Snackbar open={openSnak} autoHideDuration={3000} onClose={handleCloseMsg}>
+       {(error)?<Alert onClose={handleCloseMsg} severity="error" sx={{ width: '100%' }}>
+          {error}
+        </Alert>:
+        <Alert severity="success">{success}</Alert>
+        }
+        
+      </Snackbar>
+      {/* <Alert severity="error">This is an error message!</Alert>
+      <Alert severity="warning">This is a warning message!</Alert>
+      <Alert severity="info">This is an information message!</Alert>
+      <Alert severity="success">This is a success message!</Alert> */}
+    </Stack>
     
       <div>
-       
-
-
-
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={open}
       >
       <DialogTitle dividers >
-        <Typography variant='h4'>
+        <Typography sx={{fontSize:{xs:"26px"}}} variant='h4'>
           Welcome to E-Mart
           <CloseIcon onClick={handleClose} sx={{m:1,float:"right"}} />
         </Typography>
      
       </DialogTitle>
-        <DialogContent dividers>
+        <DialogContent  dividers>
 
-          <Typography variant='h6' gutterBottom>
+          <Typography sx={{fontSize:{xs:"16px"}}} variant='h6' gutterBottom>
             There is no product please add product first..... 
           </Typography>
-          <Typography variant='h6'>
+          <Typography sx={{fontSize:{xs:"16px"}}} variant='h6'>
             Thank you...
           </Typography>
-     
-          <ShoppingCartIcon sx={{fontSize:"120px", float:"center",color:"green",ml:15}}/>
+          <CardMedia
+              component="img"
+              width="150"
+                sx={{height:{xs:100,sm:200,lg:250},mt:1}}
+              image={shop}
+              alt="No product Image"
+            />
+          {/* <ShoppingCartIcon sx={{fontSize:"120px", float:"center",color:"green",ml:15}}/> */}
         </DialogContent>
         <DialogActions>
           <Link 
@@ -181,14 +223,14 @@ console.log("response2: ", response.data.data)
      
      
      
-      <Paper sx={{m:1}} elevation={1}>
+      
    
 {(homeProductDataLength === 0 )?
       <CardMedia
               component="img"
               width="200"
                 sx={{height:{xs:"600",sm:"800",lg:"850"}}}
-              image={shop}
+              image={Cart}
               alt="No product Image"
             />:
        
@@ -266,7 +308,9 @@ console.log("response2: ", response.data.data)
           
 
             }
-      </Paper>
+
+
+     
     </div>
   )
 }

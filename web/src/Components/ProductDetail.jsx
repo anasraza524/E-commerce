@@ -7,7 +7,7 @@ import {
   listAll,
   list,
 } from "firebase/storage";
-
+import noProductFound from '../assets/product-not-found.png'
 import { v4 } from "uuid";
 import { getStorage,uploadBytesResumable,
 
@@ -30,6 +30,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Link } from "react-router-dom";
 import CancelIcon from '@mui/icons-material/Cancel';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import {Snackbar,Alert} from '@mui/material';
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
     padding: theme.spacing(2),
@@ -59,6 +60,8 @@ const Home = () => {
   const [file, setFile] = useState(null)
   const [progress, setProgress] = useState(0);
   const [open, setOpen] = useState(false);
+  const [productDataLength, setProductDataLength] = useState(null);
+
   const [editing, setEditing] = useState({
 editingid:null,
 editingName:"",
@@ -72,7 +75,20 @@ editingProdImage:""
   const handleClose = () => {
     setOpen(false);
   };
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [openSnak, setOpenSnak] = useState(false);
+  const handleClickMsg = () => {
+    setOpenSnak(true);
+  };
 
+  const handleCloseMsg = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenSnak(false);
+  };
   
   const storage = getStorage();
 
@@ -83,7 +99,7 @@ editingProdImage:""
       console.log("response: ", response.data);
 
       setProductData(response.data.data);
-     
+     setProductDataLength(response.data.data.length)
     } catch (error) {
       console.log("error in getting all products", error);
     }
@@ -125,6 +141,9 @@ editingProdImage:""
    }
   const submitHandler = async (e) => {
     e.preventDefault();
+    if(error || success){
+      handleClickMsg()
+    }
     try {
       const response = await axios.post(`${baseUrl}/product`, {
         name:  prodName,
@@ -134,6 +153,8 @@ editingProdImage:""
 
       });
       console.log(response);
+      setSuccess(response.data.message
+        )
        e.target.reset()
       setProdName("")
       setProdPrice("")
@@ -144,6 +165,8 @@ editingProdImage:""
       setLoadProduct(!loadProduct)
   
     } catch (err) {
+      setError(err.message
+        )
       console.log("err post", err);
     }
   };
@@ -165,20 +188,27 @@ editingProdImage:""
   // }
   
   const deleteProduct = async (id) => {
+    if(error || success){
+      handleClickMsg()
+    }
     try {
       const response = await axios.delete(`${baseUrl}/product/${id}`)
       console.log("response: ", response.data);
-      
+      setSuccess(response.data.message)
       setLoadProduct(!loadProduct)
 
     } catch (error) {
+      setError(error.message
+        )
       console.log("error in deleting all products", error);
     }
   }
  
 
  const  editProduct = async(e)=> { 
-
+  if(error || success){
+    handleClickMsg()
+  }
   
   e.preventDefault();
 
@@ -189,12 +219,15 @@ editingProdImage:""
         description:editing.editingDescription,
         productImage:storageURL
       })
+      setSuccess(response.data.message)
       handleClose()
       setFile(null)
 setStorageURL("")
 setProgress(0)
+e.target.reset()
       console.log("responseEdit: ", response.data);
       console.log("image",editing.editingProdImage)
+      
       setEditing({
         editingId: null,
         editingName: "",
@@ -206,6 +239,8 @@ setProgress(0)
       setLoadProduct(!loadProduct)
 
     } catch (error) {
+      setError(error.message
+        )
       console.log("error in Updating all products", error);
     }
   }
@@ -330,7 +365,24 @@ setProgress(0)
       </BootstrapDialog>   
 
 
-
+      <Stack spacing={2} sx={{ width: '100%' }}>
+      
+      
+    
+      <Snackbar open={openSnak} autoHideDuration={2000} onClose={handleCloseMsg}>
+       {(error)?
+       <Alert onClose={handleCloseMsg} severity="error" sx={{ width: '100%' }}>
+          {error}
+        </Alert>:
+        <Alert severity="success">{success}</Alert>
+        }
+        
+      </Snackbar>
+      {/* <Alert severity="error">This is an error message!</Alert>
+      <Alert severity="warning">This is a warning message!</Alert>
+      <Alert severity="info">This is an information message!</Alert>
+      <Alert severity="success">This is a success message!</Alert> */}
+    </Stack>
 
 
 <Box
@@ -435,6 +487,15 @@ Add Product
                   
 
       <Divider />
+
+      {(productDataLength === 0 )?
+      <CardMedia
+              component="img"
+              width="200"
+                sx={{height:{xs:"600",sm:"700",lg:"850"}}}
+              image={noProductFound}
+              alt="No product Image"
+            />:
       <Grid sx={{m:{xs:1,sm:5,lg:3}}} container item spacing={7}>  
       {(!ProductData) ? null :
         ProductData?.map((eachProduct, index) => (
@@ -508,7 +569,7 @@ Add Product
 
           </Paper>
         ))}
-        </Grid>
+        </Grid>}
     </div>
   )
 }

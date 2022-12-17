@@ -1,8 +1,9 @@
 import React from 'react'
 import axios from 'axios';
 import { useState, useEffect } from "react"
+import {Snackbar,Alert} from '@mui/material';
 import {
-  Divider,Paper,Box,Button,Grid,CardMedia,Typography
+  Stack,Divider,Paper,Box,Button,Grid,CardMedia,Typography
 } from '@mui/material'
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
@@ -14,7 +15,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Link } from "react-router-dom";
 import CancelIcon from '@mui/icons-material/Cancel';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import Cart from '../assets/runingCart.gif'
+import shop from '../assets/ecom-cart.gif'
+import Cart from '../assets/cool-loading-animated.gif'
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
     padding: theme.spacing(2),
@@ -42,6 +44,22 @@ const AddToProduct = ({BageNo,setBageNo}) => {
   const handleClose = () => {
     setOpen(false);
   };
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [openSnak, setOpenSnak] = useState(false);
+  const handleClickMsg = () => {
+    setOpenSnak(true);
+  };
+
+  const handleCloseMsg = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenSnak(false);
+  };
+
+
   useEffect(() => {
     
     (async () => {
@@ -61,25 +79,50 @@ const AddToProduct = ({BageNo,setBageNo}) => {
 
 
   const deleteCartProduct = async (id) => {
+    if(error || success){
+      handleClickMsg()
+    } 
     try {
       const response = await axios.delete(`${baseUrl}/addtocart/${id}`)
       console.log("response: ", response.data);
-
+      setSuccess(response.data.message)
       setLoadProduct(!loadProduct)
 
     } catch (error) {
+      setError(error.message)
       console.log("error in getting all products", error);
     }
   }
   return (
     <div>
+   <Stack spacing={2} sx={{ width: '100%' }}>
+      
+      
+    
+      <Snackbar open={openSnak} autoHideDuration={3000} onClose={handleCloseMsg}>
+       {(error)?
+       <Alert onClose={handleCloseMsg} severity="error" sx={{ width: '100%' }}>
+          {error}
+        </Alert>:
+        <Alert severity="success">{success}</Alert>
+        }
+        
+      </Snackbar>
+      {/* <Alert severity="error">This is an error message!</Alert>
+      <Alert severity="warning">This is a warning message!</Alert>
+      <Alert severity="info">This is an information message!</Alert>
+      <Alert severity="success">This is a success message!</Alert> */}
+    </Stack>
+
+
+
          <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={open}
       >
       <DialogTitle dividers="true" >
-        <Typography variant='h4'>
+        <Typography sx={{fontSize:{xs:"28px"}}} variant='h4'>
           E-Mart
           <CloseIcon onClick={handleClose} sx={{m:1,float:"right"}} />
         </Typography>
@@ -87,14 +130,20 @@ const AddToProduct = ({BageNo,setBageNo}) => {
       </DialogTitle>
         <DialogContent dividers>
 
-          <Typography variant='h6' gutterBottom>
+          <Typography sx={{fontSize:{xs:"16px"}}} variant='h6' gutterBottom>
             There is no product in cart please add to cart first..... 
           </Typography>
-          <Typography variant='h6'>
+          <Typography sx={{fontSize:{xs:"16px"}}} variant='h6'>
             Thank you...
           </Typography>
-     
-          <ShoppingCartIcon sx={{fontSize:"120px", float:"center",color:"green",ml:15}}/>
+          <CardMedia
+              component="img"
+              width="150"
+                sx={{height:{xs:100,sm:200,lg:250},mt:1}}
+              image={shop}
+              alt="No product Image"
+            />
+          {/* <ShoppingCartIcon sx={{fontSize:"120px", float:"center",color:"green",ml:15}}/> */}
         </DialogContent>
         <DialogActions>
           <Link 
@@ -111,7 +160,7 @@ const AddToProduct = ({BageNo,setBageNo}) => {
       <CardMedia
               component="img"
               width="200"
-                sx={{height:{xs:"600",sm:"800",lg:"850px"},mt:{xs:"100px"}}}
+                sx={{height:{xs:"550px",sm:"600px",lg:"750px"},mt:{xs:"80px"}}}
               image={Cart}
               alt="No product Image"
             />:  
