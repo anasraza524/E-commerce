@@ -14,7 +14,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-
+import noProductFound from '../assets/product-not-found.png'
 
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -38,7 +38,7 @@ const Home = ({AddTheProduct}) => {
   const [homeProductData, setHomeProductData] = useState(null)
   const [loadProduct, setLoadProduct] = useState(false)
   const [open, setOpen] = useState(false);
-
+const [homeProductDataLength, sethomeProductDataLength] = useState(null)
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -68,6 +68,7 @@ const getAllProducts = async () => {
     console.log("response: ", response.data.data);
 
     setHomeProductData(response.data.data);
+    sethomeProductDataLength(response.data.data.length)
     if(response.data.data.length === 0){
          handleClickOpen()
        }else{
@@ -140,6 +141,7 @@ console.log("response2: ", response.data.data)
        
 
 
+
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
@@ -174,8 +176,19 @@ console.log("response2: ", response.data.data)
         </DialogActions>
       </BootstrapDialog>
     </div>
+     
+     
+     
       <Paper sx={{m:1}} elevation={1}>
    
+{(homeProductDataLength === 0 )?
+      <CardMedia
+              component="img"
+              width="200"
+                sx={{height:{xs:"600",sm:"800",lg:"850px"}}}
+              image={noProductFound}
+              alt="No product Image"
+            />:
        
          <Grid sx={{height:"100%" ,m:{xs:1,sm:2,lg:3}}} container item spacing={6}>
          {(!homeProductData) ? null :
@@ -250,7 +263,7 @@ console.log("response2: ", response.data.data)
           </Grid>
           
 
-   
+            }
       </Paper>
     </div>
   )

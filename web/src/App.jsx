@@ -2,11 +2,13 @@ import { Routes, Route ,Navigate} from "react-router-dom";
 import './App.css';
 import { useState, useEffect } from "react"
 // import Home from './Components/Home';
+
 import Nav from './Components/Nav';
 import Home from './Pages/Home';
 import AddToProduct from './Pages/AddToProduct';
 import MakeProduct from './Pages/MakeProduct';
 import SearchProduct from "./Pages/SearchProduct";
+
 function App() {
 
   const [BageNo, setBageNo] = useState(0)
@@ -22,7 +24,7 @@ setBageNo(BageNo+1)
     <div >
        <Nav BageNo={BageNo}/>
 
-     
+       
        <Routes>
      
 
