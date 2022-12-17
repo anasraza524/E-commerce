@@ -441,9 +441,9 @@ Add Product
           <Paper
             key={index}
             elevation={3}
-            sx={{ m:{xs:3,lg:2,sm:1},mb:"5px",  width: '100%', maxWidth:{ lg:300,xs:340,sm:300}, bgcolor: 'background.paper' }}>
+            sx={{ m:{xs:2,lg:2,sm:1},mb:"5px",  width: '100%', maxWidth:{ lg:300,xs:320,sm:300}, bgcolor: 'background.paper' }}>
 
-            <Box sx={{ width: '100%', maxWidth:{ lg:300,xs:340,sm:300}, bgcolor: 'background.paper' }}>
+            <Box sx={{ width: '100%', maxWidth:{ lg:300,xs:320,sm:300}, bgcolor: 'background.paper' }}>
               {(storageURL === null) ? 
               <CardMedia
               component="img"
