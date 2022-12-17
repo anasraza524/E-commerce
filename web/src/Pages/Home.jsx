@@ -15,6 +15,8 @@ import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import noProductFound from '../assets/product-not-found.png'
+import shop from '../assets/ecom-cart.gif'
+
 
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -185,8 +187,8 @@ console.log("response2: ", response.data.data)
       <CardMedia
               component="img"
               width="200"
-                sx={{height:{xs:"600",sm:"800",lg:"850px"}}}
-              image={noProductFound}
+                sx={{height:{xs:"600",sm:"800",lg:"850"}}}
+              image={shop}
               alt="No product Image"
             />:
        

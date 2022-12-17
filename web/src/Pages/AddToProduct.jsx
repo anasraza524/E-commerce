@@ -14,6 +14,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Link } from "react-router-dom";
 import CancelIcon from '@mui/icons-material/Cancel';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import Cart from '../assets/runingCart.gif'
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
     padding: theme.spacing(2),
@@ -106,7 +107,14 @@ const AddToProduct = ({BageNo,setBageNo}) => {
         </DialogActions>
       </BootstrapDialog>   
       
-      
+      {(BageNo === 0 )?
+      <CardMedia
+              component="img"
+              width="200"
+                sx={{height:{xs:"600",sm:"800",lg:"850px"},mt:{xs:"100px"}}}
+              image={Cart}
+              alt="No product Image"
+            />:  
       <Grid sx={{m:{xs:1,sm:2,lg:3}}} container item spacing={6}>
     {(!addtoCartData) ? null :
    addtoCartData?.map((eachProduct, index) => ( 
@@ -176,7 +184,7 @@ onClick={() => {
            ))
          } 
     
-     </Grid></div>
+     </Grid>}</div>
   )
 }
 
