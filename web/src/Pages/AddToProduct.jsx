@@ -99,7 +99,7 @@ const AddToProduct = ({BageNo,setBageNo}) => {
       
       
     
-      <Snackbar open={openSnak} autoHideDuration={3000} onClose={handleCloseMsg}>
+      <Snackbar open={openSnak} autoHideDuration={2000} onClose={handleCloseMsg}>
        {(error)?
        <Alert onClose={handleCloseMsg} severity="error" sx={{ width: '100%' }}>
           {error}

@@ -31,6 +31,7 @@ import { Link } from "react-router-dom";
 import CancelIcon from '@mui/icons-material/Cancel';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import {Snackbar,Alert} from '@mui/material';
+import Error from '../assets/404.gif'
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
     padding: theme.spacing(2),
@@ -90,6 +91,15 @@ editingProdImage:""
     setOpenSnak(false);
   };
   
+  const [openError, setOpenError] = useState(false);
+  const ClickOpenError = () => {
+    setOpenError(true);
+  };
+  const handleCloseError = () => {
+    setOpenError(false);
+  };
+
+
   const storage = getStorage();
 
 
@@ -101,6 +111,11 @@ editingProdImage:""
       setProductData(response.data.data);
      setProductDataLength(response.data.data.length)
     } catch (error) {
+      if(error){
+        ClickOpenError()
+      }else{
+      handleCloseError()
+     }
       console.log("error in getting all products", error);
     }
   }
@@ -483,12 +498,47 @@ Add Product
       <br />
       <br />
     
-                 
+      <div>
+      <BootstrapDialog
+        onClose={handleCloseError}
+        aria-labelledby="customized-dialog-title"
+        open={openError}
+        
+       
+      >
+      <DialogTitle dividers >
+        <Typography sx={{fontSize:{xs:"26px"}}} variant='h4'>
+        E-Mart Error
+          <CloseIcon onClick={handleCloseError} sx={{m:1,float:"right"}} />
+        </Typography>
+     
+      </DialogTitle>
+        <DialogContent  dividers>
+
+         
+          <CardMedia
+              component="img"
+
+                sx={{
+                  height:{xs:180,sm:350,lg:400}
+              ,width:{xs:250,sm:520,lg:580}
+              }}
+              image={Error}
+              alt="No product Image"
+            />
+        
+        </DialogContent>
+        <DialogActions>
+
+        </DialogActions>
+      </BootstrapDialog>
+    </div>
+          
                   
 
       <Divider />
 
-      {(productDataLength === 0 )?
+      {(!ProductData)?
       <CardMedia
               component="img"
               width="200"

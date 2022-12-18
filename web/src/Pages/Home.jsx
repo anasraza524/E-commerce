@@ -20,6 +20,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import noProductFound from '../assets/product-not-found.png'
 import shop from '../assets/ecom-cart.gif'
 import Cart from '../assets/runingCart.gif'
+import Error from '../assets/404.gif'
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
@@ -36,16 +37,17 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 let baseUrl = "";
 if (window.location.href.split(":")[0] === "http") {
   baseUrl = "http://localhost:3000";
-} else {
-  baseUrl = "https://wild-pink-bat-tam.cyclic.app/";
-}
-
+} 
 const Home = ({BageNo,setBageNo}) => {
   const [CurrentProduct, setCurrentProduct] = useState(null)
   const [homeProductData, setHomeProductData] = useState(null)
   const [loadProduct, setLoadProduct] = useState(false)
   const [open, setOpen] = useState(false);
- 
+ const [bodyError, setBodyError] = useState({
+  message:"",
+      statusText: "",
+      status:  ""
+ })
 const [homeProductDataLength, sethomeProductDataLength] = useState(null)
   const handleClickOpen = () => {
     setOpen(true);
@@ -53,6 +55,15 @@ const [homeProductDataLength, sethomeProductDataLength] = useState(null)
   const handleClose = () => {
     setOpen(false);
   };
+
+  const [openError, setOpenError] = useState(false);
+  const ClickOpenError = () => {
+    setOpenError(true);
+  };
+  const handleCloseError = () => {
+    setOpenError(false);
+  };
+
 
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -95,6 +106,17 @@ const getAllProducts = async () => {
          handleClose()
       }
   } catch (error) {
+    if(error){
+      ClickOpenError()
+    }else{
+    handleCloseError()
+   }
+     setBodyError({
+      message:error.message,
+      statusText: error.response.statusText,
+      status:  error.response.status
+    }
+        )
     console.log("error in getting all products", error);
   }
 }
@@ -165,7 +187,7 @@ console.log("response2: ", response.data.data)
       
       
     
-      <Snackbar open={openSnak} autoHideDuration={3000} onClose={handleCloseMsg}>
+      <Snackbar open={openSnak} autoHideDuration={2000} onClose={handleCloseMsg}>
        {(error)?<Alert onClose={handleCloseMsg} severity="error" sx={{ width: '100%' }}>
           {error}
         </Alert>:
@@ -179,6 +201,45 @@ console.log("response2: ", response.data.data)
       <Alert severity="success">This is a success message!</Alert> */}
     </Stack>
     
+    <div>
+      <BootstrapDialog
+        onClose={handleCloseError}
+        aria-labelledby="customized-dialog-title"
+        open={openError}
+        
+       
+      >
+      <DialogTitle dividers >
+        <Typography sx={{fontSize:{xs:"26px"}}} variant='h4'>
+        E-Mart Error
+          <CloseIcon onClick={handleCloseError} sx={{m:1,float:"right"}} />
+        </Typography>
+     
+      </DialogTitle>
+        <DialogContent  dividers>
+
+         
+          <CardMedia
+              component="img"
+
+                sx={{
+                  height:{xs:180,sm:350,lg:400}
+              ,width:{xs:250,sm:520,lg:580}
+              }}
+              image={Error}
+              alt="No product Image"
+            />
+        
+        </DialogContent>
+        <DialogActions>
+
+        </DialogActions>
+      </BootstrapDialog>
+    </div>
+
+
+
+
       <div>
       <BootstrapDialog
         onClose={handleClose}
@@ -225,7 +286,7 @@ console.log("response2: ", response.data.data)
      
       
    
-{(homeProductDataLength === 0 )?
+{(!homeProductData)?
       <CardMedia
               component="img"
               width="200"

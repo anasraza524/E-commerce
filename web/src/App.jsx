@@ -6,6 +6,7 @@ import { useState, useEffect } from "react"
 import Nav from './Components/Nav';
 import Home from './Pages/Home';
 import axios from 'axios';
+import StickyFooter from "./Components/Footer";
 import AddToProduct from './Pages/AddToProduct';
 import MakeProduct from './Pages/MakeProduct';
 import SearchProduct from "./Pages/SearchProduct";
@@ -50,7 +51,7 @@ function App() {
      <Route path="SearchProduct" element={<SearchProduct/>} />
      <Route path="*" element={<Navigate to="/" replace={true} />} />
      </Routes>
-      
+     <StickyFooter/>
     </div>
   );
 }
