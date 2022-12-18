@@ -273,7 +273,7 @@ e.target.reset()
         open={open}
       >
       <DialogTitle dividers="true" >
-        <Typography variant='h4'>
+        <Typography sx={{fontSize:{xs:28}}} variant='h4'>
           Update Product
           <CloseIcon onClick={handleClose} sx={{m:1,float:"right"}} />
         </Typography>
@@ -284,7 +284,7 @@ e.target.reset()
         <form  onSubmit={editProduct}>
         <TextField
        
-       sx={{ pl: 1, pr: 1,width:{lg:"800px",sm:"560px",xs:"320px"} }}
+       sx={{ pl: 0, pr: 1,width:{lg:"800px",sm:"560px",xs:"300px"} }}
           size="medium"
           type="text" placeholder="Enter your Product name" required
           defaultValue={editing.editingName}
@@ -297,7 +297,7 @@ e.target.reset()
 
         <br /><br />
         <TextField
-         sx={{ pl: 1, pr: 1,width:{lg:"800px",sm:"560px",xs:"320px"} }}
+         sx={{ pl: 0, pr: 1,width:{lg:"800px",sm:"560px",xs:"300px"} }}
           size="medium"
           type="number" placeholder="Enter your Product Price" required
           defaultValue={editing.editingPrice}
@@ -313,7 +313,7 @@ e.target.reset()
         <br />
         <TextField
         
-        sx={{ pl: 1, pr: 1,width:{lg:"800px",sm:"560px",xs:"320px"} }}
+        sx={{ pl: 0, pr: 1,width:{lg:"800px",sm:"560px",xs:"300px"} }}
           size="medium"
           type="text" placeholder="Enter your product Description"
           defaultValue={editing.editingDescription}
@@ -328,7 +328,7 @@ e.target.reset()
         </TextField>
       <Box sx={{display:"flex",
       border:'solid #B8B8B8 0.1px',
-      ml:1,mt:3,mb:3,borderRadius:"5px",
+      ml:0,mt:3,mb:3,borderRadius:"5px",
       justifyContent:'center'}}>
          <TextField 
                 sx={{pl:5,pr:5}}
@@ -349,7 +349,7 @@ e.target.reset()
 </label>
 {/* <Button sx={{ml:2}} onClick={fileUpload}>set image</Button>  */}
 
-<Box sx={{m:2 , position: 'relative', display: 'inline-flex' }}>
+<Box sx={{m:1 , position: 'relative', display: 'inline-flex' }}>
 <CircularProgress variant="determinate" value={progress}  />
       <Box
         sx={{
@@ -368,7 +368,7 @@ e.target.reset()
         </Typography>
       </Box></Box></Box></Box> 
 
-      <Button fullWidth sx={{m:1}} type="submit" variant="outlined">Update Product </Button>
+      <Button fullWidth sx={{m:0}} type="submit" variant="outlined">Update Product </Button>
         </form>
       
      
@@ -408,13 +408,13 @@ e.target.reset()
  
 }}
 >
-      <Typography sx={{m:2,ml:7}} variant='h4'>
+      <Typography sx={{m:2,ml:3}} variant='h4'>
 Add Product
       </Typography>
-      <form style={{margin:'5px'}} onSubmit={submitHandler}>
+      <form style={{margin:'3px'}} onSubmit={submitHandler}>
         <TextField
        
-          sx={{ pl: 5, pr: 5,width:{lg:"800px",sm:"600px",xs:"380px"} }}
+          sx={{ pl: 3, pr: 5,width:{lg:"800px",sm:"600px",xs:"330px"} }}
           size="medium"
           type="text" placeholder="Enter your Product name" required
           onChange={(e) => { setProdName(e.target.value) }}>
@@ -422,7 +422,7 @@ Add Product
 
         <br /><br />
         <TextField
-         sx={{ pl: 5, pr: 5,width:{lg:"350px",sm:"350px",xs:"380px"} }}
+         sx={{ pl: 3, pr: 5,width:{lg:"350px",sm:"350px",xs:"330px"} }}
           size="medium"
           type="number" placeholder="Enter your Product Price" required
           onChange={(e) => { setProdPrice(e.target.value) }}>
@@ -432,7 +432,7 @@ Add Product
         <br />
         <TextField
         
-        sx={{ pl: 5, pr: 5,width:{lg:"800px",sm:"600px",xs:"380px"} }}
+        sx={{ pl: 3, pr: 5,width:{lg:"800px",sm:"600px",xs:"330px"} }}
           size="medium"
           type="text" placeholder="Enter your product Description"
           onChange={(e) => { setProdDec(e.target.value) }}>
@@ -440,7 +440,7 @@ Add Product
         </TextField>
       <Box sx={{display:"flex",
       border:'solid #B8B8B8 0.1px',
-      ml:5,mt:3,mb:3,borderRadius:"5px",
+      ml:3,mt:3,mb:3,borderRadius:"5px",
       justifyContent:'center'}}>
          <TextField 
                 sx={{pl:5,pr:5}}
@@ -455,7 +455,7 @@ Add Product
                 }}
                 style={{ display: 'none' }}>
                 </TextField> 
-                <Box sx={{ml:3}}>
+                <Box sx={{ml:2}}>
 
 <label  htmlFor="select-image">
 < AddPhotoAlternateIcon style={{ paddingLeft: "5px", fontSize: "25px", color: 'green' }} />
@@ -538,7 +538,7 @@ Add Product
 
       <Divider />
 
-      {(!ProductData)?
+      {(!ProductData || productDataLength === 0)?
       <CardMedia
               component="img"
               width="200"

@@ -286,7 +286,7 @@ console.log("response2: ", response.data.data)
      
       
    
-{(!homeProductData)?
+{(!homeProductData || homeProductDataLength === 0)?
       <CardMedia
               component="img"
               width="200"
