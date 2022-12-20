@@ -266,7 +266,7 @@ e.target.reset()
 
 
     <div>
-   
+   {/* update dilaog box */}
    <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
@@ -499,13 +499,15 @@ Add Product
       <br />
     
       <div>
+
+        {/* error Dialog Box */}
       <BootstrapDialog
         onClose={handleCloseError}
         aria-labelledby="customized-dialog-title"
         open={openError}
         
        
-      >
+      > 
       <DialogTitle dividers >
         <Typography sx={{fontSize:{xs:"26px"}}} variant='h4'>
         E-Mart Error
@@ -518,7 +520,7 @@ Add Product
          
           <CardMedia
               component="img"
-
+              loading="lazy"
                 sx={{
                   height:{xs:180,sm:350,lg:400}
               ,width:{xs:250,sm:520,lg:580}
@@ -542,6 +544,7 @@ Add Product
       <CardMedia
               component="img"
               width="200"
+              loading="lazy"
                 sx={{height:{xs:"600",sm:"700",lg:"850"}}}
               image={noProductFound}
               alt="No product Image"
@@ -559,6 +562,8 @@ Add Product
               <CardMedia
               component="img"
               width="200"
+              
+              loading="lazy"
                 height="200"
               image='https://products.ideadunes.com/assets/images/default_product.jpg'
               alt="No product Image"
@@ -568,6 +573,7 @@ Add Product
               : <CardMedia
                 component="img"
                 width="200"
+                loading="lazy "
                 height="200"
                 image={eachProduct.productImage}
                 alt="green iguana"

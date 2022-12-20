@@ -12,14 +12,14 @@ if (window.location.href.split(":")[0] === "http") {
   baseUrl = "https://wild-pink-bat-tam.cyclic.app/";
 }
 const SearchProduct = () => {
-const [searchData, setSearchData] = useState(null)
+const [searchData, setSearchData] = useState([])
   const [searchProduct, setSearchProduct] = useState('')
   const [loadProduct, setLoadProduct] = useState(false)
   const ProductSearch = async (e) => {
     e.preventDefault();
     
     try {
-      const response = await axios.get(`${baseUrl}/product/balls`);
+      const response = await axios.get(`${baseUrl}/product/${searchProduct}`);
     
       setSearchData(response.data.data);
      

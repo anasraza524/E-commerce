@@ -139,6 +139,7 @@ const AddToProduct = ({BageNo,setBageNo}) => {
           <CardMedia
               component="img"
               width="150"
+              loading="lazy"
                 sx={{height:{xs:100,sm:200,lg:250},mt:1}}
               image={shop}
               alt="No product Image"
@@ -160,6 +161,7 @@ const AddToProduct = ({BageNo,setBageNo}) => {
       <CardMedia
               component="img"
               width="200"
+              loading="lazy"
                 sx={{height:{xs:"550px",sm:"600px",lg:"750px"},mt:{xs:"80px"}}}
               image={Cart}
               alt="No product Image"
@@ -185,6 +187,7 @@ onClick={() => {
        sx={{m:1,float:"right"}}/>
           <CardMedia
            component="img"
+           loading="lazy"
            width="200"
            height="200"
            // image='https://www.shutterstock.com/image-vector/sunscreen-product-banner-ads-on-260nw-1509241181.jpg'

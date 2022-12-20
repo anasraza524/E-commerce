@@ -225,7 +225,7 @@ app.get('/product/:name', (req, res) => {
         , (err, data) => {
             console.log("des: ", err)
         if (!err) {
-          if (data) {
+          if (data.length !== 0) {
             res.send({
               message: `get product by success`,
               data: data,

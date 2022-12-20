@@ -221,7 +221,7 @@ console.log("response2: ", response.data.data)
          
           <CardMedia
               component="img"
-
+              loading="lazy"
                 sx={{
                   height:{xs:180,sm:350,lg:400}
               ,width:{xs:250,sm:520,lg:580}
@@ -263,6 +263,7 @@ console.log("response2: ", response.data.data)
           </Typography>
           <CardMedia
               component="img"
+              loading="lazy"
               width="150"
                 sx={{height:{xs:100,sm:200,lg:250},mt:1}}
               image={shop}
@@ -290,6 +291,7 @@ console.log("response2: ", response.data.data)
       <CardMedia
               component="img"
               width="200"
+              loading="lazy"
                 sx={{height:{xs:"600",sm:"800",lg:"850"}}}
               image={Cart}
               alt="No product Image"
@@ -312,6 +314,7 @@ console.log("response2: ", response.data.data)
                <CardMedia
                 component="img"
                 width="250"
+                loading="lazy"
                 height="250"
                 // image='https://www.shutterstock.com/image-vector/sunscreen-product-banner-ads-on-260nw-1509241181.jpg'
                  image={eachProduct.productImage}
