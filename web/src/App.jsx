@@ -6,10 +6,13 @@ import { useState, useEffect } from "react"
 import Nav from './Components/Nav';
 import Home from './Pages/Home';
 import axios from 'axios';
+import Login from "./Pages/Auth/Login";
+import SignUp from "./Pages/Auth/SignUp";
 import StickyFooter from "./Components/Footer";
 import AddToProduct from './Pages/AddToProduct';
 import MakeProduct from './Pages/MakeProduct';
 import SearchProduct from "./Pages/SearchProduct";
+
 let baseUrl = ``;
 if (window.location.href.split(":")[0] === "http") {
   baseUrl = `http://localhost:3000`;
@@ -34,10 +37,17 @@ function App() {
 
   return (
     <div >
-       <Nav BageNo={BageNo}/>
-
+       {/* <Nav BageNo={BageNo}/> */}
        
-       <Routes>
+       
+ <Routes>
+<Route path="/" element={<Login/>}/>
+<Route path="SignUp" element={<SignUp/>}/>
+<Route path="*" element={<Navigate to="/" replace={true} />}/>
+
+</Routes> 
+       
+       {/* <Routes>
      
 
 
@@ -50,8 +60,8 @@ function App() {
      <Route path="MakeProduct" element={<MakeProduct/>} />
      <Route path="SearchProduct" element={<SearchProduct/>} />
      <Route path="*" element={<Navigate to="/" replace={true} />} />
-     </Routes>
-     <StickyFooter/>
+     </Routes> 
+     <StickyFooter/>*/}
     </div>
   );
 }
