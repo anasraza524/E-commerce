@@ -1,5 +1,5 @@
 import * as React from 'react';
-
+import { useReducer,useEffect,useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,7 +13,14 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
+import { INITIAL_STATE,SIGN_STATE } from './CustomeState';
+import axios from 'axios';
+let baseUrl = "";
+if (window.location.href.split(":")[0] === "http") {
+  baseUrl = "http://localhost:3000";
+} else {
+  baseUrl = "https://wild-pink-bat-tam.cyclic.app/";
+}
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -30,14 +37,44 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   const data = new FormData(event.currentTarget);
+  //   console.log({
+  //     firstName: data.get('firstName'),
+  //    lastName: data.get('lastName'),
+  //     email: data.get('email'),
+  //     password: data.get('password'),
+  //   });
+  // };
+  const [result, setResult] = useState("");
+  const [state, dispatch] = useReducer(SIGN_STATE, INITIAL_STATE);
+  const handleChange = (e) => {
+    dispatch({
+      type: "CHANGE_INPUT",
+      payload: { name: e.target.name, value: e.target.value },
     });
   };
+
+const signUpHandle = async (e) => { 
+  e.preventDefault();
+console.log(state)
+try {
+  let response = await axios.post(`${baseUrl}/signup`, {
+      firstName: state.firstName,
+      lastName: state.lastName,
+      email: state.email,
+      password: state.password
+  })
+
+
+  console.log("signup successful");
+  setResult("signup successful")
+
+} catch (e) {
+  console.log("e: ", e);
+}
+}
 
   return (
     <ThemeProvider theme={theme}>
@@ -57,13 +94,16 @@ export default function SignUp() {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box component="form" noValidate
+           onSubmit={signUpHandle} 
+           sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="given-name"
                   name="firstName"
                   required
+                  onChange={handleChange}
                   fullWidth
                   id="firstName"
                   label="First Name"
@@ -74,6 +114,7 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
+                   onChange={handleChange}
                   id="lastName"
                   label="Last Name"
                   name="lastName"
@@ -83,6 +124,7 @@ export default function SignUp() {
               <Grid item xs={12}>
                 <TextField
                   required
+                   onChange={handleChange}
                   fullWidth
                   id="email"
                   label="Email Address"
@@ -96,6 +138,7 @@ export default function SignUp() {
                   fullWidth
                   name="password"
                   label="Password"
+                  onChange={handleChange}
                   type="password"
                   id="password"
                   autoComplete="new-password"
@@ -118,7 +161,7 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link to="/" variant="body2" >
+                <Link to="/"  >
                   Already have an account? Login
                 </Link>
               </Grid>
