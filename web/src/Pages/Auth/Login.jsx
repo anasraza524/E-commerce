@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,7 +13,13 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
+import axios from 'axios';
+let baseUrl = "";
+if (window.location.href.split(":")[0] === "http") {
+  baseUrl = "http://localhost:3000";
+} else {
+  baseUrl = "https://wild-pink-bat-tam.cyclic.app/";
+}
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -35,9 +42,36 @@ export default function Login() {
     const data = new FormData(e.currentTarget);
     console.log({
       email: data.get('email'),
-      password: data.get('password'),
+      password: data.get('email'),
     });
   };
+   const [result, setResult] = useState("");
+
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
+
+
+  const loginHandler = async (e) => {
+      e.preventDefault();
+ const data = new FormData(e.currentTarget);
+      try {
+          let response = await axios.post(`${baseUrl}/login`, {
+              email: data.get('email'),
+              password: data.get('password')
+          }, {
+              withCredentials: true
+          })
+
+
+          console.log("login successful");
+          setResult("login successful")
+
+      } catch (e) {
+          console.log("e: ", e);
+      }
+
+      // e.reset();
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -57,7 +91,7 @@ export default function Login() {
           <Typography component="h1" variant="h5">
             Login
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box component="form" onSubmit={loginHandler} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
