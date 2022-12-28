@@ -16,7 +16,7 @@ const port = process.env.PORT || 3000;
 const mongodbURI = process.env.mongodbURI ||
 "mongodb+srv://abcd:abcd@cluster0.eu5uldj.mongodb.net/anas?retryWrites=true&w=majority"
 app.use(cors({
-    origin: ['http://localhost:3001', "*"],
+    origin: ['http://localhost:3001',"https://wild-pink-bat-tam.cyclic.app/", "*"],
     credentials: true
 }));
 // mongodb+srv://anas:12ANASraza786@cluster0.eu5uldj.mongodb.net/?retryWrites=true&w=majority
