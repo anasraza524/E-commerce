@@ -23,7 +23,7 @@ function App() {
     (async () => {
       const response =
         await axios.get(`${state.baseUrl}/addtocarts`);
-      
+       
       console.log("addtocart", response.data.data)
     setBageNo(response.data.data.length)
    
@@ -51,7 +51,7 @@ function App() {
     const getProfile = async () => {
       try {
         let response = await axios.get(`${state.baseUrl}/products`, {
-          withCredentials: true
+          
         })
 
         console.log("response: ", response);
