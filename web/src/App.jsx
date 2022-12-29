@@ -33,7 +33,7 @@ function App() {
  const  LogoutHandle = async()=>{
   try {
     let response = await axios.post(`${state.baseUrl}/logout`, {
-      withCredentials: true
+     
     })
     console.log("response: ", response);
 
