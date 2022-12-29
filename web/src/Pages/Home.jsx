@@ -1,5 +1,6 @@
 import React from 'react'
 import SlideShow from '../Components/SlideShow';
+import { GlobalContext } from '../Context/Context';
 import { Link } from "react-router-dom";
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
@@ -8,7 +9,7 @@ import {
   Divider,Paper,Box,Button,Grid,CardMedia,Typography
 } from '@mui/material'
 import axios from 'axios';
-import { useState, useEffect } from "react"
+import { useState, useEffect,useContext } from "react"
 
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
@@ -34,11 +35,9 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-let baseUrl = "";
-if (window.location.href.split(":")[0] === "http") {
-  baseUrl = "http://localhost:3000";
-} 
+
 const Home = ({BageNo,setBageNo}) => {
+  let { state, dispatch } = useContext(GlobalContext);
   const [CurrentProduct, setCurrentProduct] = useState(null)
   const [homeProductData, setHomeProductData] = useState(null)
   const [loadProduct, setLoadProduct] = useState(false)
@@ -83,7 +82,7 @@ const [homeProductDataLength, sethomeProductDataLength] = useState(null)
     
     (async () => {
       const response =
-        await axios.get(`${baseUrl}/addtocarts`);
+        await axios.get(`${state.baseUrl}/addtocarts`);
       
       console.log("addtocart", response.data.data)
     setBageNo(response.data.data.length)
@@ -94,7 +93,7 @@ const [homeProductDataLength, sethomeProductDataLength] = useState(null)
 
 const getAllProducts = async () => {
   try {
-    const response = await axios.get(`${baseUrl}/products`);
+    const response = await axios.get(`${state.baseUrl}/products`);
     console.log("response: ", response.data.data);
 
     setHomeProductData(response.data.data);
@@ -132,7 +131,7 @@ useEffect(() => {
       handleClickMsg()
     }
     try {
-      const response = await axios.get(`${baseUrl}/product/${id}`)
+      const response = await axios.get(`${state.baseUrl}/product/${id}`)
       console.log("response: ", response.data);
 console.log("response2: ", response.data.data)
       setCurrentProduct(response.data.data)
@@ -163,7 +162,7 @@ console.log("response2: ", response.data.data)
     }
     try {
       const response = await
-      axios.post(`${baseUrl}/addtocart`, objectCart);
+      axios.post(`${state.baseUrl}/addtocart`, objectCart);
   
    console.log("asds",response)
    setSuccess(response.data.message

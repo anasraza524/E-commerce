@@ -45,12 +45,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 
 
 
-let baseUrl = "";
-if (window.location.href.split(":")[0] === "http") {
-  baseUrl = "http://localhost:3000";
-} else {
-  baseUrl = "https://wild-pink-bat-tam.cyclic.app/";
-}
+
 const Home = () => {
   let { state, dispatch } = useContext(GlobalContext);
   const [loadProduct, setLoadProduct] = useState(false)

@@ -16,7 +16,7 @@ const port = process.env.PORT || 3001;
 const mongodbURI = process.env.mongodbURI ||
 "mongodb+srv://abcd:abcd@cluster0.eu5uldj.mongodb.net/anas?retryWrites=true&w=majority"
 app.use(cors({
-    origin: ['http://localhost:3001',"https://wild-pink-bat-tam.cyclic.app/", "*"],
+    origin: ['http://localhost:3001', 'https://localhost:3001', "*"],
     credentials: true
 }));
 // mongodb+srv://anas:12ANASraza786@cluster0.eu5uldj.mongodb.net/?retryWrites=true&w=majority
@@ -172,7 +172,9 @@ app.post("/api/v1/login", (req, res) => {
 
                             res.cookie('Token', token, {
                                 maxAge: 86_400_000,
-                                httpOnly: true
+                                httpOnly: true,
+                                sameSite: 'none',
+                                secure: true
                             });
 
                             res.send({
@@ -210,7 +212,9 @@ app.post("/api/v1/logout", (req, res) => {
 
     res.cookie('Token', '', {
         maxAge: 1,
-        httpOnly: true
+        httpOnly: true,
+        sameSite: 'none',
+        secure: true
     });
 
     res.send({ message: "Logout successful" });
@@ -239,7 +243,11 @@ app.use('/api/v1',(req, res, next) => {
                 res.status(401);
                 res.cookie('Token', '', {
                     maxAge: 1,
-                    httpOnly: true
+                    httpOnly: true,
+                    sameSite: 'none',
+                    secure: true
+                    
+                    
                 });
                 res.send({ message: "token expired" })
 

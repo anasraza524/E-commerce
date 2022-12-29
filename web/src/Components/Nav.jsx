@@ -29,7 +29,7 @@ import { Mail,DragHandle,
 
  import { Link } from "react-router-dom";
 
- import { useState } from "react";
+ import { useState,useContext } from "react";
  import * as React from 'react';
  import axios from 'axios';
  import { useEffect } from "react"
@@ -83,10 +83,7 @@ import { Mail,DragHandle,
  
 
 
-let baseUrl = ``;
-if (window.location.href.split(":")[0] === "http") {
-  baseUrl = `http://localhost:3000`;
-}
+
 
  const Nav = ({mode,setMode,BageNo,setBageNo,LogoutHandle}) => {
    const [open, setOpen] = useState(false);
@@ -162,7 +159,7 @@ const [loadProduct, setLoadProduct] = useState(false)
          </ListItem></LinkPage> 
          
          <Divider/>
-         <ListItem disablePadding>
+         <ListItem  onClick={LogoutHandle} disablePadding>
            <ListItemButton component="a" >
              <ListItemIcon>
                 <Logout/>

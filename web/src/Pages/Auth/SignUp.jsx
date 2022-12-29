@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { useReducer,useEffect,useState } from 'react';
+import { GlobalContext } from '../../Context/Context';
+import { useReducer,useEffect,useState ,useContext} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -15,12 +16,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { INITIAL_STATE,SIGN_STATE } from './CustomeState';
 import axios from 'axios';
-let baseUrl = "";
-if (window.location.href.split(":")[0] === "http") {
-  baseUrl = "http://localhost:3000";
-} else {
-  baseUrl = "https://wild-pink-bat-tam.cyclic.app/";
-}
+
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -47,10 +43,11 @@ export default function SignUp() {
   //     password: data.get('password'),
   //   });
   // };
+  let { state, dispatch } = useContext(GlobalContext);
   const [result, setResult] = useState("");
-  const [state, dispatch] = useReducer(SIGN_STATE, INITIAL_STATE);
+  const [state1, dispatch1] = useReducer(SIGN_STATE, INITIAL_STATE);
   const handleChange = (e) => {
-    dispatch({
+    dispatch1({
       type: "CHANGE_INPUT",
       payload: { name: e.target.name, value: e.target.value },
     });
@@ -60,11 +57,11 @@ const signUpHandle = async (e) => {
   e.preventDefault();
 console.log(state)
 try {
-  let response = await axios.post(`${baseUrl}/signup`, {
-      firstName: state.firstName,
-      lastName: state.lastName,
-      email: state.email,
-      password: state.password
+  let response = await axios.post(`${state.baseUrl}/signup`, {
+      firstName: state1.firstName,
+      lastName: state1.lastName,
+      email: state1.email,
+      password: state1.password
   })
 
 

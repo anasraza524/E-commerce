@@ -13,10 +13,7 @@ import AddToProduct from './Pages/AddToProduct';
 import MakeProduct from './Pages/MakeProduct';
 import SearchProduct from "./Pages/SearchProduct";
 import { GlobalContext } from './Context/Context';
-let baseUrl = ``;
-if (window.location.href.split(":")[0] === "http") {
-  baseUrl = `http://localhost:3000`;
-}
+
 function App() {
   let { state, dispatch } = useContext(GlobalContext);
   const [BageNo, setBageNo] = useState(0)
@@ -25,7 +22,7 @@ function App() {
     
     (async () => {
       const response =
-        await axios.get(`${baseUrl}/addtocarts`);
+        await axios.get(`${state.baseUrl}/addtocarts`);
       
       console.log("addtocart", response.data.data)
     setBageNo(response.data.data.length)

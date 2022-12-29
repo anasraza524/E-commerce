@@ -1,17 +1,14 @@
 import React from 'react'
-import { useState } from 'react';
+import { useState,useContext } from 'react';
+import { GlobalContext } from '../Context/Context';
 import axios from 'axios';
 import {Box,TextField,Button,
   Container,styled,Avatar,Grid,Typography,CardMedia
 ,Paper,InputBase,IconButton,Divider} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-let baseUrl = "";
-if (window.location.href.split(":")[0] === "http") {
-  baseUrl = "http://localhost:3000";
-} else {
-  baseUrl = "https://wild-pink-bat-tam.cyclic.app/";
-}
+
 const SearchProduct = () => {
+  let { state, dispatch } = useContext(GlobalContext);
 const [searchData, setSearchData] = useState([])
   const [searchProduct, setSearchProduct] = useState('')
   const [loadProduct, setLoadProduct] = useState(false)
@@ -19,7 +16,7 @@ const [searchData, setSearchData] = useState([])
     e.preventDefault();
     
     try {
-      const response = await axios.get(`${baseUrl}/product/${searchProduct}`);
+      const response = await axios.get(`${state.baseUrl}/product/${searchProduct}`);
     
       setSearchData(response.data.data);
      
