@@ -1,4 +1,5 @@
 import React from 'react'
+import { GlobalContext } from '../Context/Context';
 import axios from 'axios';
 import {
   ref,
@@ -13,7 +14,7 @@ import { getStorage,uploadBytesResumable,
 
 } from "firebase/storage";
 
-import { useState, useEffect } from "react"
+import { useState, useEffect,useContext } from "react"
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import {
   Typography, Card, CardContent,CircularProgress,
@@ -51,6 +52,7 @@ if (window.location.href.split(":")[0] === "http") {
   baseUrl = "https://wild-pink-bat-tam.cyclic.app/";
 }
 const Home = () => {
+  let { state, dispatch } = useContext(GlobalContext);
   const [loadProduct, setLoadProduct] = useState(false)
   const [prodImage, setProdImage] = useState('')
   const [ProductData, setProductData] = useState(null)
@@ -105,7 +107,7 @@ editingProdImage:""
 
   const getAllProducts = async () => {
     try {
-      const response = await axios.get(`${baseUrl}/products`);
+      const response = await axios.get(`${state.baseUrl}/products`);
       console.log("response: ", response.data);
 
       setProductData(response.data.data);
@@ -160,7 +162,7 @@ editingProdImage:""
       handleClickMsg()
     }
     try {
-      const response = await axios.post(`${baseUrl}/product`, {
+      const response = await axios.post(`${state.baseUrl}/product`, {
         name:  prodName,
         price: prodPrice,
         description: prodDec,
@@ -195,7 +197,7 @@ editingProdImage:""
   //     productImage:storageURL,
   //   }
   //   const response = await
-  //     axios.post(`${baseUrl}/product`, data);
+  //     axios.post(`${state.baseUrl}/product`, data);
   //   console.log(data)
   //   // console.log(prodName, prodDec, prodPrice,prodImage)
   //   console.log(response);
@@ -207,7 +209,7 @@ editingProdImage:""
       handleClickMsg()
     }
     try {
-      const response = await axios.delete(`${baseUrl}/product/${id}`)
+      const response = await axios.delete(`${state.baseUrl}/product/${id}`)
       console.log("response: ", response.data);
       setSuccess(response.data.message)
       setLoadProduct(!loadProduct)
@@ -228,7 +230,7 @@ editingProdImage:""
   e.preventDefault();
 
     try {
-      const response = await axios.put(`${baseUrl}/product/${editing.editingid}`,{
+      const response = await axios.put(`${state.baseUrl}/product/${editing.editingid}`,{
         name:editing.editingName,
         price:editing.editingPrice,
         description:editing.editingDescription,

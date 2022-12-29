@@ -88,7 +88,7 @@ if (window.location.href.split(":")[0] === "http") {
   baseUrl = `http://localhost:3000`;
 }
 
- const Nav = ({mode,setMode,BageNo,setBageNo}) => {
+ const Nav = ({mode,setMode,BageNo,setBageNo,LogoutHandle}) => {
    const [open, setOpen] = useState(false);
    const [isOpen, setIsOpen] = React.useState(false)
    const toggleDrawer = () => {
@@ -233,7 +233,7 @@ const [loadProduct, setLoadProduct] = useState(false)
          <Icons>
            
          <LogoutIcon
-        //   onClick={logout}
+          onClick={LogoutHandle}
           />
            <Avatar
              sx={{ width: 30, height: 30 }}

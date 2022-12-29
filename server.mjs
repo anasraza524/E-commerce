@@ -12,7 +12,7 @@ import {
 //  mongoose.set('strictQuery', false);
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 const mongodbURI = process.env.mongodbURI ||
 "mongodb+srv://abcd:abcd@cluster0.eu5uldj.mongodb.net/anas?retryWrites=true&w=majority"
 app.use(cors({
@@ -24,7 +24,7 @@ const SECRET = process.env.SECRET || "topsecret";
 
 // app.use(cors());
 app.use(express.json());
- let products = [];
+//  let products = [];
 // let addtocart = [];
 // let bageNo = 0
 
@@ -66,7 +66,7 @@ const userSchema = new mongoose.Schema({
 const userModel = mongoose.model('Users', userSchema);
 
 
-app.post("/signup", (req, res) => {
+app.post("/api/v1/signup", (req, res) => {
 
     let body = req.body;
 
@@ -130,7 +130,7 @@ app.post("/signup", (req, res) => {
     })
 });
 
-app.post("/login", (req, res) => {
+app.post("/api/v1/login", (req, res) => {
 
     let body = req.body;
     body.email = body.email.toLowerCase();
@@ -206,7 +206,7 @@ app.post("/login", (req, res) => {
         })
 })
 
-app.post("/logout", (req, res) => {
+app.post("/api/v1/logout", (req, res) => {
 
     res.cookie('Token', '', {
         maxAge: 1,
@@ -216,7 +216,7 @@ app.post("/logout", (req, res) => {
     res.send({ message: "Logout successful" });
 })
 
-app.use((req, res, next) => {
+app.use('/api/v1',(req, res, next) => {
 
     console.log("req.cookies: ", req.cookies);
 
@@ -258,19 +258,7 @@ app.use((req, res, next) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-app.post('/addtocart', (req, res) => {
+app.post('/api/v1/addtocart', (req, res) => {
     const body = req.body
     if (!body.name 
         || !body.price 
@@ -312,7 +300,7 @@ app.post('/addtocart', (req, res) => {
         })
 })
 
-app.delete('/addtocart/:id', (req, res) => {
+app.delete('/api/v1/addtocart/:id', (req, res) => {
     const id = req.params.id;
     addtocartModel.deleteOne({ _id: id }, (err, deletedData) => {
         console.log("deleted: ", deletedData);
@@ -337,7 +325,7 @@ app.delete('/addtocart/:id', (req, res) => {
     });
 })
 
-app.get('/addtocarts', (req, res) => {
+app.get('/api/v1/addtocarts', (req, res) => {
     addtocartModel.find({}, (err, data) => {
         console.log("get Error",err)
         if (!err) {
@@ -358,7 +346,7 @@ app.get('/addtocarts', (req, res) => {
 
 
 
-app.post('/product', (req, res) => {
+app.post('/api/v1/product', (req, res) => {
     const body = req.body
     if (!body.name 
         || !body.price 
@@ -402,7 +390,7 @@ app.post('/product', (req, res) => {
 
 
 
-app.get('/products', (req, res) => {
+app.get('/api/v1/products', (req, res) => {
     productModel.find({}, (err, data) => {
         console.log("get Error",err)
         if (!err) {
@@ -421,7 +409,7 @@ app.get('/products', (req, res) => {
 })
 /
 
-app.get('/product/:id', (req, res) => {
+app.get('/api/v1/product/:id', (req, res) => {
 
     const id = req.params.id;
 
@@ -445,7 +433,7 @@ app.get('/product/:id', (req, res) => {
     });
 })
 
-app.get('/product/:name', (req, res) => {
+app.get('/api/v1/product/:name', (req, res) => {
    
     const querryName = req.params.name;
     // ({name:{$regex:`${querryName}`}}`
@@ -474,7 +462,7 @@ app.get('/product/:name', (req, res) => {
     });
 
 
-app.delete('/product/:id',async (req, res) => {
+app.delete('/api/v1/product/:id',async (req, res) => {
     const id = req.params.id;
     productModel.deleteOne({ _id: id }, (err, deletedData) => {
         console.log("deleted: ", deletedData);
@@ -498,7 +486,7 @@ app.delete('/product/:id',async (req, res) => {
     });
 })
 
-app.put('/product/:id',async (req, res) => {
+app.put('/api/v1/product/:id',async (req, res) => {
 
     const body = req.body;
     const id = req.params.id;

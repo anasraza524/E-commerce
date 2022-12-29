@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState,useContext } from 'react';
+import { GlobalContext } from '../../Context/Context';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -14,12 +15,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
-let baseUrl = "";
-if (window.location.href.split(":")[0] === "http") {
-  baseUrl = "http://localhost:3000";
-} else {
-  baseUrl = "https://wild-pink-bat-tam.cyclic.app/";
-}
+
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -37,6 +33,8 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Login() {
+  let { state, dispatch } = useContext(GlobalContext);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
@@ -55,16 +53,19 @@ export default function Login() {
       e.preventDefault();
  const data = new FormData(e.currentTarget);
       try {
-          let response = await axios.post(`${baseUrl}/login`, {
+          let response = await axios.post(`${state.baseUrl}/login`, {
               email: data.get('email'),
               password: data.get('password')
           }, {
               withCredentials: true
           })
-
+          dispatch({
+            type:"USER_LOGIN"
+          })
 
           console.log("login successful");
           setResult("login successful")
+       
 
       } catch (e) {
           console.log("e: ", e);
