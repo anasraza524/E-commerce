@@ -15,14 +15,16 @@ const app = express();
 const port = process.env.PORT || 3001;
 const mongodbURI = process.env.mongodbURI ||
 "mongodb+srv://abcd:abcd@cluster0.eu5uldj.mongodb.net/anas?retryWrites=true&w=majority"
-app.use(cors({
-    origin: ['http://localhost:3001', 'https://localhost:3001', "*"],
-    credentials: true
-}));
+
+
+// app.use(cors({
+//     origin: ['http://localhost:3001', 'https://localhost:3001', "*"],
+//     credentials: true
+// }));
 // mongodb+srv://anas:12ANASraza786@cluster0.eu5uldj.mongodb.net/?retryWrites=true&w=majority
 const SECRET = process.env.SECRET || "topsecret";
 
-// app.use(cors());
+app.use(cors());
 app.use(express.json());
 //  let products = [];
 // let addtocart = [];
@@ -174,7 +176,7 @@ app.post("/api/v1/login", (req, res) => {
                                 maxAge: 86_400_000,
                                 httpOnly: true,
                                 sameSite: 'none',
-                                secure: false
+                                secure: true
                             });
 
                             res.send({

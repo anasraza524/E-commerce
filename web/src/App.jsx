@@ -50,8 +50,13 @@ function App() {
     
     const getProfile = async () => {
       try {
-        let response = await axios.get(`http://localhost:3001/api/v1/products`, {
-          withCredentials: false
+        // axios.defaults.withCredentials = true;
+        let response = await axios.get(`${state.baseUrl}/products`, {
+          withCredentials: false,
+          headers: {
+            'Access-Control-Allow-Origin' : '*',
+            'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+            }
         })
 
         console.log("response: ", response);
