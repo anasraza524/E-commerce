@@ -22,7 +22,12 @@ function App() {
     
     (async () => {
       const response =
-        await axios.get(`${state.baseUrl}/addtocarts`);
+        await axios.get(`${state.baseUrl}/addtocarts`,{
+         
+            withCredentials: true,
+            
+         
+        })
        
       console.log("addtocart", response.data.data)
     setBageNo(response.data.data.length)
@@ -52,11 +57,8 @@ function App() {
       try {
         // axios.defaults.withCredentials = true;
         let response = await axios.get(`${state.baseUrl}/products`, {
-          withCredentials: false,
-          headers: {
-            'Access-Control-Allow-Origin' : '*',
-            'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-            }
+          withCredentials: true,
+          
         })
 
         console.log("response: ", response);
