@@ -50,8 +50,8 @@ function App() {
     
     const getProfile = async () => {
       try {
-        let response = await axios.get(`${state.baseUrl}/products`, {
-          
+        let response = await axios.get(`http://localhost:3001/api/v1/products`, {
+          withCredentials: false
         })
 
         console.log("response: ", response);

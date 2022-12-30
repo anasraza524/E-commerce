@@ -174,7 +174,7 @@ app.post("/api/v1/login", (req, res) => {
                                 maxAge: 86_400_000,
                                 httpOnly: true,
                                 sameSite: 'none',
-                                secure: true
+                                secure: false
                             });
 
                             res.send({
@@ -264,93 +264,6 @@ app.use('/api/v1',(req, res, next) => {
     });
 })
 
-
-
-app.post('/api/v1/addtocart', (req, res) => {
-    const body = req.body
-    if (!body.name 
-        || !body.price 
-        || !body.description
-    
-    ) {
-
-        res.status(400)
-        res.send({ message: "Requird cart  Parameter missing." })
-        return;
-    }
-    
-    console.log(body.name)
-    console.log(body.price)
-    console.log(body.description)
-    // console.log('name:',body.productImage)
-
-    addtocartModel.create({
-        id:body.id,
-        name: body.name,
-        price: body.price,
-        
-        description: body.description,
-        productImage: body.productImage,
-    },
-        (err, saved) => {
-            console.log("post Error",err)
-            if (!err) {
-                console.log(saved);
-
-                res.send({
-                    message: "product added successfully in Cart"
-                });
-            } else {
-                res.status(500).send({
-                    message: "server error .."
-                })
-            }
-        })
-})
-
-app.delete('/api/v1/addtocart/:id', (req, res) => {
-    const id = req.params.id;
-    addtocartModel.deleteOne({ _id: id }, (err, deletedData) => {
-        console.log("deleted: ", deletedData);
-        if (!err) {
-
-            if (deletedData.deletedCount !== 0) {
-                res.send({
-                    message: "Product has been removed successfully",
-                })
-            } else {
-                res.status(404);
-                res.send({
-                    message: "No cart Product found",
-                //    "  with this id: " + id,"
-                });
-            }
-        } else {
-            res.status(500).send({
-                message: "server error"
-            })
-        }
-    });
-})
-
-app.get('/api/v1/addtocarts', (req, res) => {
-    addtocartModel.find({}, (err, data) => {
-        console.log("get Error",err)
-        if (!err) {
-            res.send({
-                message: "got all products successfully",
-                data: data
-              
-            })  
-           
-        } else {
-            res.status(500).send({
-                message: "server error...."
-            })
-        }
-    });
-})
-/
 
 
 
@@ -538,7 +451,90 @@ app.put('/api/v1/product/:id',async (req, res) => {
     }
 })
 
+app.post('/api/v1/addtocart', (req, res) => {
+    const body = req.body
+    if (!body.name 
+        || !body.price 
+        || !body.description
+    
+    ) {
 
+        res.status(400)
+        res.send({ message: "Requird cart  Parameter missing." })
+        return;
+    }
+    
+    console.log(body.name)
+    console.log(body.price)
+    console.log(body.description)
+    // console.log('name:',body.productImage)
+
+    addtocartModel.create({
+        id:body.id,
+        name: body.name,
+        price: body.price,
+        
+        description: body.description,
+        productImage: body.productImage,
+    },
+        (err, saved) => {
+            console.log("post Error",err)
+            if (!err) {
+                console.log(saved);
+
+                res.send({
+                    message: "product added successfully in Cart"
+                });
+            } else {
+                res.status(500).send({
+                    message: "server error .."
+                })
+            }
+        })
+})
+
+app.delete('/api/v1/addtocart/:id', (req, res) => {
+    const id = req.params.id;
+    addtocartModel.deleteOne({ _id: id }, (err, deletedData) => {
+        console.log("deleted: ", deletedData);
+        if (!err) {
+
+            if (deletedData.deletedCount !== 0) {
+                res.send({
+                    message: "Product has been removed successfully",
+                })
+            } else {
+                res.status(404);
+                res.send({
+                    message: "No cart Product found",
+                //    "  with this id: " + id,"
+                });
+            }
+        } else {
+            res.status(500).send({
+                message: "server error"
+            })
+        }
+    });
+})
+
+app.get('/api/v1/addtocarts', (req, res) => {
+    addtocartModel.find({}, (err, data) => {
+        console.log("get Error",err)
+        if (!err) {
+            res.send({
+                message: "got all products successfully",
+                data: data
+              
+            })  
+           
+        } else {
+            res.status(500).send({
+                message: "server error...."
+            })
+        }
+    });
+})
 
 const __dirname = path.resolve();
 app.use('/', express.static(path.join(__dirname, './web/build')))
