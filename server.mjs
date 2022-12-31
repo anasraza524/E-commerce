@@ -26,6 +26,7 @@ const SECRET = process.env.SECRET || "topsecret";
 
 // app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 //  let products = [];
 // let addtocart = [];
 // let bageNo = 0
