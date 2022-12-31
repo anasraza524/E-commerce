@@ -162,14 +162,14 @@ editingProdImage:""
       handleClickMsg()
     }
     try {
-      const response = await axios.post(`${state.baseUrl}/product`, {
-        withCredentials:true,
+      const response = await axios.post(`${state.baseUrl}/product` ,{
+        
         name:  prodName,
         price: prodPrice,
         description: prodDec,
         productImage:storageURL,
 
-      });
+      },{withCredentials:true});
       console.log(response);
       setSuccess(response.data.message
         )
