@@ -8,11 +8,12 @@ import {
     stringToHash,
     varifyHash,
 } from "bcrypt-inzi"
-import dotenv from './dotenv'
+import * as dotenv from 'dotenv'
 import nodemailer from "nodemailer";
-
+import { link } from 'fs';
+dotenv.config()
 //  mongoose.set('strictQuery', false);
-dotenv.config();
+
 const app = express();
 const port = process.env.PORT || 3001;
 const mongodbURI = process.env.mongodbURI ||
@@ -135,87 +136,6 @@ app.post("/api/v1/signup", (req, res) => {
         }
     })
 });
-
-app.post("/api/v1/login", (req, res) => {
-
-    let body = req.body;
-    body.email = body.email.toLowerCase();
-
-    if (!body.email || !body.password) { // null check - undefined, "", 0 , false, null , NaN
-        res.status(400).send(
-            `required fields missing, request example: 
-                {
-                    "email": "abc@abc.com",
-                    "password": "12345"
-                }`
-        );
-        return;
-    }
-
-    // check if user exist
-    userModel.findOne(
-        { email: body.email },
-        "firstName lastName email password",
-        (err, data) => {
-            if (!err) {
-                console.log("data: ", data);
-
-                if (data) { // user found
-                    varifyHash(body.password, data.password).then(isMatched => {
-
-                        console.log("isMatched: ", isMatched);
-
-                        if (isMatched) {
-
-                            const token = jwt.sign({
-                                _id: data._id,
-                                email: data.email,
-                                iat: Math.floor(Date.now() / 1000) - 30,
-                                exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24),
-                            }, SECRET);
-
-                            console.log("token: ", token);
-
-                            res.cookie('Token', token, {
-                                maxAge: 86_400_000,
-                                httpOnly: true,
-                                sameSite: 'none',
-                                secure: true
-                            });
-
-                            res.send({
-                                message: "login successful",
-                                profile: {
-                                    email: data.email,
-                                    firstName: data.firstName,
-                                    lastName: data.lastName,
-                                    
-                                    _id: data._id
-                                }
-                            });
-                            return;
-                        } else {
-                            console.log("password did not match");
-                            res.status(401).send({ message: "Incorrect email or password" });
-                            return;
-                        }
-                    })
-
-                } else { // user not already exist
-                    console.log("user not found");
-                    res.status(401).send({ message: "Incorrect email or password" });
-                    return;
-                }
-            } else {
-                console.log("db error: ", err);
-                res.status(500).send({ message: "login failed, please try later" });
-                return;
-            }
-        })
-})
-
-
-
 app.post("/api/v1/forget_password",(req, res) => {
     let body = req.body;
     body.email = body.email.toLowerCase();
@@ -250,7 +170,7 @@ app.post("/api/v1/forget_password",(req, res) => {
                     sameSite: 'none',
                     secure: true
                 });
-                const link = `http://localhost:3000/user/reset/${user._id}/${token}`;
+                const link = `http://localhost:3001/api/v1/forget_password/${user._id}/${token}`;
                  // email sending
           const transport = nodemailer.createTransport({
             service: "gmail",
@@ -442,7 +362,7 @@ app.post("/api/v1/forget_password",(req, res) => {
                         console.log("token approved");
         
                         req.body.token = decodedData
-                        const isUser =  userModel.findById(id);
+                        const isUser =  userModel.findById(_id);
                         stringToHash(body.password).then(hashString => {
         
                             userModel.findByIdAndUpdate(body._id,{
@@ -481,6 +401,87 @@ app.post("/api/v1/forget_password",(req, res) => {
         
         
         )
+
+app.post("/api/v1/login", (req, res) => {
+
+    let body = req.body;
+    body.email = body.email.toLowerCase();
+
+    if (!body.email || !body.password) { // null check - undefined, "", 0 , false, null , NaN
+        res.status(400).send(
+            `required fields missing, request example: 
+                {
+                    "email": "abc@abc.com",
+                    "password": "12345"
+                }`
+        );
+        return;
+    }
+
+    // check if user exist
+    userModel.findOne(
+        { email: body.email },
+        "firstName lastName email password",
+        (err, data) => {
+            if (!err) {
+                console.log("data: ", data);
+
+                if (data) { // user found
+                    varifyHash(body.password, data.password).then(isMatched => {
+
+                        console.log("isMatched: ", isMatched);
+
+                        if (isMatched) {
+
+                            const token = jwt.sign({
+                                _id: data._id,
+                                email: data.email,
+                                iat: Math.floor(Date.now() / 1000) - 30,
+                                exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24),
+                            }, SECRET);
+
+                            console.log("token: ", token);
+
+                            res.cookie('Token', token, {
+                                maxAge: 86_400_000,
+                                httpOnly: true,
+                                sameSite: 'none',
+                                secure: true
+                            });
+
+                            res.send({
+                                message: "login successful",
+                                profile: {
+                                    email: data.email,
+                                    firstName: data.firstName,
+                                    lastName: data.lastName,
+                                    
+                                    _id: data._id
+                                }
+                            });
+                            return;
+                        } else {
+                            console.log("password did not match");
+                            res.status(401).send({ message: "Incorrect email or password" });
+                            return;
+                        }
+                    })
+
+                } else { // user not already exist
+                    console.log("user not found");
+                    res.status(401).send({ message: "Incorrect email or password" });
+                    return;
+                }
+            } else {
+                console.log("db error: ", err);
+                res.status(500).send({ message: "login failed, please try later" });
+                return;
+            }
+        })
+})
+
+
+
 
 
 app.post("/api/v1/logout", (req, res) => {

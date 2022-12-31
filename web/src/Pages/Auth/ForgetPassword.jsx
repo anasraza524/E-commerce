@@ -1,14 +1,10 @@
-import React from 'react'
 import { useState,useContext } from 'react';
 import { GlobalContext } from '../../Context/Context';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import { Link } from "react-router-dom";
-import Grid from '@mui/material/Grid';
+
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
@@ -19,14 +15,36 @@ const theme = createTheme();
 const ForgetPassword = () => {
     let { state, dispatch } = useContext(GlobalContext);
 
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      const data = new FormData(e.currentTarget);
-      console.log({
-        email: data.get('email'),
+    // const handleSubmit = (e) => {
+    //   e.preventDefault();
+    //   const data = new FormData(e.currentTarget);
+    //   console.log({
+    //     email: data.get('email'),
        
-      });
-    };
+    //   });
+    // };
+
+
+    const forgetPassword =async (e) => { 
+     
+        e.preventDefault();
+        const data = new FormData(e.currentTarget);
+    try{ const res = await axios.post(`${state.baseUrl}/forget_password`, { 
+      
+      email: data.get('email')
+     }, {
+      withCredentials: true
+  });
+    
+    if (res) {
+      alert("email Sent");
+    }}
+    catch(err){
+console.log("foegetPassowrd Error",err)
+    }
+       
+    
+     }
   return (
     <ThemeProvider theme={theme}>
     <Container component="main" maxWidth="xs">
@@ -47,7 +65,7 @@ const ForgetPassword = () => {
         </Typography><br />
         <Typography component="p" variant="p">
         Type Your Email Here </Typography>
-        <Box component="form"  noValidate sx={{ mt: 1 }}>
+        <Box component="form" onSubmit={forgetPassword}  noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             required

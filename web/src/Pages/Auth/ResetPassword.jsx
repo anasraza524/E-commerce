@@ -15,9 +15,14 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useParams, useNavigate } from "react-router-dom";
+
 import axios from 'axios';
 const theme = createTheme();
 const ResetPassword = () => {
+  
+  const { id, token } = useParams();
+  const navigate = useNavigate();
     let { state, dispatch } = useContext(GlobalContext);
 
     const handleSubmit = (e) => {
@@ -28,8 +33,19 @@ const ResetPassword = () => {
        
       });
     };
+    const ResetPassword = async (e) => {
+      e.preventDefault();
+      const data = new FormData(e.currentTarget);
+      const res = await axios.post(
+        `${state.BaseUrl}forget_password/${id}/${token}`,
+       { password:data.get('passowrd')}
+      );
+      if (res.status === 200) {
+        alert("password changed Successfully");
+        navigate("/login");
+      }
+    };
 
-    
   return (
     <ThemeProvider theme={theme}>
     <Container component="main" maxWidth="xs">
@@ -50,17 +66,17 @@ const ResetPassword = () => {
         </Typography><br />
         <Typography component="p" variant="p">
         Type Your Email Here </Typography>
-        <Box component="form"  noValidate sx={{ mt: 1 }}>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-          />
+        <Box component="form" onSubmit={ResetPassword}  noValidate sx={{ mt: 1 }}>
+        <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
         
         
           <Button

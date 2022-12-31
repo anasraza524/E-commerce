@@ -41,12 +41,7 @@ function App() {
 
 
 
-  let config = {
-    method: "POST",
-    url: `${state.baseUrl}/logout`,
-    headers: {
-      "Content-Type": "application/json",
-    }}
+
  const  LogoutHandle = async()=>{
   try {
     let response = await axios({
