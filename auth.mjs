@@ -1,5 +1,61 @@
 app.post("/forget-password",(req, res) => {
-    let { email } = req.body;
+    let body = req.body;
+    body.email = body.email.toLowerCase();
+    if (!body.email ) { // null check - undefined, "", 0 , false, null , NaN
+        res.status(400).send(
+            `required fields missing, request example: 
+                {
+                    "email": "abc@abc.com"
+                  
+                }`
+        );
+        return;
+    }
+
+    userModel.findOne({ email: body.email }, (err, user) => {
+        if (!err) {
+            console.log("user: ", user);
+
+            if (user) { // user already exist
+                const token = jwt.sign({
+                    _id: user._id,
+                    email: user.email,
+                    iat: Math.floor(Date.now() / 1000) - 30,
+                    exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24),
+                }, SECRET);
+
+                console.log("token: ", token);
+
+                res.cookie('Token', token, {
+                    maxAge: 1000*60,
+                    httpOnly: true,
+                    sameSite: 'none',
+                    secure: true
+                });
+
+            }else { // user not already exist
+                console.log("userEmail not found");
+                res.status(401).send({ message: "Incorrect email" });
+                return;
+            }
+   
+        }})
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
     try {
       if (email) {
         const isUser = userModel.findOne({ email: email });
