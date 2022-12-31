@@ -12,12 +12,16 @@ import StickyFooter from "./Components/Footer";
 import AddToProduct from './Pages/AddToProduct';
 import MakeProduct from './Pages/MakeProduct';
 import SearchProduct from "./Pages/SearchProduct";
+import ForgetPassword from "./Pages/Auth/ForgetPassword";
+import ResetPassword from "./Pages/Auth/ResetPassword";
 import { GlobalContext } from './Context/Context';
+import { ImportExportRounded } from "@mui/icons-material";
 
 function App() {
   let { state, dispatch } = useContext(GlobalContext);
   const [BageNo, setBageNo] = useState(0)
   const [loadProduct, setLoadProduct] = useState(false)
+  
   useEffect(() => {
     
     (async () => {
@@ -34,12 +38,27 @@ function App() {
    
     })();
   }, [loadProduct]);
-  
+
+
+
+  let config = {
+    method: "POST",
+    url: `${state.baseUrl}/logout`,
+    headers: {
+      "Content-Type": "application/json",
+    }}
  const  LogoutHandle = async()=>{
   try {
-    let response = await axios.post(`${state.baseUrl}/logout`, {
-     
-    })
+    let response = await axios({
+      withCredentials:true,
+      method: "POST",
+      url: `${state.baseUrl}/logout`,
+      headers: {
+        "Content-Type": "application/json",
+      }}
+   
+    )
+
     console.log("response: ", response);
 
     dispatch({
@@ -91,6 +110,8 @@ function App() {
  <Routes>
 <Route path="/" element={<Login/>}/>
 <Route path="SignUp" element={<SignUp/>}/>
+<Route path="ForgetPassword" element={<ForgetPassword/>}/>
+<Route path="ResetPassword" element={<ResetPassword/>}/>
 <Route path="*" element={<Navigate to="/" replace={true} />}/>
 
 </Routes> :null
