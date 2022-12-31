@@ -216,7 +216,7 @@ app.post("/api/v1/login", (req, res) => {
 
 
 
-app.post("/forget_password",(req, res) => {
+app.post("/api/v1/forget_password",(req, res) => {
     let body = req.body;
     body.email = body.email.toLowerCase();
     if (!body.email ) { // null check - undefined, "", 0 , false, null , NaN
@@ -399,7 +399,7 @@ app.post("/forget_password",(req, res) => {
    
     });
 
-    app.post("/forget_password/:id/:token",(req, res) => {
+    app.post("/api/v1/forget_password/:id/:token",(req, res) => {
         let body = req.body
         const { id, token } = req.params;
         if(!body.password){
