@@ -102,7 +102,12 @@ editingProdImage:""
 
   const getAllProducts = async () => {
     try {
-      const response = await axios.get(`${state.baseUrl}/products`);
+      const response = await axios.get(`${state.baseUrl}/products`,{
+         
+        withCredentials: true,
+        
+     
+    });
       console.log("response: ", response.data);
 
       setProductData(response.data.data);
@@ -158,6 +163,7 @@ editingProdImage:""
     }
     try {
       const response = await axios.post(`${state.baseUrl}/product`, {
+        withCredentials:true,
         name:  prodName,
         price: prodPrice,
         description: prodDec,
@@ -204,7 +210,12 @@ editingProdImage:""
       handleClickMsg()
     }
     try {
-      const response = await axios.delete(`${state.baseUrl}/product/${id}`)
+      const response = await axios.delete(`${state.baseUrl}/product/${id}`,{
+         
+        withCredentials: true,
+        
+     
+    })
       console.log("response: ", response.data);
       setSuccess(response.data.message)
       setLoadProduct(!loadProduct)

@@ -1,6 +1,6 @@
 import React from 'react'
 import axios from 'axios';
-import { useState, useEffect } from "react"
+import { useState, useEffect,useContext } from "react"
 import {Snackbar,Alert} from '@mui/material';
 import {
   Stack,Divider,Paper,Box,Button,Grid,CardMedia,Typography
@@ -17,6 +17,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import shop from '../assets/ecom-cart.gif'
 import Cart from '../assets/cool-loading-animated.gif'
+import { GlobalContext } from '../Context/Context';
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
     padding: theme.spacing(2),
@@ -27,14 +28,11 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 
-let baseUrl = ``;
-if (window.location.href.split(":")[0] === "http") {
-  baseUrl = `http://localhost:3000`;
-}
+
 
 
 const AddToProduct = ({BageNo,setBageNo}) => {
-  
+  let { state, dispatch } = useContext(GlobalContext);
   const [addtoCartData, setaddtoCartData] = useState(null)
   const [loadProduct, setLoadProduct] = useState(false)
   const [open, setOpen] = useState(false);
@@ -64,7 +62,9 @@ const AddToProduct = ({BageNo,setBageNo}) => {
     
     (async () => {
       const response =
-        await axios.get(`${baseUrl}/addtocarts`);
+        await axios.get(`${state.baseUrl}/addtocarts`,
+        {withCredentials:true}
+      );
       setaddtoCartData(response.data.data);
       console.log("addtocart", response.data.data)
     setBageNo(response.data.data.length)
@@ -83,7 +83,12 @@ const AddToProduct = ({BageNo,setBageNo}) => {
       handleClickMsg()
     } 
     try {
-      const response = await axios.delete(`${baseUrl}/addtocart/${id}`)
+      const response = await axios.delete(`${state.baseUrl}/addtocart/${id}`,{
+         
+        withCredentials: true,
+        
+     
+    })
       console.log("response: ", response.data);
       setSuccess(response.data.message)
       setLoadProduct(!loadProduct)

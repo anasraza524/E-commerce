@@ -82,7 +82,12 @@ const [homeProductDataLength, sethomeProductDataLength] = useState(null)
     
     (async () => {
       const response =
-        await axios.get(`${state.baseUrl}/addtocarts`);
+        await axios.get(`${state.baseUrl}/addtocarts`,{
+         
+          withCredentials: true,
+          
+       
+      });
       
       console.log("addtocart", response.data.data)
     setBageNo(response.data.data.length)
@@ -93,7 +98,12 @@ const [homeProductDataLength, sethomeProductDataLength] = useState(null)
 
 const getAllProducts = async () => {
   try {
-    const response = await axios.get(`${state.baseUrl}/products`);
+    const response = await axios.get(`${state.baseUrl}/products`,{
+         
+      withCredentials: true,
+      
+   
+  });
     console.log("response: ", response.data.data);
 
     setHomeProductData(response.data.data);
@@ -131,7 +141,12 @@ useEffect(() => {
       handleClickMsg()
     }
     try {
-      const response = await axios.get(`${state.baseUrl}/product/${id}`)
+      const response = await axios.get(`${state.baseUrl}/product/${id}`,{
+         
+        withCredentials: true,
+        
+     
+    })
       console.log("response: ", response.data);
 console.log("response2: ", response.data.data)
       setCurrentProduct(response.data.data)
@@ -162,7 +177,12 @@ console.log("response2: ", response.data.data)
     }
     try {
       const response = await
-      axios.post(`${state.baseUrl}/addtocart`, objectCart);
+      axios.post(`${state.baseUrl}/addtocart`, objectCart,{
+         
+        withCredentials: true,
+        
+     
+    });
   
    console.log("asds",response)
    setSuccess(response.data.message
