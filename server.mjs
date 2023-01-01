@@ -182,7 +182,7 @@ app.post("/api/v1/forget_password",(req, res) => {
             secure: true,
             auth: {
               user:'anasattari48@gmail.com' ,
-              pass:' bkhrhoudercpssfn',
+              pass:'',
             },
           });
 console.log("done")
