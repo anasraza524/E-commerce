@@ -175,16 +175,17 @@ app.post("/api/v1/forget_password",(req, res) => {
           const transport = nodemailer.createTransport({
             service: "gmail",
             host: "smtp.gmail.com",
-            port: 465,
+            port: 535,
+    
             auth: {
-              user: process.env.EMAIL,
-              pass: process.env.EMAIL_PASSWORD,
+              user:'anasattari48@gmail.com' ,
+              pass:' bkhrhoudercpssfn',
             },
           });
-
+console.log("done")
           const mailOptions = {
             from: process.env.EMAIL,
-            to: email,
+            to: body.email,
             subject: `Password Reset Request`,
             text: `
             <!doctype html>
@@ -299,7 +300,10 @@ app.post("/api/v1/forget_password",(req, res) => {
             </body>
             </html>`,
                       };
+                      console.log("done2")
                       transport.sendMail(mailOptions, (error, info) => {
+                        console.log("error",error)
+                        console.log("info",info)
             if (!error) {
               return res.status(200).json({ message: "Email Sent" });
             }else{
@@ -319,7 +323,7 @@ app.post("/api/v1/forget_password",(req, res) => {
    
     });
 
-    app.post("/api/v1/forget_password/:id/:token",(req, res) => {
+app.post("/api/v1/forget_password/:id/:token",(req, res) => {
         let body = req.body
         const { id, token } = req.params;
         if(!body.password){
