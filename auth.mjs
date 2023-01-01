@@ -187,47 +187,134 @@ app.post("/forget_password",(req, res) => {
     });
 
 
+// some mistake 
+// app.post("/forget_password/:id/:token",(req, res) => {
+// let body = req.body
+// const { id, token } = req.params;
+// if(!body.password){
+//     res.status(400).send(
+//         `required fields missing, request example: 
+//             {
+//                 "password": "12345"
+              
+//             }`
+//     );
+//     const isUser =  userModel.findById(id);
+//     const isValid = jwt.verify(token, SECRET)
+//     stringToHash(body.password).then(hashString => {
+
+//         userModel.findByIdAndUpdate(isUser._id,{
+          
+//             password: hashString
+//         },
+//             (err, result) => {
+//                 if (!err) {
+//                     console.log("data saved: ", result);
+//                     res.status(201).send({ message: "Password Changed Successfully" });
+//                 } else {
+//                     console.log("db error: ", err);
+//                     res.status(400).send({ message: "Link has been Expired" });
+//                 }
+//             });
+//     })
+//     // const isSuccess =  authModel.findByIdAndUpdate(isUser._id, {
+//     //     $set: {
+//     //       password: hashedPass,
+//     //     },
+//     //   });
+//     // return;
+// }
+
+
+
+// }
+
+
+
+// )
+
+
+
 
 app.post("/forget_password/:id/:token",(req, res) => {
-let body = req.body
-const { id, token } = req.params;
-if(!body.password){
-    res.status(400).send(
-        `required fields missing, request example: 
-            {
-                "password": "12345"
-              
-            }`
-    );
-    const isUser =  userModel.findById(id);
-    stringToHash(body.password).then(hashString => {
-
-        userModel.findByIdAndUpdate(isUser._id,{
-          
-            password: hashString
-        },
-            (err, result) => {
-                if (!err) {
-                    console.log("data saved: ", result);
-                    res.status(201).send({ message: "user is created" });
+    let body = req.body
+    const { id, token } = req.params;
+    if(!body.password){
+        res.status(400).send(
+            `required fields missing, request example: 
+                {
+                    "password": "12345"
+                  
+                }`
+        );
+        
+        if (!req?.cookies?.token) {
+            res.status(401).send({
+                message: "include http-only credentials with every request"
+            })
+            return;
+        }
+        jwt.verify(req.cookies.Token, SECRET, function (err, decodedData) {
+            if (!err) {
+    
+                console.log("decodedData: ", decodedData);
+    
+                const nowDate = new Date().getTime() / 1000;
+    
+                if (decodedData.exp < nowDate) {
+    
+                    res.status(401);
+                    res.cookie('Token', '', {
+                        maxAge: 1,
+                        httpOnly: true,
+                        sameSite: 'none',
+                        secure: true
+                        
+                        
+                    });
+                    res.send({ message: "token expired" })
+    
                 } else {
-                    console.log("db error: ", err);
-                    res.status(500).send({ message: "internal server error" });
+    
+                    console.log("token approved");
+    
+                    req.body.token = decodedData
+                    const isUser =  userModel.findById(id);
+                    stringToHash(body.password).then(hashString => {
+    
+                        userModel.findByIdAndUpdate(body._id,{
+                          
+                            password: hashString
+                        },
+                            (err, result) => {
+                                if (!err) {
+                                    console.log("data saved: ", result);
+                                    res.status(201).send({ message: "Password Changed Successfully" });
+                                } else {
+                                    console.log("db error: ", err);
+                                    res.status(400).send({ message: "Link has been Expired" });
+                                }
+                            });
+                    })
                 }
-            });
-    })
-    // const isSuccess =  authModel.findByIdAndUpdate(isUser._id, {
-    //     $set: {
-    //       password: hashedPass,
-    //     },
-    //   });
-    // return;
-}
-
-
-
-}
-
-
-
-)
+            } else {
+                res.status(401).send("invalid token")
+            }
+        });
+    
+        
+        // const isSuccess =  authModel.findByIdAndUpdate(isUser._id, {
+        //     $set: {
+        //       password: hashedPass,
+        //     },
+        //   });
+        // return;
+    }
+    
+    
+    
+    }
+    
+    
+    
+    )
