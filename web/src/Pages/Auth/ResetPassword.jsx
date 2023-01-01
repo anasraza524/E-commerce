@@ -62,10 +62,10 @@ const ResetPassword = () => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-        Forgot password
+        New password
         </Typography><br />
         <Typography component="p" variant="p">
-        Type Your Email Here </Typography>
+        Type Your New password Here </Typography>
         <Box component="form" onSubmit={ResetPassword}  noValidate sx={{ mt: 1 }}>
         <TextField
               margin="normal"

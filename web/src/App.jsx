@@ -106,8 +106,8 @@ function App() {
 <Route path="/" element={<Login/>}/>
 <Route path="SignUp" element={<SignUp/>}/>
 <Route path="ForgetPassword" element={<ForgetPassword/>}/>
-<Route path="ResetPassword" element={<ResetPassword/>}/>
-<Route path="*" element={<Navigate to="/" replace={true} />}/>
+<Route path="user/reset/:_id/:token" element={<ResetPassword/>}/>
+{/* <Route path="*" element={<Navigate to="/" replace={true} />}/> */}
 
 </Routes> :null
 }
