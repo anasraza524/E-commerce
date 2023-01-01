@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { GlobalContext } from '../../Context/Context';
 import { useReducer,useEffect,useState ,useContext} from 'react';
+import '../../Components/DialogBox.css'
+import {Snackbar,Alert,Stack} from '@mui/material';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
+import {Button,DialogContent,Dialog,DialogContentText,DialogTitle,DialogActions,CardMedia} from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -16,7 +18,9 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { INITIAL_STATE,SIGN_STATE } from './CustomeState';
 import axios from 'axios';
-
+import DialogBox from '../../Components/DialogBox';
+import Sucsess from '../../assets/Succes.gif'
+import Error from '../../assets/error..gif'
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -33,6 +37,28 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp() {
+  const [open, setOpen] = React.useState(false);
+  const DialogOpen = () => {
+    setOpen(true);
+  };
+
+  const DialogClose = () => {
+    setOpen(false);
+  };
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [openSnak, setOpenSnak] = useState(false);
+  const handleClickMsg = () => {
+    setOpenSnak(true);
+  };
+
+  const handleCloseMsg = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenSnak(false);
+  };
   // const handleSubmit = (event) => {
   //   event.preventDefault();
   //   const data = new FormData(event.currentTarget);
@@ -55,6 +81,9 @@ export default function SignUp() {
 
 const signUpHandle = async (e) => { 
   e.preventDefault();
+  if(error || success){
+    handleClickMsg()
+  } 
 console.log(state)
 try {
   let response = await axios.post(`${state.baseUrl}/signup`, {
@@ -63,18 +92,126 @@ try {
       email: state1.email,
       password: state1.password
   })
-
-
+  setSuccess(response.data.message)
+DialogOpen()
   console.log("signup successful");
-  setResult("signup successful")
-
+  setResult("Signup Successful")
+e.target.reset()
 } catch (e) {
+  setError(error.message)
+  setError(error.data.message)
+  DialogOpen()
   console.log("e: ", e);
+  
 }
 }
 
   return (
     <ThemeProvider theme={theme}>
+     <Stack spacing={2} sx={{ width: '100%' }}>
+      
+      
+    
+      <Snackbar open={openSnak} autoHideDuration={2000} onClose={handleCloseMsg}>
+       {(error)?
+       <Alert onClose={handleCloseMsg} severity="error" sx={{ width: '100%' }}>
+          {error}
+        </Alert>:
+        <Alert severity="success">{success}</Alert>
+        }
+        
+      </Snackbar>
+      {/* <Alert severity="error">This is an error message!</Alert>
+      <Alert severity="warning">This is a warning message!</Alert>
+      <Alert severity="info">This is an information message!</Alert>
+      <Alert severity="success">This is a success message!</Alert> */}
+    </Stack>
+
+    
+     <Dialog
+
+        open={open}
+        onClose={DialogClose}
+        aria-labelledby="responsive-dialog-title"
+      >
+         <DialogTitle dividers >
+        <Typography sx={{fontSize:{xs:"26px"},display:'flex',flexDirection:"column",alignItems:"center"}} variant='h4'>
+          E-Mart
+          {/* <CloseIcon onClick={DialogClose} sx={{m:1,float:"right"}} /> */}
+        </Typography>
+     
+      </DialogTitle>
+      <DialogContent sx={{display:'flex',flexDirection:"column",alignItems:"center"}}  dividers>
+
+{(!result === "")?
+<CardMedia
+    component="img"
+    loading="eager"
+    width="150"
+      sx={{height:{xs:100,sm:200,lg:250},mt:1}}
+    image={Sucsess}
+    alt="No product Image"
+  />
+:
+<CardMedia
+    component="img"
+    loading="eager"
+    width="150"
+      sx={{height:{xs:100,sm:150,lg:200}}}
+    image={Error}
+    alt="No product Image"
+  />
+}
+<Box sx={{m:{lg:2,sm:2,xs:1}}}>
+<Typography sx={{fontSize:{xs:"30px",lg:'30px',sm:'30px'}}} variant='h3' gutterBottom>
+{(!result === "")?
+{result}
+
+:
+"Signup Error"
+}
+</Typography>
+<Typography sx={{fontSize:{xs:"16px"}}} variant='p' gutterBottom>
+{(!result === "")?
+"Thank for creating Emart Account"
+
+:
+"Oops Error in Signup"
+}
+
+</Typography>
+</Box>
+{/* <CardMedia
+    component="img"
+    loading="lazy"
+    width="150"
+      sx={{height:{xs:100,sm:200,lg:250},mt:1}}
+    image={CardImage}
+    alt="No product Image"
+  /> */}
+
+{/* <ShoppingCartIcon sx={{fontSize:"120px", float:"center",color:"green",ml:15}}/> */}
+</DialogContent>
+<DialogActions>
+{(!result === "")?
+ <Link 
+ sx={{fontSize:"20px" , textDecoration:"none"}}
+ to="/Login">
+ <Button sx={{fontSize:"20px"}} autoFocus onClick={DialogClose}>
+   Ok
+ </Button>
+ </Link>
+:
+
+<Button sx={{fontSize:"20px"}} autoFocus onClick={DialogClose}>
+  Ok
+</Button>
+
+}
+
+         
+        </DialogActions>
+      </Dialog>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -85,6 +222,11 @@ try {
             alignItems: 'center',
           }}
         >
+           {/* <DialogBox
+        DialogContentText={"Signup Succsefull"}
+        DialogDec={"Thank for creating Emart Account "}
+        
+        /> */}
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>

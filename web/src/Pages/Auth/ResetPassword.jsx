@@ -38,11 +38,11 @@ const ResetPassword = () => {
       const data = new FormData(e.currentTarget);
       const res = await axios.post(
         `${state.BaseUrl}forget_password/${id}/${token}`,
-       { password:data.get('passowrd')}
+       { password:data.get('password')}
       );
       if (res.status === 200) {
         alert("password changed Successfully");
-        navigate("/login");
+        navigate("/");
       }
     };
 
@@ -85,7 +85,7 @@ const ResetPassword = () => {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-           Send Email
+           Change Password
           </Button>
       
         </Box>

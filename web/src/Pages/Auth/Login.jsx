@@ -9,6 +9,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { Link } from "react-router-dom";
 import Grid from '@mui/material/Grid';
+import {Snackbar,Alert,Stack} from '@mui/material';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
@@ -43,6 +44,23 @@ export default function Login() {
       password: data.get('email'),
     });
   };
+
+
+
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [openSnak, setOpenSnak] = useState(false);
+  const handleClickMsg = () => {
+    setOpenSnak(true);
+  };
+
+  const handleCloseMsg = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenSnak(false);
+  };
    const [result, setResult] = useState("");
 
   // const [email, setEmail] = useState("");
@@ -50,7 +68,11 @@ export default function Login() {
 
 
   const loginHandler = async (e) => {
+
       e.preventDefault();
+      if(error || success){
+        handleClickMsg()
+      } 
  const data = new FormData(e.currentTarget);
       try {
           let response = await axios.post(`${state.baseUrl}/login`, {
@@ -62,12 +84,14 @@ export default function Login() {
           dispatch({
             type:"USER_LOGIN"
           })
-
+          setSuccess(response.data.message)
           console.log("login successful");
           setResult("login successful")
        
 
       } catch (e) {
+        setError(error.message)
+        setError(error.data.message)
           console.log("e: ", e);
       }
 
@@ -75,7 +99,25 @@ export default function Login() {
   }
 
   return (
+    <>
+      <Stack spacing={2} sx={{ width: '100%' }}>
+
+<Snackbar open={openSnak} autoHideDuration={2000} onClose={handleCloseMsg}>
+ {(error)?
+ <Alert onClose={handleCloseMsg} severity="error" sx={{ width: '100%' }}>
+    {error}
+  </Alert>:
+  <Alert severity="success">{success}</Alert>
+  }
+
+</Snackbar>
+{/* <Alert severity="error">This is an error message!</Alert>
+<Alert severity="warning">This is a warning message!</Alert>
+<Alert severity="info">This is an information message!</Alert>
+<Alert severity="success">This is a success message!</Alert> */}
+</Stack>
     <ThemeProvider theme={theme}>
+    
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -141,6 +183,6 @@ export default function Login() {
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
-    </ThemeProvider>
+    </ThemeProvider></>
   );
 }

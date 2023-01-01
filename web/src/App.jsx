@@ -100,14 +100,14 @@ function App() {
     <div >
       
       
-       
+   
        {(state.isLogin === false)?
  <Routes>
 <Route path="/" element={<Login/>}/>
 <Route path="SignUp" element={<SignUp/>}/>
 <Route path="ForgetPassword" element={<ForgetPassword/>}/>
 <Route path="/user/reset/:_id/:token" element={<ResetPassword/>}/>
-{/* <Route path="*" element={<Navigate to="/" replace={true} />}/> */}
+ <Route path="*" element={<Navigate to="/" replace={true} />}/> 
 
 </Routes> :null
 }
