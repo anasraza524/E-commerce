@@ -178,8 +178,8 @@ app.post("/api/v1/forget_password",(req, res) => {
           const transport = nodemailer.createTransport({
             service: "gmail",
             host: "smtp.gmail.com",
-            port: 535,
-    
+            port: 465,
+            secure: true,
             auth: {
               user:'anasattari48@gmail.com' ,
               pass:' bkhrhoudercpssfn',
