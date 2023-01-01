@@ -21,7 +21,7 @@ import axios from 'axios';
 const theme = createTheme();
 const ResetPassword = () => {
   
-  const { id, token } = useParams();
+  const { _id, token } = useParams();
   const navigate = useNavigate();
     let { state, dispatch } = useContext(GlobalContext);
 
@@ -36,15 +36,20 @@ const ResetPassword = () => {
     const ResetPassword = async (e) => {
       e.preventDefault();
       const data = new FormData(e.currentTarget);
-      const res = await axios.post(
-        `${state.BaseUrl}forget_password/${id}/${token}`,
-       { password:data.get('password')}
+      try{
+      
+      const res = await axios.post(`/api/v1/forget_password/${_id}/${token}`,
+       { password:data.get('password'), withCredentials:true }
       );
-      if (res.status === 200) {
-        alert("password changed Successfully");
-        navigate("/");
+      // if (res.status === 200) {
+      //   alert("password changed Successfully");
+      //   navigate("/");
+      // }
+    }catch(error) {
+        console.log("Reset error: ", error);
+
       }
-    };
+    }
 
   return (
     <ThemeProvider theme={theme}>

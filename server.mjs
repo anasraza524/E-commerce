@@ -165,14 +165,14 @@ app.post("/api/v1/forget_password",(req, res) => {
                 console.log("token: ", token);
 
                 res.cookie('Token', token, {
-                    maxAge: 90,
+                    maxAge: 900,
                     httpOnly: true,
                     sameSite: 'none',
                     secure: true
                 });
                 
                 // const link = `http://localhost:3001/ResetPassword`;
-                 const link = `http://localhost:3001/user/reset/${user._id}/${token}`;
+                 const link = `http://localhost:3000/user/reset/${user._id}/${token}`;
                 // const link = `http://localhost:3001/api/v1/forget_password/${user._id}/${token}`;
                  // email sending
           const transport = nodemailer.createTransport({
@@ -182,7 +182,7 @@ app.post("/api/v1/forget_password",(req, res) => {
             secure: true,
             auth: {
               user:'anasattari48@gmail.com' ,
-              pass:'',
+              pass:'zzjjgwcidzonowmk',
             },
           });
 console.log("done")
@@ -328,6 +328,7 @@ console.log("done")
 
 app.post("/api/v1/forget_password/:id/:token",(req, res) => {
         let body = req.body
+       console.log('1')
         const { id, token } = req.params;
         if(!body.password){
             res.status(400).send(
@@ -337,16 +338,16 @@ app.post("/api/v1/forget_password/:id/:token",(req, res) => {
                       
                     }`
             );
-            
+            console.log('2')
             if (!req?.cookies?.token) {
                 res.status(401).send({
-                    message: "include http-only credentials with every request"
+                    message: "0include http-only credentials with every request"
                 })
                 return;
             }
-            jwt.verify(req.cookies.Token, SECRET, function (err, decodedData) {
+            jwt.verify(req.cookies.token, SECRET, function (err, decodedData) {
                 if (!err) {
-        
+                    console.log('3')
                     console.log("decodedData: ", decodedData);
         
                     const nowDate = new Date().getTime() / 1000;
@@ -369,10 +370,10 @@ app.post("/api/v1/forget_password/:id/:token",(req, res) => {
                         console.log("token approved");
         
                         req.body.token = decodedData
-                        const isUser =  userModel.findById(_id);
+                        const isUser =  userModel.findById(id);
                         stringToHash(body.password).then(hashString => {
         
-                            userModel.findByIdAndUpdate(body._id,{
+                            userModel.findByIdAndUpdate(isUser,{
                               
                                 password: hashString
                             },
