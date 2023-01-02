@@ -175,7 +175,7 @@ app.post("/api/v1/forget_password",(req, res) => {
                 });
                 
                 // const link = `http://localhost:3001/ResetPassword`;
-                 const link = `http://localhost:3000/reset/${user._id}/${token}`;
+                 const link = `http://localhost:3000/user/reset/${user._id}/${token}`;
                 // const link = `http://localhost:3001/api/v1/forget_password/${user._id}/${token}`;
                  // email sending
           const transport = nodemailer.createTransport({
