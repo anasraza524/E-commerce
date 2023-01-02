@@ -38,8 +38,10 @@ const ResetPassword = () => {
       const data = new FormData(e.currentTarget);
       try{
       
-      const res = await axios.post(`/api/v1/forget_password/${_id}/${token}`,
-       { password:data.get('password'), withCredentials:true }
+      const res = await axios.put(`/api/v1/forget_password/${_id}/${token}`,
+       { password:data.get('password'),  },{
+        withCredentials:true
+       }
       );
       // if (res.status === 200) {
       //   alert("password changed Successfully");

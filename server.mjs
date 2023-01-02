@@ -1,3 +1,5 @@
+import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+dotenv.config()
 import express from 'express'
 import path from 'path';
 import cors from 'cors';
@@ -8,13 +10,14 @@ import {
     stringToHash,
     varifyHash,
 } from "bcrypt-inzi"
-import * as dotenv from 'dotenv'
+
 import nodemailer from "nodemailer";
 import { link } from 'fs';
-dotenv.config()
+
 //  mongoose.set('strictQuery', false);
 
 const app = express();
+
 const port = process.env.PORT || 3001;
 const mongodbURI = process.env.mongodbURI ||
 "mongodb+srv://abcd:abcd@cluster0.eu5uldj.mongodb.net/anas?retryWrites=true&w=majority"
@@ -172,7 +175,7 @@ app.post("/api/v1/forget_password",(req, res) => {
                 });
                 
                 // const link = `http://localhost:3001/ResetPassword`;
-                 const link = `http://localhost:3000/user/reset/${user._id}/${token}`;
+                 const link = `http://localhost:3000/reset/${user._id}/${token}`;
                 // const link = `http://localhost:3001/api/v1/forget_password/${user._id}/${token}`;
                  // email sending
           const transport = nodemailer.createTransport({
@@ -181,8 +184,8 @@ app.post("/api/v1/forget_password",(req, res) => {
             port: 465,
             secure: true,
             auth: {
-              user:'anasattari48@gmail.com' ,
-              pass:'zzjjgwcidzonowmk',
+              user:process.env.EMAIL ,
+              pass:process.env.EMAIL_PASSWORD,
             },
           });
 console.log("done")
@@ -326,90 +329,127 @@ console.log("done")
    
     });
 
-app.post("/api/v1/forget_password/:id/:token",(req, res) => {
-        let body = req.body
-       console.log('1')
-        const { id, token } = req.params;
-        if(!body.password){
-            res.status(400).send(
-                `required fields missing, request example: 
-                    {
-                        "password": "12345"
+// app.put("/api/v1/forget_password/:id/:token",(req, res) => {
+//         let body = req.body
+//        console.log('1')
+//         const { id, token } = req.params;
+//         if(!body.password,!body._id,!body.token){
+//             res.status(400).send(
+//                 `required fields missing, request example: 
+//                     {
+//                         "password": "12345"
                       
-                    }`
-            );
-            console.log('2')
-            if (!req?.cookies?.token) {
-                res.status(401).send({
-                    message: "0include http-only credentials with every request"
-                })
-                return;
-            }
-            jwt.verify(req.cookies.token, SECRET, function (err, decodedData) {
-                if (!err) {
-                    console.log('3')
-                    console.log("decodedData: ", decodedData);
+//                     }`
+//             );
+//             console.log('2')
+//             if (!req?.cookies?.token) {
+//                 res.status(401).send({
+//                     message: "0include http-only credentials with every request"
+//                 })
+//                 return;
+//             }
+//             jwt.verify(req.cookies.token, SECRET, function (err, decodedData) {
+//                 if (!err) {
+//                     console.log('3')
+//                     console.log("decodedData: ", decodedData);
         
-                    const nowDate = new Date().getTime() / 1000;
+//                     const nowDate = new Date().getTime() / 1000;
         
-                    if (decodedData.exp < nowDate) {
+//                     if (decodedData.exp < nowDate) {
         
-                        res.status(401);
-                        res.cookie('Token', '', {
-                            maxAge: 1,
-                            httpOnly: true,
-                            sameSite: 'none',
-                            secure: true
+//                         res.status(401);
+//                         res.cookie('Token', '', {
+//                             maxAge: 1,
+//                             httpOnly: true,
+//                             sameSite: 'none',
+//                             secure: true
                             
                             
-                        });
-                        res.send({ message: "token expired" })
+//                         });
+//                         res.send({ message: "token expired" })
         
-                    } else {
+//                     } else {
         
-                        console.log("token approved");
+//                         console.log("token approved");
         
-                        req.body.token = decodedData
-                        const isUser =  userModel.findById(id);
-                        stringToHash(body.password).then(hashString => {
+//                         req.body.token = decodedData
+//                         const isUser =  userModel.findById(id);
+//                         stringToHash(body.password).then(hashString => {
         
-                            userModel.findByIdAndUpdate(isUser,{
+//                             userModel.findByIdAndUpdate(body._id,{
                               
-                                password: hashString
-                            },
-                                (err, result) => {
-                                    if (!err) {
-                                        console.log("data saved: ", result);
-                                        res.status(201).send({ message: "Password Changed Successfully" });
-                                    } else {
-                                        console.log("db error: ", err);
-                                        res.status(400).send({ message: "Link has been Expired" });
-                                    }
-                                });
-                        })
-                    }
-                } else {
-                    res.status(401).send("invalid token")
-                }
-            });
+//                                 password: hashString
+//                             },
+//                                 (err, result) => {
+//                                     if (!err) {
+//                                         console.log("data saved: ", result);
+//                                         res.status(201).send({ message: "Password Changed Successfully" });
+//                                     } else {
+//                                         console.log("db error: ", err);
+//                                         res.status(400).send({ message: "Link has been Expired" });
+//                                     }
+//                                 });
+//                         })
+//                     }
+//                 } else {
+//                     res.status(401).send("invalid token")
+//                 }
+//             });
         
             
-            // const isSuccess =  authModel.findByIdAndUpdate(isUser._id, {
-            //     $set: {
-            //       password: hashedPass,
-            //     },
-            //   });
-            // return;
-        }
+//             // const isSuccess =  authModel.findByIdAndUpdate(isUser._id, {
+//             //     $set: {
+//             //       password: hashedPass,
+//             //     },
+//             //   });
+//             // return;
+//         }
         
         
         
-        }
+//         }
         
         
         
-        )
+//         )
+app.put("/api/v1/forget_password/:id/:token",(req, res) => {
+    let body = req.body
+   console.log('1')
+    const { _id, token } = req.params;
+    if(!body.password,!_id,!token){
+        res.status(400).send(
+            `required fields missing, request example: `
+            
 
+        );
+        return;}
+
+        try {
+            stringToHash(body.password).then(hashString => {
+    
+                                
+            let data =  userModel.findByIdAndUpdate(_id,
+                {
+                    password: hashString
+                },
+                { new: true }
+            ).exec();
+    
+            console.log('updated: ', data);
+    
+            res.send({
+                message: "product modified successfully"
+            });
+    
+        })} catch (error) {
+            res.status(500).send({
+                message: "server error"
+            })
+        }
+
+    }
+
+    )
 app.post("/api/v1/login", (req, res) => {
 
     let body = req.body;
