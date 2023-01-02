@@ -1,2 +1,3 @@
 node_modules
+#in our .gitignore file 
 .env
