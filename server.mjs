@@ -14,6 +14,7 @@ import {
     stringToHash,
     varifyHash,
 } from "bcrypt-inzi"
+import { userModel } from './dbRepo/model.mjs';
 
 
 
@@ -552,6 +553,40 @@ app.use('/api/v1', addtoCart)
 
 
 
+const getUser =async () => { 
+if(req.params.id){
+    _id = req.params.id
+}else{
+    _id = req.params.token._id
+}
+try{
+const user = await userModel.findById(_id,"email firstName lastName -_id").exec()
+if (!user) {
+    res.status(404).send({message:"Error data not found"})
+    return;
+} else {
+
+    // res.set({
+    //     "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+    //     "Pragma": "no-cache",
+    //     "Expires": "0",
+    //     "Surrogate-Control": "no-store"
+    // });
+    res.status(200).send(user)
+    .send({message:"working"})
+}
+
+} catch (error) {
+
+console.log("error: ", error);
+res.status(500).send({
+    message: "something went wrong on server",
+});
+}
+}
+
+app.use("api/v1/prodile",getUser)
+app.use("api/v1/prodile/:id",getUser)
 
 
 const __dirname = path.resolve();
