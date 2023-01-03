@@ -26,7 +26,7 @@ router.post('/addtocart', (req, res) => {
         id:body.id,
         name: body.name,
         price: body.price,
-        
+        owner: new mongoose.Types.ObjectId(body.token._id),
         description: body.description,
         productImage: body.productImage,
     },

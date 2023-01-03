@@ -9,7 +9,8 @@ let productSchema = new mongoose.Schema({
     price: Number,
     description: String,
      productImage: String,
-     
+     owner: { type: mongoose.ObjectId, required: true },
+     isDeleted: { typeof: Boolean, default: false },
     createdOn: { type: Date, default: Date.now }
 });
 export const productModel = mongoose.model('products', productSchema);
@@ -21,6 +22,7 @@ let addtocartSchema = new mongoose.Schema({
     price: Number,
     description: String,
     productImage: String,
+    owner: { type: mongoose.ObjectId, required: true },
     createdOn: { type: Date, default: Date.now }
 });
 export const addtocartModel = mongoose.model('addtocarts', addtocartSchema);

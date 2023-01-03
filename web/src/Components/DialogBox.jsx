@@ -36,7 +36,7 @@ const DialogBox = ({DialogContentText,DialogDec}) => {
         onClose={DialogClose}
         aria-labelledby="responsive-dialog-title"
       >
-         <DialogTitle dividers >
+         <DialogTitle dividers="true" >
         <Typography sx={{fontSize:{xs:"26px"},display:'flex',flexDirection:"column",alignItems:"center"}} variant='h4'>
           E-Mart
           {/* <CloseIcon onClick={DialogClose} sx={{m:1,float:"right"}} /> */}

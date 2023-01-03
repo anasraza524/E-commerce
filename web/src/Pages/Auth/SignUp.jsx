@@ -85,25 +85,29 @@ const signUpHandle = async (e) => {
     handleClickMsg()
   } 
 console.log(state)
+setSuccess('')
+setError('')
 try {
   let response = await axios.post(`${state.baseUrl}/signup`, {
       firstName: state1.firstName,
       lastName: state1.lastName,
       email: state1.email,
       password: state1.password
-  })
+  },{withCredentials:true})
   setSuccess(response.data.message)
 DialogOpen()
-  console.log("signup successful");
-  setResult("Signup Successful")
+console.log(response);
+  console.log("Signup successful");
+  setResult(response.data.message)
 e.target.reset()
-} catch (e) {
-  setError(error.message)
-  setError(error.data.message)
+} catch (error) {
+
+  console.log("Sign Error: ", error);
+   setError(error.message)
   DialogOpen()
-  console.log("e: ", e);
-  
+ setError(error.response.data.message)
 }
+
 }
 
   return (
@@ -134,16 +138,16 @@ e.target.reset()
         onClose={DialogClose}
         aria-labelledby="responsive-dialog-title"
       >
-         <DialogTitle dividers >
+         <DialogTitle dividers="true" >
         <Typography sx={{fontSize:{xs:"26px"},display:'flex',flexDirection:"column",alignItems:"center"}} variant='h4'>
           E-Mart
           {/* <CloseIcon onClick={DialogClose} sx={{m:1,float:"right"}} /> */}
         </Typography>
      
       </DialogTitle>
-      <DialogContent sx={{display:'flex',flexDirection:"column",alignItems:"center"}}  dividers>
+      <DialogContent sx={{display:'flex',flexDirection:"column",alignItems:"center"}}  dividers="true">
 
-{(!result === "")?
+{(!error)?
 <CardMedia
     component="img"
     loading="eager"
@@ -164,15 +168,15 @@ e.target.reset()
 }
 <Box sx={{m:{lg:2,sm:2,xs:1}}}>
 <Typography sx={{fontSize:{xs:"30px",lg:'30px',sm:'30px'}}} variant='h3' gutterBottom>
-{(!result === "")?
-{result}
+{(!error)?
+"Signup successful"
 
 :
 "Signup Error"
 }
 </Typography>
 <Typography sx={{fontSize:{xs:"16px"}}} variant='p' gutterBottom>
-{(!result === "")?
+{(!error)?
 "Thank for creating Emart Account"
 
 :
@@ -193,7 +197,7 @@ e.target.reset()
 {/* <ShoppingCartIcon sx={{fontSize:"120px", float:"center",color:"green",ml:15}}/> */}
 </DialogContent>
 <DialogActions>
-{(!result === "")?
+{(!error)?
  <Link 
  sx={{fontSize:"20px" , textDecoration:"none"}}
  to="/Login">
@@ -242,6 +246,7 @@ e.target.reset()
                   autoComplete="given-name"
                   name="firstName"
                   required
+                  type="text"
                   onChange={handleChange}
                   fullWidth
                   id="firstName"
@@ -253,6 +258,7 @@ e.target.reset()
                 <TextField
                   required
                   fullWidth
+                  type="text"
                    onChange={handleChange}
                   id="lastName"
                   label="Last Name"
@@ -266,6 +272,7 @@ e.target.reset()
                    onChange={handleChange}
                   fullWidth
                   id="email"
+                  type="email"
                   label="Email Address"
                   name="email"
                   autoComplete="email"

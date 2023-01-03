@@ -82,17 +82,18 @@ export default function Login() {
               withCredentials: true
           })
           dispatch({
-            type:"USER_LOGIN"
+            type:"USER_LOGIN",
+            payload: response.data.profile
           })
           setSuccess(response.data.message)
           console.log("login successful");
           setResult("login successful")
        
 
-      } catch (e) {
-        setError(error.message)
-        setError(error.data.message)
-          console.log("e: ", e);
+      } catch (error) {
+       setError(error.message)
+        setError(error.response.data.message)
+          console.log("LoginError: ",error);
       }
 
       // e.reset();
