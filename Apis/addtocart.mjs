@@ -1,6 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import { userModel, productModel,addtocartModel } from '../dbRepo/model.mjs'
+import { addtocartModel } from '../dbRepo/model.mjs'
 
 const router = express.Router()
 
@@ -70,24 +70,50 @@ router.delete('/addtocart/:id', (req, res) => {
         }
     });
 })
-
-router.get('/addtocarts', (req, res) => {
-    addtocartModel.find({}, (err, data) => {
-        console.log("get Error",err)
-        if (!err) {
-            res.send({
-                message: "got all products successfully",
-                data: data
+// all user without owner
+// router.get('/addtocarts', (req, res) => {
+//     addtocartModel.find({}, (err, data) => {
+//         console.log("get Error",err)
+//         if (!err) {
+//             res.send({
+//                 message: "got all products successfully",
+//                 data: data
               
-            })  
+//             })  
            
-        } else {
-            res.status(500).send({
-                message: "server error...."
-            })
-        }
-    });
-})
+//         } else {
+//             res.status(500).send({
+//                 message: "server error...."
+//             })
+//         }
+//     });
+// })
+router.get('/addtocarts', (req, res) => {
 
+    const userId = new mongoose.Types.ObjectId(req.body.token._id);
+
+    addtocartModel.find(
+        { owner: userId },
+        {},
+        {
+            sort: { "_id": -1 },
+            limit: 100,
+            skip: 0
+        }
+        , (err, data) => {
+            if (!err) {
+                res.send({
+                    message: "got all products successfully",
+                    data: data
+                  
+                })  
+               
+            } else {
+                res.status(500).send({
+                    message: "server error...."
+                })
+            }
+        });
+})
 
 export default router 

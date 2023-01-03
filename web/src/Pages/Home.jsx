@@ -98,7 +98,7 @@ const [homeProductDataLength, sethomeProductDataLength] = useState(null)
 
 const getAllProducts = async () => {
   try {
-    const response = await axios.get(`${state.baseUrl}/products`,{
+    const response = await axios.get(`${state.baseUrl}/productsAll`,{
          
       withCredentials: true,
       
