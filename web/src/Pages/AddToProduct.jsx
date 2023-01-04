@@ -82,6 +82,8 @@ const AddToProduct = ({BageNo,setBageNo}) => {
     if(error || success){
       handleClickMsg()
     } 
+    setSuccess('')
+setError('')
     try {
       const response = await axios.delete(`${state.baseUrl}/addtocart/${id}`,{
          

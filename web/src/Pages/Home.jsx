@@ -98,13 +98,13 @@ const [homeProductDataLength, sethomeProductDataLength] = useState(null)
 
 const getAllProducts = async () => {
   try {
-    const response = await axios.get(`${state.baseUrl}/productsAll`,{
+    const response = await axios.get(`${state.baseUrl}/productAll`,{
          
       withCredentials: true,
       
    
   });
-    console.log("response: ", response.data.data);
+    console.log("response: ", response);
 
     setHomeProductData(response.data.data);
     sethomeProductDataLength(response.data.data.length)
@@ -140,6 +140,8 @@ useEffect(() => {
     if(error || success){
       handleClickMsg()
     }
+    setSuccess('')
+setError('')
     try {
       const response = await axios.get(`${state.baseUrl}/product/${id}`,{
          
@@ -175,6 +177,8 @@ console.log("response2: ", response.data.data)
     if(error || success){
       handleClickMsg()
     }
+    setSuccess('')
+setError('')
     try {
       const response = await
       axios.post(`${state.baseUrl}/addtocart`, objectCart,{

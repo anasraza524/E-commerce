@@ -29,6 +29,7 @@ router.post('/product', (req, res) => {
         price: body.price,
         description: body.description,
         productImage: body.productImage,
+        owner: new mongoose.Types.ObjectId(body.token._id),
     },
         (err, saved) => {
             console.log("post Error",err)
@@ -46,15 +47,20 @@ router.post('/product', (req, res) => {
         })
 })
 
-router.get('/products', (req, res) => {
+router.get('/productAll', (req, res) => {
     productModel.find({}, (err, data) => {
         console.log("get Error",err)
-        if (!err) {
+        if (!err) {;
             res.send({
                 message: "got all products successfully",
                 data: data
               
-            })  
+            });
+            // res.send({
+            //     message: "got all products successfully",
+            //     data: data
+              
+            // })  
            
         } else {
             res.status(500).send({
@@ -64,7 +70,33 @@ router.get('/products', (req, res) => {
     });
 })
 
+router.get('/products', (req, res) => {
 
+    const userId = new mongoose.Types.ObjectId(req.body.token._id);
+
+    productModel.find(
+        { owner: userId
+            // , isDeleted: false 
+            },
+        {},
+        {
+            sort: { "_id": -1 },
+            limit: 100,
+            skip: 0
+        }
+        , (err, data) => {
+            if (!err) {
+                res.send({
+                    message: "got all products successfully",
+                    data: data
+                })
+            } else {
+                res.status(500).send({
+                    message: "server error"
+                })
+            }
+        });
+})
 router.get('/product/:id', (req, res) => {
 
     const id = req.params.id;

@@ -108,7 +108,7 @@ editingProdImage:""
         
      
     });
-      console.log("response: ", response.data);
+      console.log("responseProduct: ", response.data);
 
       setProductData(response.data.data);
      setProductDataLength(response.data.data.length)
@@ -161,6 +161,8 @@ editingProdImage:""
     if(error || success){
       handleClickMsg()
     }
+    setSuccess('')
+setError('')
     try {
       const response = await axios.post(`${state.baseUrl}/product` ,{
         
@@ -209,6 +211,8 @@ editingProdImage:""
     if(error || success){
       handleClickMsg()
     }
+    setSuccess('')
+setError('')
     try {
       const response = await axios.delete(`${state.baseUrl}/product/${id}`,{
          
@@ -234,14 +238,15 @@ editingProdImage:""
   }
   
   e.preventDefault();
-
+  setSuccess('')
+  setError('')
     try {
       const response = await axios.put(`${state.baseUrl}/product/${editing.editingid}`,{
         name:editing.editingName,
         price:editing.editingPrice,
         description:editing.editingDescription,
         productImage:storageURL
-      })
+      },{withCredentials:true})
       setSuccess(response.data.message)
       handleClose()
       setFile(null)

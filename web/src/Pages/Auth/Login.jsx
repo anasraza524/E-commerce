@@ -73,6 +73,8 @@ export default function Login() {
       if(error || success){
         handleClickMsg()
       } 
+      setSuccess('')
+setError('')
  const data = new FormData(e.currentTarget);
       try {
           let response = await axios.post(`${state.baseUrl}/login`, {

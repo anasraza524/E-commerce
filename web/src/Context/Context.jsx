@@ -7,6 +7,8 @@ let data = {
   darkTheme: true,
   user: {},
   isLogin: null,
+  Error:"",
+  Success:"",
   baseUrl: (window.location.href.split(":")[0] === "http")
     ?
     `http://localhost:3001/api/v1` : `/api/v1`

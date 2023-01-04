@@ -560,7 +560,7 @@ if(req.params.id){
     _id = req.params.token._id
 }
 try{
-const user = await userModel.findById(_id,"email firstName lastName -_id").exec()
+const user = await userModel.findOne({ _id: _id },"email firstName lastName -_id").exec()
 if (!user) {
     res.status(404).send({message:"Error data not found"})
     return;

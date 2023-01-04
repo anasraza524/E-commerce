@@ -75,11 +75,12 @@ function App() {
           
         })
 
-        console.log("response: ", response);
+        console.log("responseApp: ", response);
 
         dispatch({
           type: 'USER_LOGIN',
           payload: response.data
+
         })
       } catch (error) {
 

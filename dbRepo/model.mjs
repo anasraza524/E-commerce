@@ -10,7 +10,7 @@ let productSchema = new mongoose.Schema({
     description: String,
      productImage: String,
      owner: { type: mongoose.ObjectId, required: true },
-     isDeleted: { typeof: Boolean, default: false },
+    //  isDeleted: { typeof: Boolean, default: false },
     createdOn: { type: Date, default: Date.now }
 });
 export const productModel = mongoose.model('products', productSchema);
