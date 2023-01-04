@@ -149,7 +149,7 @@ setError('')
         
      
     })
-      console.log("response: ", response.data);
+      console.log("responseCart: ", response);
 console.log("response2: ", response.data.data)
       setCurrentProduct(response.data.data)
       console.log("CurrentProduct",CurrentProduct)
@@ -184,8 +184,7 @@ setError('')
       axios.post(`${state.baseUrl}/addtocart`, objectCart,{
          
         withCredentials: true,
-        
-     
+
     });
   
    console.log("asds",response)

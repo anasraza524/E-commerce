@@ -69,6 +69,56 @@ router.get('/productAll', (req, res) => {
         }
     });
 })
+router.get('/product/:id', (req, res) => {
+
+    const id = req.params.id;
+
+    productModel.findOne({ _id: id }, (err, data) => {
+        if (!err) {
+            if (data) {
+                res.send({
+                    message: `get product by id: ${data._id} success`,
+                    data: data
+                });
+            } else {
+                res.status(404).send({
+                    message: "product not found",
+                })
+            }
+        } else {
+            res.status(500).send({
+                message: "server error"
+            })
+        }
+    });
+})
+router.get("/products/:name", (req, res) => {
+    console.log(req.params.name);
+
+    const body = req.body
+    const name = req.params.name
+    productModel.find({ 
+   
+        name: { $regex: `${name}` }
+     }, (err, data) => {
+      if (!err) {
+        if (data) {
+          res.send({
+            message: `get product by success`,
+            data: data,
+          });
+        } else {
+          res.status(404).send({
+            message: "product not found",
+          });
+        }
+      } else {
+        res.status(500).send({
+          message: "server error",
+        });
+      }
+    });
+  });
 
 router.get('/products', (req, res) => {
 
@@ -97,57 +147,8 @@ router.get('/products', (req, res) => {
             }
         });
 })
-router.get('/product/:id', (req, res) => {
 
-    const id = req.params.id;
 
-    productModel.findOne({ _id: id }, (err, data) => {
-        if (!err) {
-            if (data) {
-                res.send({
-                    message: `get product by id: ${data._id} success`,
-                    data: data
-                });
-            } else {
-                res.status(404).send({
-                    message: "product not found",
-                })
-            }
-        } else {
-            res.status(500).send({
-                message: "server error"
-            })
-        }
-    });
-})
-
-router.get('/product/:name', (req, res) => {
-   
-    const querryName = req.params.name;
-    // ({name:{$regex:`${querryName}`}}`
-    // { name:querryName}
-      productModel.find({name:{$regex:`${querryName}`}}
-        
-        , (err, data) => {
-            console.log("des: ", err)
-        if (!err) {
-          if (data.length !== 0) {
-            res.send({
-              message: `get product by success`,
-              data: data,
-            });
-          } else {
-            res.status(404).send({
-              message: "product not found",
-            });
-          }
-        } else {
-          res.status(500).send({
-            message: "server error/./.",
-          });
-        }
-      });
-    });
 
 
 router.delete('/product/:id',async (req, res) => {
