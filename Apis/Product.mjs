@@ -96,7 +96,7 @@ router.get("/products/:name", (req, res) => {
     console.log(req.params.name);
 
     const body = req.body
-    const name = req.params.name
+    const name = req.params.toLowerCase()
     productModel.find({ 
    
         name: { $regex: `${name}` }

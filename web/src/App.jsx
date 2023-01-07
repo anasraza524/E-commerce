@@ -4,6 +4,7 @@ import { useState, useEffect,useContext } from "react"
 // import Home from './Components/Home';
 import Loading from './assets/Loading.gif'
 import Nav from './Components/Nav';
+import OtpRecord from "./Pages/OtpRecord";
 import Home from './Pages/Home';
 import axios from 'axios';
 import Login from "./Pages/Auth/Login";
@@ -141,6 +142,7 @@ function App() {
 <Route path="/" element={<Login/>}/>
 <Route path="SignUp" element={<SignUp/>}/>
 <Route path="ForgetPassword" element={<ForgetPassword/>}/>
+<Route path="OtpRecord" element={<OtpRecord/>}/>
 <Route path="/user/reset/:id/:token" element={<ResetPassword/>}/>
  <Route path="*" element={<Navigate to="/" replace={true} />}/> 
 
