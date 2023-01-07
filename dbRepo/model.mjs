@@ -2,6 +2,15 @@
 import mongoose from 'mongoose';
 
 
+let otpSchema = new mongoose.Schema({
+
+    otp: String,
+     email: String,
+    
+    //  isDeleted: { typeof: Boolean, default: false },
+    createdOn: { type: Date, default: Date.now }
+});
+export const OtpRecordModel = mongoose.model('OtpRecords', otpSchema);
 
 
 let productSchema = new mongoose.Schema({

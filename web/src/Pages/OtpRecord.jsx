@@ -1,12 +1,41 @@
 
 import OTPInput from "react18-input-otp";
-import React, { useState } from "react";
-import {Avatar} from '@mui/material';
+import { useState,useContext } from "react";
+import axios from "axios";
+import { GlobalContext } from '../Context/Context';
+import {Avatar,Button} from '@mui/material';
 import "./OtpRecord.css";
 const OtpRecord = () => {
+  let { state, dispatch } = useContext(GlobalContext);
     const [OTP, setOTP] = useState("");
-  function handleChange(OTP) {
-    setOTP(OTP);}
+  function  handleChange(OTP)  {
+    setOTP(OTP);
+  
+  console.log(OTP)
+
+  }
+  const otpCode =async (e) => { 
+     
+   
+    
+try{ const res = await axios.post(`${state.baseUrl}/request_otp`, { 
+  
+  otp: OTP
+ }, {
+  withCredentials: true
+});
+
+if (res) {
+  alert("Otp Submit");
+}}
+catch(err){
+console.log("OtpPassowrd Error",err)
+}
+   
+
+ }
+
+    
   return (
     <>
 <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
@@ -24,11 +53,13 @@ const OtpRecord = () => {
           value={OTP}
           inputStyle="inputStyle"
           numInputs={5}
-          placeholder="0"
+        
           autoComplete="one-time-code"
            separator={<span></span>}
         />
+       
       </div>
+      <Button onClick={otpCode}> Submit</Button>
       <div class="text-center mt-5"><span class="d-block mobile-text">Don't receive the code?</span><span class="font-weight-bold text-danger cursor">Resend</span></div>
   </div>
 </div></>
