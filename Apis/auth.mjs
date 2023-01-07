@@ -1,7 +1,8 @@
 import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 dotenv.config()
 import express from 'express';
-import { userModel, productModel,addtocartModel } from '../dbRepo/model.mjs'
+import { nanoid, customAlphabet } from 'nanoid'
+import { userModel, productModel } from '../dbRepo/model.mjs'
 import {
     stringToHash,
     varifyHash,
@@ -9,6 +10,7 @@ import {
 import jwt from 'jsonwebtoken';
 import nodemailer from "nodemailer";
 import cookieParser from 'cookie-parser';
+import { customAlphabet } from 'nanoid';
 const SECRET = process.env.SECRET || "topsecret";
 
 
@@ -348,44 +350,44 @@ console.log("done")
         
         
 //         )
-router.put("/forget_password/:id/:token",(req, res) => {
-    let body = req.body
-   console.log('1')
-    const { _id, token } = req.params;
-    if(!body.password,!_id,!token){
-        res.status(400).send(
-            `required fields missing, request example: `
+// router.put("/forget_password/:id/:token",(req, res) => {
+//     let body = req.body
+//    console.log('1')
+//     const { _id, token } = req.params;
+//     if(!body.password,!_id,!token){
+//         res.status(400).send(
+//             `required fields missing, request example: `
             
 
-        );
-        return;}
+//         );
+//         return;}
 
-        try {
-            stringToHash(body.password).then(hashString => {
+//         try {
+//             stringToHash(body.password).then(hashString => {
     
                                 
-            let data =  userModel.findByIdAndUpdate(_id,
-                {
-                    password: hashString
-                },
-                { new: true }
-            ).exec();
+//             let data =  userModel.findByIdAndUpdate(_id,
+//                 {
+//                     password: hashString
+//                 },
+//                 { new: true }
+//             ).exec();
     
-            console.log('updated: ', data);
+//             console.log('updated: ', data);
     
-            res.send({
-                message: "product modified successfully"
-            });
+//             res.send({
+//                 message: "product modified successfully"
+//             });
     
-        })} catch (error) {
-            res.status(500).send({
-                message: "server error"
-            })
-        }
+//         })} catch (error) {
+//             res.status(500).send({
+//                 message: "server error"
+//             })
+//         }
 
-    }
+//     }
 
-    )
+//     )
 router.post("/login", (req, res) => {
 
     let body = req.body;
@@ -475,5 +477,183 @@ router.post("/logout", (req, res) => {
     res.send({ message: "Logout successful" });
 })
 
+router.post("/forget-password", async (req,res)=>{
+    try{
+let body = req.body
+body.email = body.email.toLowerCase()
+if(!body.email) {
+    res.send({
+        message:`required parameter is messing. ex : {"email":""abc@.com}`
+    })
+    return;
+}   
+
+const user = await  findOne({email:body.email},"firstName lastName email").exec() 
+if(!user) throw new Error("user not Found")
+const nanoid = customAlphabet('1234567890',5)
+const OTP = nanoid()
+console.log("OTP: ", OTP)
+OtpRecordModel.create({
+    otp:OTP,
+    email:body.email
+})
+
+
+const transport = nodemailer.createTransport({
+    service: "gmail",
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: {
+      user:process.env.EMAIL ,
+      pass:process.env.EMAIL_PASSWORD,
+    },
+  });
+  const mailOptions = {
+    from: process.env.EMAIL,
+    to: body.email,
+    subject: `Password Reset Request`,
+    text: `
+    <!doctype html>
+    <html lang="en-US">
+    <head>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+        <title>Reset Password Email Template</title>
+        <meta name="description" content="Reset Password Email Template.">
+        <style type="text/css">
+            a:hover {text-decoration: underline !important;}
+        </style>
+    </head>
+    <body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0">
+        <!--100% body table-->
+        <table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+            style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;">
+            <tr>
+                <td>
+                    <table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                        align="center" cellpadding="0" cellspacing="0">
+                        
+                        <tr>
+                            <td>
+                                <table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                    style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);">
+                                    <tr>
+                                        <td style="height:40px;">&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                    <td style="padding:0 35px;">
+                                    <h1 style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;">You have
+                                        requested to reset your password</h1>
+                                    <span
+                                        style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"></span>
+                                    <p style="color:#455056; font-size:15px;line-height:24px; margin:0;">
+                                        We cannot simply send you your old password. A unique link to reset your
+                                        password has been generated for you. To reset your password, check the
+                                        following OTP and follow the instructions.
+                                    </p>
+                                    <h3 style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;">You have
+                                    OTP</h3>
+                                    <h4 style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;">You have
+                                    ${OTP}</h4>
+
+                                </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="height:40px;">&nbsp;</td>
+                                    </tr>
+                                </table>
+                            </td>
+                       
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <!--/100% body table-->
+    </body>
+    </html>`,
+                html: `
+    <!doctype html>
+    <html lang="en-US">
+    <head>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+        <title>Reset Password Email Template</title>
+        <meta name="description" content="Reset Password Email Template.">
+        <style type="text/css">
+            a:hover {text-decoration: underline !important;}
+        </style>
+    </head>
+    <body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0">
+        <!--100% body table-->
+        <table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+            style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;">
+            <tr>
+                <td>
+                    <table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                        align="center" cellpadding="0" cellspacing="0">
+                       
+                        <tr>
+                            <td>
+                                <table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                    style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);">
+                                    <tr>
+                                        <td style="height:40px;">&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:0 35px;">
+                                            <h1 style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;">You have
+                                                requested to reset your password</h1>
+                                            <span
+                                                style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"></span>
+                                            <p style="color:#455056; font-size:15px;line-height:24px; margin:0;">
+                                                We cannot simply send you your old password. A unique link to reset your
+                                                password has been generated for you. To reset your password, check the
+                                                following OTP and follow the instructions.
+                                            </p>
+                                            <h3 style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;">You have
+                                            OTP</h3>
+                                            <h4 style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;">You have
+                                            ${OTP}</h4>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="height:40px;">&nbsp;</td>
+                                    </tr>
+                                </table>
+                            </td>
+                       
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <!--/100% body table-->
+    </body>
+    </html>`,
+              };
+              transport.sendMail(mailOptions, (error, info) => {
+                console.log("error",error)
+                console.log("info",info)
+    if (!error) {
+      return res.status(200).json({ 
+        message: "OTP sent success" ,
+    });
+    return;
+
+    }else{
+        return res.status(400).json({ message: "Error in Sending Email " });
+    }
+    
+  });
+
+
+}
+    catch (error) {
+        console.log("error: ", error);
+        res.status(500).send({
+            message: error.message
+        })
+    }
+    }
+)
 
 export default router
