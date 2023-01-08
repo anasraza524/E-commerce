@@ -37,16 +37,19 @@ const theme = createTheme();
 
 export default function Login() {
   let { state, dispatch } = useContext(GlobalContext);
-const notify = () => toast.error(error, {
-  position: "top-right",
-  autoClose: 3000,
-  hideProgressBar: false,
-  closeOnClick: true,
-  pauseOnHover: true,
-  draggable: true,
-  progress: undefined,
-  theme: "light",
-  });;
+  const notify = (error,errorNetwork,errorCheck) => toast.error((error)?
+  error:errorNetwork
+      
+      , {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });;
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
@@ -104,7 +107,9 @@ setError('')
        
 
       } catch (error) {
-        notify()
+        notify(error.response.data.message , error.message,
+          error.response.status
+          )
          setError(error.response.data.message)
       //  setError(error.message)
         
@@ -130,18 +135,7 @@ draggable
 pauseOnHover
 theme="light"
 />
-<ToastContainer
-position="top-right"
-autoClose={2000}
-hideProgressBar={false}
-newestOnTop={false}
-closeOnClick
-rtl={false}
-pauseOnFocusLoss
-draggable
-pauseOnHover
-theme="light"
-/>
+
       </div>
       <Stack spacing={2} sx={{ width: '100%' }}>
 

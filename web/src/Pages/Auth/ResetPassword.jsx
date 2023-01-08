@@ -9,16 +9,17 @@ import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { Link } from "react-router-dom";
+import {DialogContent,Dialog,DialogContentText,DialogTitle,DialogActions,CardMedia} from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import {DialogContent,Dialog,DialogContentText,DialogTitle,DialogActions,CardMedia} from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useParams, useNavigate } from "react-router-dom";
 import DialogBox from '../../Components/DialogBox';
 import Sucsess from '../../assets/Succes.gif'
+import 'react-toastify/dist/ReactToastify.css';
 import Error from '../../assets/error..gif'
 import axios from 'axios';
 const theme = createTheme();
@@ -26,10 +27,12 @@ const ResetPassword = () => {
   const [open, setOpen] = React.useState(false);
   const DialogOpen = () => {
     setOpen(true);
+    navigate("/");
   };
 
   const DialogClose = () => {
     setOpen(false);
+    navigate("/");
   };
   const { _id, token } = useParams();
   const navigate = useNavigate();
@@ -102,7 +105,7 @@ aria-labelledby="responsive-dialog-title"
 component="img"
 loading="eager"
 width="150"
-sx={{height:{xs:100,sm:200,lg:250},mt:1}}
+sx={{height:{xs:100,sm:150,lg:200},mt:1}}
 image={Sucsess}
 alt="No product Image"
 />
@@ -198,6 +201,10 @@ Ok
           </Button>
       
         </Box>
+        <Typography component="p" variant="p">
+          <Link  to="/"  >
+                  Don`t want to change password
+                </Link></Typography>
       </Box>
    
     </Container>

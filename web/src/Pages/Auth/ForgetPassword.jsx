@@ -1,4 +1,4 @@
-import { useState,useContext } from 'react';
+import React,{ useState,useContext } from 'react';
 import { GlobalContext } from '../../Context/Context';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -9,17 +9,33 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { Link } from "react-router-dom";
+import {DialogContent,Dialog,DialogContentText,DialogTitle,DialogActions,CardMedia} from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
+import SendEmail from '../../assets/sending-emai.gif'
 const theme = createTheme();
 
 const ForgetPassword = () => {
+  const [open, setOpen] = React.useState(false);
+  const DialogOpen = () => {
+  
+    setOpen(true);
+  };
+
+  const DialogClose = () => {
+    setOpen(false);
+    navigate("/OtpRecord");
+  };
     let { state, dispatch } = useContext(GlobalContext);
-    const notify = () => toast.error(error, {
+    const notify = (error,errorNetwork,errorCheck) => toast.error((errorCheck !== 401)?
+error:errorNetwork
+    
+    , {
       position: "top-right",
-      autoClose: 3000,
+      autoClose: 2000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -50,17 +66,22 @@ const ForgetPassword = () => {
       withCredentials: true
   });
     
-    if (res) {
-      alert("email Sent");
-    }
-          if(res.status === 200) {
+    // if (res) {
+    //   alert("email Sent");
+    // }
+    DialogOpen()
+      //     if(res.status === 200) {
         
-        navigate("/OtpRecord");
-      }}
+      //   navigate("/OtpRecord");
+      // }
+}
     catch(err){
-      notify()
+      notify(err.response.data.message , err.message,
+        err.response.status
+        )
       setError(err.response.data.message)
 console.log("foegetPassowrd Error",err)
+console.log("err.response.status",err.response.status)
     }
        
     
@@ -79,6 +100,60 @@ draggable
 pauseOnHover
 theme="light"
 />
+<Dialog
+
+open={open}
+onClose={DialogClose}
+aria-labelledby="responsive-dialog-title"
+>
+ <DialogTitle dividers="true" >
+<Typography sx={{fontSize:{xs:"26px"},display:'flex',flexDirection:"column",alignItems:"center"}} variant='h4'>
+  E-Mart
+  {/* <CloseIcon onClick={DialogClose} sx={{m:1,float:"right"}} /> */}
+</Typography>
+
+</DialogTitle>
+<DialogContent sx={{display:'flex',flexDirection:"column",alignItems:"center"}}  dividers="true">
+
+<CardMedia
+component="img"
+loading="eager"
+width="150"
+sx={{height:{xs:100,sm:150,lg:200},mt:1}}
+ image={SendEmail}
+alt="No product Image"
+/>
+
+<Box sx={{m:{lg:2,sm:2,xs:1}}}>
+<Typography sx={{fontSize:{xs:"30px",lg:'30px',sm:'30px'}}} variant='h3' gutterBottom>
+
+Email has been sent 
+
+</Typography>
+<Typography sx={{fontSize:{xs:"16px"}}} variant='p' gutterBottom>
+
+please visit your inbox and copy & past the given OTP <br />
+Thank you,
+</Typography>
+</Box>
+
+</DialogContent>
+<DialogActions>
+
+<Link 
+sx={{fontSize:"20px" , textDecoration:"none"}}
+to="/OtpRecord">
+<Button sx={{fontSize:"20px"}} autoFocus onClick={DialogClose}>
+Ok
+</Button>
+</Link>
+
+
+
+
+ 
+</DialogActions>
+</Dialog>
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <Box
@@ -118,8 +193,12 @@ theme="light"
           >
            Send Email
           </Button>
-      
+       
         </Box>
+        <Typography component="p" variant="p">
+          <Link  to="/"  >
+                  lets Login
+                </Link></Typography>
       </Box>
    
     </Container>

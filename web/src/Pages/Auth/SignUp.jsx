@@ -17,6 +17,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { INITIAL_STATE,SIGN_STATE } from './CustomeState';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import DialogBox from '../../Components/DialogBox';
 import Sucsess from '../../assets/Succes.gif'
@@ -37,6 +39,19 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp() {
+  const notify = (error,errorNetwork,errorCheck) => toast.error((errorCheck !== 401)?
+  error:errorNetwork
+      
+      , {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });;
   const [open, setOpen] = React.useState(false);
   const DialogOpen = () => {
     setOpen(true);
@@ -102,7 +117,9 @@ console.log(response);
   setResult(response.data.message)
 e.target.reset()
 } catch (error) {
-
+  notify(error.response.data.message , error.message,
+    error.response.status
+    )
   console.log("Sign Error: ", error);
    setError(error.message)
   DialogOpen()
@@ -113,6 +130,18 @@ e.target.reset()
 
   return (
     <ThemeProvider theme={theme}>
+                    <ToastContainer
+position="top-right"
+autoClose={2000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="light"
+/>
      <Stack spacing={2} sx={{ width: '100%' }}>
       
       
