@@ -471,7 +471,7 @@ router.post("/login", (req, res) => {
 router.post("/logout", (req, res) => {
 
     res.cookie('Token', '', {
-        maxAge: 1,
+        maxAge: 0,
         httpOnly: true,
         sameSite: 'none',
         secure: true
@@ -493,13 +493,16 @@ if(!body.email) {
 
 const user = await  userModel.findOne(
     {email:body.email},
-    "firstName lastName email")
+    "firstName lastName email _id")
   
 if(!user) throw new Error("user not Found")
 const nanoid = customAlphabet('1234567890',5)
 const OTP = nanoid()
 console.log("OTP: ", OTP)
+
+// const newHashOtp = await stringToHash(OTP);
 OtpRecordModel.create({
+    // otp:newHashOtp,
     otp:OTP,
     email:body.email
 })
@@ -646,11 +649,30 @@ const transport = nodemailer.createTransport({
                 console.log("error",error)
                 console.log("info",info)
     if (!error) {
-      return res.status(200).json({ 
+    //     const token_0 = jwt.sign({
+    //         _id: user._id,
+    //         email: user.email,
+    //         iat: Math.floor(Date.now() / 1000) - 30,
+    //         exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24),
+    //     }, SECRET);
+    // console.log("toten",user.email,user._id)
+    //     console.log("token_O: ", token_0);
+    
+    //     res.cookie('Token_0', token_0, {
+    //         maxAge: 86_400_000,
+    //         httpOnly: true,
+    //         sameSite: 'none',
+    //         secure: true
+    //     });
+    
+
+
+    res.status(200);
+    res.send({ 
         message: "OTP sent success" ,
     });
-    return;
 
+return;
     }else{
         return res.status(400).json({ message: "Error in Sending Email " });
     }
@@ -670,10 +692,14 @@ const transport = nodemailer.createTransport({
 
 router.post("/request_otp", async (req,res)=>{
 try {
+   
     let body = req.body;
+   
+//  const _id = req.body.Token_0._id
+    
 if(!body.otp){
     res.status(400).send(
-        `required fields missing, request example: 
+        `required fields missing, request example: n
         {
          
             "otp": "12345",
@@ -682,20 +708,34 @@ if(!body.otp){
     );
     return;
 }
-
+// console.log("Email",req.params.token_0.email)
 const OtpRecord = await OtpRecordModel.findOne({
-    otp:body.otp
-}, "email")
+    otp:body.otp   //     console.log("token_O: ", token_0);
+}, "email otp")
 .sort({ _id: -1 })
 .exec()
+console.log("OtpRecord",OtpRecord)
  if(!OtpRecord) throw new Error("OTP Not Found")
-
- const isMatched = await varifyHash(body.otp, OtpRecord.otp)
-        if (!isMatched) throw new Error("Invalid OTP")
+if(body.otp ===  OtpRecord.otp){
+    res.send({
+        message: "OTP is Matched",
+    });
+}else{
+   
+    res.send({
+        message: "Invalid OTP",
+    });
+}
+//  const isMatched = await varifyHash(body.otp, OtpRecord.otp)
+ console.log("current",body.otp)
+ console.log("dbRecord",OtpRecord.otp)
+//        console.log("Matched",isMatched)
+//  if (!isMatched) throw new Error("Invalid OTP")
+        
+           
+       
 // success
-res.send({
-    message: "OTP is Matched",
-});
+
 } catch (error) {
     console.log("Otp_error: ", error);
     res.status(500).send({
@@ -709,6 +749,15 @@ router.post("/reset_password", async (req,res)=>{
    try {
     let body = req.body
 
+    const newPasswordHash = await stringToHash(body.password)
+const passwordChange = await userModel.updateOne({password:newPasswordHash}).exec()
+
+if(!passwordChange) throw new Error("Error in password")
+ // success
+ res.send({
+    message: "password changed success",
+});
+return;
    } catch (error) {
     
    }

@@ -72,6 +72,7 @@ export default function SignUp() {
   let { state, dispatch } = useContext(GlobalContext);
   const [result, setResult] = useState("");
   const [state1, dispatch1] = useReducer(SIGN_STATE, INITIAL_STATE);
+  
   const handleChange = (e) => {
     dispatch1({
       type: "CHANGE_INPUT",

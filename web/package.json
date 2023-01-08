@@ -21,6 +21,7 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.0.2",
     "react-scripts": "5.0.1",
+    "react-toastify": "^9.1.1",
     "react18-input-otp": "^1.1.2",
     "styled-components": "^5.3.6",
     "uuid": "^9.0.0",

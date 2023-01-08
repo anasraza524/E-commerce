@@ -4,17 +4,29 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-
+import { useParams, useNavigate } from "react-router-dom";
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 const theme = createTheme();
+
 const ForgetPassword = () => {
     let { state, dispatch } = useContext(GlobalContext);
-
+    const notify = () => toast.error(error, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      });;
     // const handleSubmit = (e) => {
     //   e.preventDefault();
     //   const data = new FormData(e.currentTarget);
@@ -23,8 +35,10 @@ const ForgetPassword = () => {
        
     //   });
     // };
+    const navigate = useNavigate();
 
-
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
     const forgetPassword =async (e) => { 
      
         e.preventDefault();
@@ -38,8 +52,14 @@ const ForgetPassword = () => {
     
     if (res) {
       alert("email Sent");
-    }}
+    }
+          if(res.status === 200) {
+        
+        navigate("/OtpRecord");
+      }}
     catch(err){
+      notify()
+      setError(err.response.data.message)
 console.log("foegetPassowrd Error",err)
     }
        
@@ -47,6 +67,18 @@ console.log("foegetPassowrd Error",err)
      }
   return (
     <ThemeProvider theme={theme}>
+              <ToastContainer
+position="top-right"
+autoClose={2000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="light"
+/>
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <Box

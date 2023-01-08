@@ -16,9 +16,11 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
-
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 function Copyright(props) {
   return (
+
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link to="/" >
@@ -35,7 +37,16 @@ const theme = createTheme();
 
 export default function Login() {
   let { state, dispatch } = useContext(GlobalContext);
-
+const notify = () => toast.error(error, {
+  position: "top-right",
+  autoClose: 3000,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  progress: undefined,
+  theme: "light",
+  });;
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
@@ -93,8 +104,10 @@ setError('')
        
 
       } catch (error) {
-       setError(error.message)
-        setError(error.response.data.message)
+        notify()
+         setError(error.response.data.message)
+      //  setError(error.message)
+        
           console.log("LoginError: ",error);
       }
 
@@ -103,6 +116,33 @@ setError('')
 
   return (
     <>
+    <div>
+        {/* <button onClick={notify}>Notify !</button> */}
+        <ToastContainer
+position="top-right"
+autoClose={2000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="light"
+/>
+<ToastContainer
+position="top-right"
+autoClose={2000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="light"
+/>
+      </div>
       <Stack spacing={2} sx={{ width: '100%' }}>
 
 <Snackbar open={openSnak} autoHideDuration={2000} onClose={handleCloseMsg}>
@@ -142,6 +182,7 @@ setError('')
               margin="normal"
               required
               fullWidth
+              type="text"
               id="email"
               label="Email Address"
               name="email"
@@ -152,6 +193,7 @@ setError('')
               margin="normal"
               required
               fullWidth
+            
               name="password"
               label="Password"
               type="password"
